@@ -1,0 +1,12 @@
+/*声明 WebFont*/
+@font-face {
+    font-family: 'Zpix';
+    src: url('fonts/Zpix.eot');
+    src:
+      url('fonts/Zpix.eot?#font-spider') format('embedded-opentype'),
+      url('fonts/Zpix.woff') format('woff'),
+      url('fonts/Zpix.ttf') format('truetype'),
+      url('fonts/Zpix.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
