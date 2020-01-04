@@ -1,5 +1,5 @@
 ---
-title: My New Post
+title: 自然辩证法
 date: 2020-01-03 23:04:14
 tags:
 ---
