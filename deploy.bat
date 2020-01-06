@@ -1,1 +1,1 @@
-hexo d
+hexo g -d
