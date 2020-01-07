@@ -1,0 +1,711 @@
+---
+title: oracle10g函数大全
+date: 2016/2/18 3:13:54
+tags:
+---
+
+    
+    
+    ****oracle** 分析函数--SQL*PLUS环境**
+    一、总体介绍
+    12.1 分析函数如何工作
+    语法 FUNCTION_NAME(<参数>,…) OVER (<PARTITION BY 表达式,…> <ORDER BY 表达式 <ASC DESC> <NULLS FIRST NULLS LAST>> <WINDOWING子句>) PARTITION子句 ORDER BY子句 WINDOWING子句 缺省时相当于RANGE UNBOUNDED PRECEDING 
+    **1. 值域窗(RANGE WINDOW)** 
+    RANGE N PRECEDING 仅对数值或日期类型有效,选定窗为排序后当前行之前,某列(即排序列)值大于/小于(当前行该列值 –/+ N)的所有行,因此与ORDER BY子句有关系。 
+    **2. 行窗(ROW WINDOW)** 
+    ROWS N PRECEDING 选定窗为当前行及之前N行。 
+    还可以加上BETWEEN AND 形式,例如RANGE BETWEEN m PRECEDING AND n FOLLOWING 
+    函数 AVG(<distinct all> eXPr) 
+    一组或选定窗中表达式的平均值 CORR(expr, expr) 即COVAR_POP(exp1,exp2) / (STDDEV_POP(expr1) * STDDEV_POP(expr2)),两个表达式的互相关,-1(反相关) ~ 1(正相关),0表示不相关 
+    COUNT(<distinct> <*> <expr>) 计数 
+    COVAR_POP(expr, expr) 总体协方差 
+    COVAR_SAMP(expr, expr) 样本协方差 
+    CUME_DIST 累积分布,即行在组中的相对位置,返回0 ~ 1 
+    DENSE_RANK 行的相对排序(与ORDER BY搭配),相同的值具有一样的序数(NULL计为相同),并不留空序数 
+    FIRST_VALUE 一个组的第一个值 
+    LAG(expr, <offset>, <default>) 访问之前的行,OFFSET是缺省为1 的正数,表示相对行数,DEFAULT是当超出选定窗范围时的返回值(如第一行不存在之前行) 
+    LAST_VALUE 一个组的最后一个值 
+    LEAD(expr, <offset>, <default>) 访问之后的行,OFFSET是缺省为1 的正数,表示相对行数,DEFAULT是当超出选定窗范围时的返回值(如最后行不存在之前行) 
+    [ ](http://cache.baiducontent.com/)**MAX** (expr) 最大值 
+    MIN(expr) 最小值 
+    NTILE(expr) 按表达式的值和行在组中的位置编号,如表达式为4,则组分4份,分别为1 ~ 4的值,而不能等分则多出的部分在值最小的那组 
+    PERCENT_RANK 类似CUME_DIST,1/(行的序数 - 1) 
+    RANK 相对序数,答应并列,并空出随后序号 
+    RATIO_TO_REPORT(expr) 表达式值 / SUM(表达式值) 
+    ROW_NUMBER 排序的组中行的偏移 
+    STDDEV(expr) 标准差 
+    STDDEV_POP(expr) 总体标准差 
+    STDDEV_SAMP(expr) 样本标准差 
+    SUM(expr) 合计 
+    VAR_POP(expr) 总体方差 
+    VAR_SAMP(expr) 样本方差 
+    VARIANCE(expr) 方差 
+    REGR_ xxxx(expr, expr) 线性回归函数 
+    REGR_SLOPE：返回斜率，等于COVAR_POP(expr1, expr2) / VAR_POP(expr2)
+    REGR_INTERCEPT：返回回归线的y截距，等于
+    AVG(expr1) - REGR_SLOPE(expr1, expr2) * AVG(expr2)
+    REGR_COUNT：返回用于填充回归线的非空数字对的数目
+    REGR_R2：返回回归线的决定系数，计算式为：
+    If VAR_POP(expr2) = 0 then return NULL
+    If VAR_POP(expr1) = 0 and VAR_POP(expr2) != 0 then return 1
+    If VAR_POP(expr1) > 0 and VAR_POP(expr2 != 0 then 
+    return POWER(CORR(expr1,expr),2)
+    REGR_AVGX：计算回归线的自变量(expr2)的平均值，去掉了空对(expr1, expr2)后，等于AVG(expr2)
+    REGR_AVGY：计算回归线的应变量(expr1)的平均值，去掉了空对(expr1, expr2)后，等于AVG(expr1)
+    REGR_SXX： 返回值等于REGR_COUNT(expr1, expr2) * VAR_POP(expr2)
+    REGR_SYY： 返回值等于REGR_COUNT(expr1, expr2) * VAR_POP(expr1)
+    REGR_SXY: 返回值等于REGR_COUNT(expr1, expr2) * COVAR_POP(expr1, expr2)
+    
+    
+    首先：创建表及接入测试数据
+    create table students
+    (id number(15,0),
+    area varchar2(10),
+    stu_type varchar2(2),
+    score number(20,2));
+    insert into students values(1, '111', 'g', 80 );
+    insert into students values(1, '111', 'j', 80 );
+    insert into students values(1, '222', 'g', 89 );
+    insert into students values(1, '222', 'g', 68 );
+    insert into students values(2, '111', 'g', 80 );
+    insert into students values(2, '111', 'j', 70 );
+    insert into students values(2, '222', 'g', 60 );
+    insert into students values(2, '222', 'j', 65 );
+    insert into students values(3, '111', 'g', 75 );
+    insert into students values(3, '111', 'j', 58 );
+    insert into students values(3, '222', 'g', 58 );
+    insert into students values(3, '222', 'j', 90 );
+    insert into students values(4, '111', 'g', 89 );
+    insert into students values(4, '111', 'j', 90 );
+    insert into students values(4, '222', 'g', 90 );
+    insert into students values(4, '222', 'j', 89 );
+    commit;
+    
+    二、具体应用：
+    1、分组求和：
+    **1）GROUP BY子句** 
+    --A、GROUPING SETS
+    
+    select id,area,stu_type,sum(score) score 
+    from students
+    group by grouping sets((id,area,stu_type),(id,area),id)
+    order by id,area,stu_type;
+    
+    /*--------理解grouping sets
+    select a, b, c, sum( d ) from t
+    group by grouping sets ( a, b, c )
+    
+    等效于
+    
+    select * from (
+    select a, null, null, sum( d ) from t group by a
+    union all
+    select null, b, null, sum( d ) from t group by b 
+    union all
+    select null, null, c, sum( d ) from t group by c 
+    )
+    */
+    
+    --B、ROLLUP
+    
+    select id,area,stu_type,sum(score) score 
+    from students
+    group by rollup(id,area,stu_type)
+    order by id,area,stu_type;
+    
+    /*--------理解rollup
+    select a, b, c, sum( d )
+    from t
+    group by rollup(a, b, c);
+    
+    等效于
+    
+    select * from (
+    select a, b, c, sum( d ) from t group by a, b, c 
+    union all
+    select a, b, null, sum( d ) from t group by a, b
+    union all
+    select a, null, null, sum( d ) from t group by a
+    union all
+    select null, null, null, sum( d ) from t
+    )
+    */
+    
+    --C、CUBE
+    
+    select id,area,stu_type,sum(score) score 
+    from students
+    group by cube(id,area,stu_type)
+    order by id,area,stu_type;
+    
+    /*--------理解cube
+    select a, b, c, sum( d ) from t
+    group by cube( a, b, c)
+    
+    等效于
+    
+    select a, b, c, sum( d ) from t
+    group by grouping sets( 
+    ( a, b, c ), 
+    ( a, b ), ( a ), ( b, c ), 
+    ( b ), ( a, c ), ( c ), 
+    () )
+    */
+    
+    --D、GROUPING
+    /*从上面的结果中我们很容易发现,每个统计数据所对应的行都会出现null,
+    如何来区分到底是根据那个字段做的汇总呢,grouping函数判断是否合计列!*/
+    
+    select decode(grouping(id),1,'all id',id) id,
+    decode(grouping(area),1,'all area',to_char(area)) area,
+    decode(grouping(stu_type),1,'all_stu_type',stu_type) stu_type,
+    sum(score) score
+    from students
+    group by cube(id,area,stu_type)
+    order by id,area,stu_type; 
+    
+    **二、OVER()函数的使用**
+    1、统计名次——DENSE_RANK(),ROW_NUMBER()
+    1)允许并列名次、名次不间断，DENSE_RANK()，结果如122344456……
+    将score按ID分组排名：dense_rank() over(partition by id order by score desc)
+    将score不分组排名：dense_rank() over(order by score desc)
+    select id,area,score,
+    dense_rank() over(partition by id order by score desc) 分组id排序,
+    dense_rank() over(order by score desc) 不分组排序
+    from students order by id,area;
+    
+    2)不允许并列名次、相同值名次不重复，ROW_NUMBER()，结果如123456……
+    将score按ID分组排名：row_number() over(partition by id order by score desc)
+    将score不分组排名：row_number() over(order by score desc)
+    select id,area,score,
+    row_number() over(partition by id order by score desc) 分组id排序,
+    row_number() over(order by score desc) 不分组排序
+    from students order by id,area;
+    
+    3)允许并列名次、复制名次自动空缺，rank()，结果如12245558……
+    将score按ID分组排名：rank() over(partition by id order by score desc)
+    将score不分组排名：rank() over(order by score desc)
+    select id,area,score,
+    rank() over(partition by id order by score desc) 分组id排序,
+    rank() over(order by score desc) 不分组排序
+    from students order by id,area;
+    
+    4)名次分析，cume_dist()——-最大排名/总个数 
+    函数：cume_dist() over(order by id)
+    select id,area,score,
+    cume_dist() over(order by id) a, --按ID最大排名/总个数 
+    cume_dist() over(partition by id order by score desc) b, --ID分组中，scroe最大排名值/本组总个数
+    row_number() over (order by id) 记录号
+    from students order by id,area;
+    
+    
+    5)利用cume_dist()，允许并列名次、复制名次自动空缺，取并列后较大名次，结果如22355778……
+    将score按ID分组排名：cume_dist() over(partition by id order by score desc)*sum(1) over(partition by id)
+    将score不分组排名：cume_dist() over(order by score desc)*sum(1) over()
+    select id,area,score,
+    sum(1) over() as 总数,
+    sum(1) over(partition by id) as 分组个数,
+    (cume_dist() over(partition by id order by score desc))*(sum(1) over(partition by id)) 分组id排序,
+    (cume_dist() over(order by score desc))*(sum(1) over()) 不分组排序
+    from students order by id,area
+    
+    2、分组统计－－sum(), **max** (),avg(),RATIO_TO_REPORT()
+    select id,area,
+    sum(1) over() as 总记录数, 
+    sum(1) over(partition by id) as 分组记录数,
+    sum(score) over() as 总计 , 
+    sum(score) over(partition by id) as 分组求和,
+    sum(score) over(order by id) as  分组连续求和,
+    sum(score) over(partition by id,area) as 分组ID和area求和,
+    sum(score) over(partition by id order by area) as 分组ID并连续按area求和,
+    **max** (score) over() as 最大值,
+    **max** (score) over(partition by id) as 分组最大值,
+    **max** (score) over(order by id) as 分组连续最大值,
+    **max** (score) over(partition by id,area) as 分组ID和area求最大值,
+    **max** (score) over(partition by id order by area) as 分组ID并连续按area求最大值,
+    avg(score) over() as 所有平均,
+    avg(score) over(partition by id) as 分组平均,
+    avg(score) over(order by id) as 分组连续平均,
+    avg(score) over(partition by id,area) as 分组ID和area平均,
+    avg(score) over(partition by id order by area) as 分组ID并连续按area平均,
+    RATIO_TO_REPORT(score) over() as "占所有%",
+    RATIO_TO_REPORT(score) over(partition by id) as "占分组%",
+    score from students;
+    
+    3、LAG(COL,n,default)、LEAD(OL,n,default) --取前后边N条数据
+    取前面记录的值：lag(score,n,x) over(order by id)
+    取后面记录的值：lead(score,n,x) over(order by id) 
+    参数：n表示移动N条记录，X表示不存在时填充值，iD表示排序列
+    select id,lag(score,1,0) over(order by id) lg,score from students;
+    select id,lead(score,1,0) over(order by id) lg,score from students;
+    
+    4、FIRST_VALUE()、LAST_VALUE()
+    取第起始1行值：first_value(score,n) over(order by id)
+    取第最后1行值：LAST_value(score,n) over(order by id)
+    select id,first_value(score) over(order by id) fv,score from students;
+    select id,last_value(score) over(order by id) fv,score from students;
+    
+    
+    
+    
+    **sum(...) over ...**
+    【功能】连续求和分析函数
+    【参数】具体参示例
+    【说明】 **Oracle** 分析函数
+    
+    NC示例：
+    select bdcode,sum(1) over(order by bdcode) aa from bd_bdinfo 
+    
+    【示例】
+    1.原表信息： SQL> break on deptno skip 1  -- 为效果更明显，把不同部门的数据隔段显示。
+    SQL> select deptno,ename,sal
+       2   from emp
+       3   order by deptno;
+    
+    DEPTNO ENAME          SAL
+    ---------- ---------- ----------
+           10 CLARK          2450
+              KING          5000
+              MILLER           1300
+    
+           20 SMITH          800
+              ADAMS          1100
+              FORD          3000
+              SCOTT          3000
+              JONES          2975
+    
+           30 ALLEN          1600
+              BLAKE          2850
+              MARTIN           1250
+              JAMES          950
+              TURNER           1500
+              WARD          1250
+    
+    2.先来一个简单的，注意over(...)条件的不同，
+    使用 sum(sal) over (order by ename)... 查询员工的薪水“连续”求和,
+    注意over (order   by ename)如果没有order by 子句，求和就不是“连续”的，
+    放在一起，体会一下不同之处：
+    
+    SQL> select deptno,ename,sal,
+       2   sum(sal) over (order by ename) 连续求和,
+       3   sum(sal) over () 总和,                -- 此处sum(sal) over () 等同于sum(sal)
+       4   100*round(sal/sum(sal) over (),4) "份额(%)"
+       5   from emp
+       6   /
+    
+    DEPTNO ENAME          SAL 连续求和    总和 份额(%)
+    ---------- ---------- ---------- ---------- ---------- ----------
+           20 ADAMS          1100    1100    29025    3.79
+           30 ALLEN          1600    2700    29025    5.51
+           30 BLAKE          2850    5550    29025    9.82
+           10 CLARK          2450    8000    29025    8.44
+           20 FORD          3000    11000    29025    10.34
+           30 JAMES          950    11950    29025    3.27
+           20 JONES          2975    14925    29025    10.25
+           10 KING          5000    19925    29025    17.23
+           30 MARTIN           1250    21175    29025    4.31
+           10 MILLER           1300    22475    29025    4.48
+           20 SCOTT          3000    25475    29025    10.34
+           20 SMITH          800    26275    29025    2.76
+           30 TURNER           1500    27775    29025    5.17
+           30 WARD          1250    29025    29025    4.31
+    
+    3.使用子分区查出各部门薪水连续的总和。注意按部门分区。注意over(...)条件的不同，
+    sum(sal) over (partition by deptno order by ename) 按部门“连续”求总和
+    sum(sal) over (partition by deptno) 按部门求总和
+    sum(sal) over (order by deptno，ename) 不按部门“连续”求总和
+    sum(sal) over () 不按部门，求所有员工总和，效果等同于sum(sal)。
+    
+    SQL> select deptno,ename,sal,
+       2   sum(sal) over (partition by deptno order by ename) 部门连续求和,--各部门的薪水"连续"求和
+       3   sum(sal) over (partition by deptno) 部门总和,   -- 部门统计的总和，同一部门总和不变
+       4   100*round(sal/sum(sal) over (partition by deptno),4) "部门份额(%)",
+       5   sum(sal) over (order by deptno,ename) 连续求和, --所有部门的薪水"连续"求和
+       6   sum(sal) over () 总和,   -- 此处sum(sal) over () 等同于sum(sal)，所有员工的薪水总和
+       7   100*round(sal/sum(sal) over (),4) "总份额(%)"
+       8   from emp
+       9   /
+    
+    DEPTNO ENAME SAL 部门连续求和 部门总和 部门份额(%) 连续求和 总和   总份额(%)
+    ------ ------ ----- ------------ ---------- ----------- ---------- ------ ----------
+    10 CLARK 2450       2450    8750       28    2450   29025    8.44
+       KING 5000       7450    8750    57.14    7450   29025    17.23
+       MILLER   1300       8750    8750    14.86    8750   29025    4.48
+    
+    20 ADAMS 1100       1100    10875    10.11    9850   29025    3.79
+       FORD 3000       4100    10875    27.59    12850   29025    10.34
+       JONES 2975       7075    10875    27.36    15825   29025    10.25
+       SCOTT 3000        10075    10875    27.59    18825   29025    10.34
+       SMITH 800        10875    10875        7.36    19625   29025    2.76
+    
+    30 ALLEN 1600       1600    9400    17.02    21225   29025    5.51
+       BLAKE 2850       4450    9400    30.32    24075   29025    9.82
+       JAMES 950       5400    9400    10.11    25025   29025    3.27
+       MARTIN   1250       6650    9400        13.3    26275   29025    4.31
+       TURNER   1500       8150    9400    15.96    27775   29025    5.17
+       WARD 1250       9400    9400        13.3    29025   29025    4.31
+    
+    
+    4.来一个综合的例子，求和规则有按部门分区的，有不分区的例子
+    SQL> select deptno,ename,sal,sum(sal) over (partition by deptno order by sal) dept_sum,
+       2   sum(sal) over (order by deptno,sal) sum
+       3   from emp;
+    
+    DEPTNO ENAME          SAL DEPT_SUM        SUM
+    ---------- ---------- ---------- ---------- ----------
+           10 MILLER           1300    1300    1300
+              CLARK          2450    3750    3750
+              KING          5000    8750    8750
+    
+           20 SMITH          800        800    9550
+              ADAMS          1100    1900    10650
+              JONES          2975    4875    13625
+              SCOTT          3000    10875    19625
+              FORD          3000    10875    19625
+    
+           30 JAMES          950        950    20575
+              WARD          1250    3450    23075
+              MARTIN           1250    3450    23075
+              TURNER           1500    4950    24575
+              ALLEN          1600    6550    26175
+              BLAKE          2850    9400    29025
+    
+    5.来一个逆序的，即部门从大到小排列，部门里各员工的薪水从高到低排列，累计和的规则不变。
+    
+    SQL> select deptno,ename,sal,
+       2   sum(sal) over (partition by deptno order by deptno desc,sal desc) dept_sum,
+       3   sum(sal) over (order by deptno desc,sal desc) sum
+       4   from emp;
+    
+    DEPTNO ENAME          SAL DEPT_SUM        SUM
+    ---------- ---------- ---------- ---------- ----------
+           30 BLAKE          2850    2850    2850
+              ALLEN          1600    4450    4450
+              TURNER           1500    5950    5950
+              WARD          1250    8450    8450
+              MARTIN           1250    8450    8450
+              JAMES          950    9400    9400
+    
+           20 SCOTT          3000    6000    15400
+              FORD          3000    6000    15400
+              JONES          2975    8975    18375
+              ADAMS          1100    10075    19475
+              SMITH          800    10875    20275
+    
+           10 KING          5000    5000    25275
+              CLARK          2450    7450    27725
+              MILLER           1300    8750    29025
+    
+    
+    6.体会：在"... from emp;"后面不要加order   by 子句，使用的分析函数的(partition by deptno order by sal)
+    里已经有排序的语句了，如果再在句尾添加排序子句，一致倒罢了，不一致，结果就令人费劲了。如：
+    
+    SQL> select deptno,ename,sal,sum(sal) over (partition by deptno order by sal) dept_sum,
+       2   sum(sal) over (order by deptno,sal) sum
+       3   from emp
+       4   order by deptno desc;
+    
+    DEPTNO ENAME          SAL DEPT_SUM        SUM
+    ---------- ---------- ---------- ---------- ----------
+           30 JAMES          950        950    20575
+              WARD          1250    3450    23075
+              MARTIN           1250    3450    23075
+              TURNER           1500    4950    24575
+              ALLEN          1600    6550    26175
+              BLAKE          2850    9400    29025
+    
+           20 SMITH          800        800    9550
+              ADAMS          1100    1900    10650
+              JONES          2975    4875    13625
+              SCOTT          3000    10875    19625
+              FORD          3000    10875    19625
+    
+           10 MILLER           1300    1300    1300
+              CLARK          2450    3750    3750
+              KING          5000    8750    8750  
+      
+      
+    
+    
+    
+     **RANK()
+    dense_rank()**
+    【语法】RANK ( ) OVER ( [query_partition_clause] order_by_clause )
+            dense_RANK ( ) OVER ( [query_partition_clause] order_by_clause )
+    
+    【功能】聚合函数RANK 和 dense_rank 主要的功能是计算一组数值中的排序值。
+    【参数】dense_rank与rank()用法相当，
+    【区别】dence_rank在并列关系是，相关等级不会跳过。rank则跳过
+    rank()是跳跃排序，有两个第二名时接下来就是第四名（同样是在各个分组内） 
+    dense_rank()l是连续排序，有两个第二名时仍然跟着第三名。
+    【说明】 **Oracle** 分析函数
+    
+    
+    【示例】
+    聚合函数RANK 和 dense_rank 主要的功能是计算一组数值中的排序值。
+    　　
+    　　在9i版本之前，只有分析功能（analytic ），即从一个查询结果中计算每一行的排序值，是基于order_by_clause子句中的value_exprs指定字段的。
+    　　
+    　　其语法为：
+    　　
+    　　RANK ( ) OVER ( [query_partition_clause] order_by_clause )
+    　　
+    　　在9i版本新增加了合计功能（aggregate），即对给定的参数值在设定的排序查询中计算出其排序值。这些参数必须是常数或常值表达式，且必须和ORDER BY子句中的字段个数、位置、类型完全一致。
+    　　
+    　　其语法为：
+    　　
+    　　RANK ( expr [, expr]... ) WITHIN GROUP
+    　　( ORDER BY
+    　　expr [ DESC | ASC ] [NULLS { FIRST | LAST }]
+    　　[, expr [ DESC | ASC ] [NULLS { FIRST | LAST }]]...
+    　　)
+    　　
+    　　例子1：
+    　　
+    　　有表Table内容如下
+    　　
+    　　COL1　COL2
+    　　　 1　1
+    　　　 2　1
+    　　　 3　2
+    　　　 3　1
+    　　　 4　1
+    　　　 4　2
+    　　　 5　2
+    　　　 5　2
+    　　　 6　2
+    　　
+    　　分析功能：列出Col2分组后根据Col1排序,并生成数字列。比较实用于在成绩表中查出各科前几名的信息。
+    　　
+    　　SELECT a.*,RANK() OVER(PARTITION BY col2 ORDER BY col1) "Rank" FROM table a;
+    　　
+    　　结果如下：
+    　　
+    　　COL1　COL2　Rank
+    　　　 1　1　　 1
+    　　　 2　1　　 2
+    　　　 3　1　　 3
+    　　　 4　1　　 4
+    　　　 3　2　　 1
+    　　　 4　2　　 2
+    　　　 5　2　　 3
+    　　　 5　2　　 3
+    　　　 6　2　　 5
+    　　
+    　　例子2：
+    　　
+    　　TABLE：A （科目，分数）
+    　　
+    　　数学，80
+    　　语文，70
+    　　数学，90
+    　　数学，60
+    　　数学，100
+    　　语文，88
+    　　语文，65
+    　　语文，77
+    　　
+    　　现在我想要的结果是：（即想要每门科目的前3名的分数）
+        数学，100
+    　　数学，90
+    　　数学，80
+    　　语文，88
+    　　语文，77
+    　　语文，70
+    　　
+    　　那么语句就这么写：
+    　　
+    　　select * from (select rank() over(partition by 科目 order by 分数 desc) rk,a.* from a) t
+    　　where t.rk<=3;
+    　　
+    　　例子3：
+    　　
+    　　合计功能：计算出数值(4,1)在Orade By Col1,Col2排序下的排序值，也就是col1=4,col2=1在排序以后的位置
+    　　
+    　　SELECT RANK(4,3) WITHIN GROUP (ORDER BY col1,col2) "Rank" FROM table;
+    　　
+    　　结果如下：
+    　　Rank
+    　　4
+    　　
+    　　dense_rank与rank()用法相当，但是有一个区别：dence_rank在并列关系是，相关等级不会跳过。rank则跳过
+    　　
+    　　例如：表
+    　　
+    　　A　　　　　　B　　　　　　C
+    　　a　　　　　liu　　　　　wang
+    　　a　　　　　jin　　　　　shu
+    　　a　　　　　cai　　　　　kai
+    　　b　　　　　yang　　　　 du
+    　　b　　　　　lin　　　　　ying
+    　　b　　　　　yao　　　　　cai
+    　　b　　　　　yang　　　　 99
+    　　
+    　　例如：当rank时为：
+    　　
+    　　select m.a,m.b,m.c,rank() over(partition by a order by b) liu from test3 m
+    　　
+    　　 A　　　　　B　　　　　　 C　　　　　LIU
+    　　 a　　　　　cai　　　　　 kai　　　　　1
+    　　 a　　　　　jin　　　　　 shu　　　　　2
+    　　 a　　　　　liu　　　　　 wang　　　　 3
+    　　 b　　　　　lin　　　　　 ying　　　　 1
+    　　 b　　　　　yang　　　　　du　　　　　 2
+    　　 b　　　　　yang　　　　　99　　　　　 2
+    　　 b　　　　　yao　　　　　 cai　　　　　4
+    　　
+    　　而如果用dense_rank时为：
+    　　
+    　　select m.a,m.b,m.c,dense_rank() over(partition by a order by b) liu from test3 m
+    　　
+    　　 A　　　　　B　　　　　　 C　　　　　LIU
+    　　 a　　　　　cai　　　　　kai　　　　　1
+    　　 a　　　　　jin　　　　　shu　　　　　2
+    　　 a　　　　　liu　　　　　wang　　　　 3
+    　　 b　　　　　lin　　　　　ying　　　　 1
+    　　 b　　　　　yang　　　　 du　　　　　 2
+    　　 b　　　　　yang　　　　 99　　　　　 2
+    　　 b　　　　　yao　　　　　cai　　　　　3   
+      
+    
+    
+    
+    **ROW_NUMBER()**
+    【语法】ROW_NUMBER() OVER (PARTITION BY COL1 ORDER BY COL2) 
+    【功能】表示根据COL1分组，在分组内部根据 COL2排序，而这个值就表示每组内部排序后的顺序编号（组内连续的唯一的） 
+    row_number() 返回的主要是“行”的信息，并没有排名
+    【参数】
+    【说明】 **Oracle** 分析函数
+    
+    主要功能：用于取前几名，或者最后几名等
+    
+    【示例】
+    表内容如下：
+    name | seqno | description
+    A | 1 | test
+    A | 2 | test
+    A | 3 | test
+    A | 4 | test
+    B | 1 | test
+    B | 2 | test
+    B | 3 | test
+    B | 4 | test
+    C | 1 | test
+    C | 2 | test
+    C | 3 | test
+    C | 4 | test
+    
+    我想有一个sql语句，搜索的结果是 
+    A | 1 | test
+    A | 2 | test
+    B | 1 | test
+    B | 2 | test
+    C | 1 | test
+    C | 2 | test
+    实现: 
+    select name,seqno,description 
+    from(select name,seqno,description,row_number() over (partition by name order by seqno) id
+    from table_name) where id<=3;  
+    
+    
+    
+     **lag()和lead()**
+    【语法】
+    lag(EXPR,<OFFSET>,<DEFAULT>)
+    LEAD(EXPR,<OFFSET>,<DEFAULT>)
+    【功能】表示根据COL1分组，在分组内部根据 COL2排序，而这个值就表示每组内部排序后的顺序编号（组内连续的唯一的） 
+    lead （） 下一个值 lag（） 上一个值
+    
+    【参数】
+    EXPR是从其他行返回的表达式 
+    OFFSET是缺省为1 的正数，表示相对行数。希望检索的当前行分区的偏移量
+    DEFAULT是在OFFSET表示的数目超出了分组的范围时返回的值。
+    【说明】 **Oracle** 分析函数
+    
+    【示例】
+    -- Create table
+    create table LEAD_TABLE
+    (
+     CASEID VARCHAR2(10),
+     STEPID VARCHAR2(10),
+     ACTIONDATE DATE
+    )
+    tablespace COLM_DATA
+     pctfree 10
+     initrans 1
+     maxtrans 255
+     storage
+     (
+     initial 64K
+     minextents 1
+     maxextents unlimited
+     );
+    
+    insert into LEAD_TABLE values('Case1','Step1',to_date('20070101','yyyy-mm-dd'));
+    insert into LEAD_TABLE values('Case1','Step2',to_date('20070102','yyyy-mm-dd'));
+    insert into LEAD_TABLE values('Case1','Step3',to_date('20070103','yyyy-mm-dd'));
+    insert into LEAD_TABLE values('Case1','Step4',to_date('20070104','yyyy-mm-dd'));
+    insert into LEAD_TABLE values('Case1','Step5',to_date('20070105','yyyy-mm-dd'));
+    insert into LEAD_TABLE values('Case1','Step4',to_date('20070106','yyyy-mm-dd'));
+    insert into LEAD_TABLE values('Case1','Step6',to_date('20070101','yyyy-mm-dd'));
+    insert into LEAD_TABLE values('Case1','Step1',to_date('20070201','yyyy-mm-dd'));
+    insert into LEAD_TABLE values('Case2','Step2',to_date('20070202','yyyy-mm-dd'));
+    insert into LEAD_TABLE values('Case2','Step3',to_date('20070203','yyyy-mm-dd'));
+    commit;
+     
+    结果如下：
+    
+    Case1 Step1 2007-1-1 Step2 2007-1-2 
+    Case1 Step2 2007-1-2 Step3 2007-1-3 Step1 2007-1-1
+    Case1 Step3 2007-1-3 Step4 2007-1-4 Step2 2007-1-2
+    Case1 Step4 2007-1-4 Step5 2007-1-5 Step3 2007-1-3
+    Case1 Step5 2007-1-5 Step4 2007-1-6 Step4 2007-1-4
+    Case1 Step4 2007-1-6 Step6 2007-1-7 Step5 2007-1-5
+    Case1 Step6 2007-1-7 Step4 2007-1-6
+    Case2 Step1 2007-2-1 Step2 2007-2-2 
+    Case2 Step2 2007-2-2 Step3 2007-2-3 Step1 2007-2-1
+    Case2 Step3 2007-2-3 Step2 2007-2-2
+    
+    还可以进一步统计一下两者的相差天数
+    
+    select caseid,stepid,actiondate,nextactiondate,nextactiondate-actiondate datebetween from (
+    select caseid,stepid,actiondate,lead(stepid) over (partition by caseid order by actiondate) nextstepid,
+    lead(actiondate) over (partition by caseid order by actiondate) nextactiondate,
+    lag(stepid) over (partition by caseid order by actiondate) prestepid,
+    lag(actiondate) over (partition by caseid order by actiondate) preactiondate
+    from lead_table) 
+    结果如下：
+    
+    Case1 Step1 2007-1-1 2007-1-2 1
+    Case1 Step2 2007-1-2 2007-1-3 1
+    Case1 Step3 2007-1-3 2007-1-4 1
+    Case1 Step4 2007-1-4 2007-1-5 1
+    Case1 Step5 2007-1-5 2007-1-6 1
+    Case1 Step4 2007-1-6 2007-1-7 1
+    Case1 Step6 2007-1-7 
+    Case2 Step1 2007-2-1 2007-2-2 1
+    Case2 Step2 2007-2-2 2007-2-3 1
+    Case2 Step3 2007-2-3 
+     
+    每一条记录都能连接到上/下一行的内容
+    
+    lead （） 下一个值 lag（） 上一个值
+    
+    select caseid,stepid,actiondate,lead(stepid) over (partition by caseid order by actiondate) nextstepid,
+    lead(actiondate) over (partition by caseid order by actiondate) nextactiondate,
+    lag(stepid) over (partition by caseid order by actiondate) prestepid,
+    lag(actiondate) over (partition by caseid order by actiondate) preactiondate
+    from lead_table
+    
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
