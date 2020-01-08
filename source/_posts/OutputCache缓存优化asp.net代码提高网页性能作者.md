@@ -147,7 +147,7 @@ void Page_Load(object sender, EventArgs e)
 </script>    
 <head id="Head1" runat="server">    
 <title>示例12-1</title>    
-<link id="InstanceStyle" href="StyleSheet.css" type="text/css" rel="stylesheet" />    
+   
 </head>    
 <body>    
 <form id="form1" runat="server">    
