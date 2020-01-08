@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="2014-11-6：129系统测试环境所有复选控件失效 时间设置错误 2014-11-7： 2014-11-25：csc服务器瘫痪，数据交换极慢，清缓存迁移nas文件服务器后解决问题 2014-11-27：discuz清空dll不能直接使用。。。。  2014-12-02：support文件 zed 中兴通讯学院反馈问题support的zed文件大面积不能使用，临时解决方案：删除包括spt_dow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="运维问题">
+<meta property="og:url" content="http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="2014-11-6：129系统测试环境所有复选控件失效 时间设置错误 2014-11-7： 2014-11-25：csc服务器瘫痪，数据交换极慢，清缓存迁移nas文件服务器后解决问题 2014-11-27：discuz清空dll不能直接使用。。。。  2014-12-02：support文件 zed 中兴通讯学院反馈问题support的zed文件大面积不能使用，临时解决方案：删除包括spt_dow">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-03-08T19:23:00.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.909Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>运维问题</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2016/02/27/%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95contains%E9%AB%98%E7%BA%A7%E4%BD%BF%E7%94%A8/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&text=运维问题" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&title=运维问题" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&is_video=false&description=运维问题" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=运维问题&body=Check out this article: http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&title=运维问题" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&title=运维问题" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&title=运维问题" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&title=运维问题" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&name=运维问题&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&t=运维问题" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#ORA-00976-此处不允许指定的伪列或运算符"><span class="toc-number">1.</span> <span class="toc-text">ORA-00976: 此处不允许指定的伪列或运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bug-13496250-Unexpected-ORA-976-using-LEVEL-PRIOR-ROWNUM-in-an-ANSI-“ON”-filter-predicate"><span class="toc-number">2.</span> <span class="toc-text">Bug 13496250  Unexpected ORA-976 using LEVEL &#x2F; PRIOR &#x2F; ROWNUM in an ANSI “ON” filter predicate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#当sql-在一个where-条件中使用-LEVEL-PRIOR-ROWNUM-关键字-配-on-关键字的时候可能会出错！"><span class="toc-number">3.</span> <span class="toc-text">当sql 在一个where 条件中使用  LEVEL &#x2F; PRIOR &#x2F; ROWNUM 关键字 配 on 关键字的时候可能会出错！</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SELECT"><span class="toc-number">4.</span> <span class="toc-text">SELECT *</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FROM-select-1-col1-from-dual"><span class="toc-number">5.</span> <span class="toc-text">FROM (select 1 col1 from dual)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JOIN-select-1-col2-from-dual"><span class="toc-number">6.</span> <span class="toc-text">JOIN (select 1 col2 from dual)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ON-col1-col2"><span class="toc-number">7.</span> <span class="toc-text">ON col1 &#x3D; col2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AND-col2-in-SELECT-col3"><span class="toc-number">8.</span> <span class="toc-text">AND col2 in (SELECT col3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FROM-level-test"><span class="toc-number">9.</span> <span class="toc-text">FROM       level_test</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WHERE-LEVEL-IN-1-2"><span class="toc-number">10.</span> <span class="toc-text">WHERE  LEVEL IN (1, 2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#START-WITH-col4-0"><span class="toc-number">11.</span> <span class="toc-text">START WITH col4 &#x3D; 0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CONNECT-BY-col4-PRIOR-col3-lt-这样的用法"><span class="toc-number">12.</span> <span class="toc-text">**  CONNECT BY col4 &#x3D; PRIOR col3);&lt;&#x3D;&#x3D;&#x3D;&#x3D;这样的用法**</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决办法："><span class="toc-number">13.</span> <span class="toc-text">解决办法：</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        运维问题
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-03-08T19:23:00.000Z" itemprop="datePublished">2016-03-09</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>2014-11-6：129系统测试环境所有复选控件失效 时间设置错误</p>
+<p>2014-11-7：</p>
+<p>2014-11-25：csc服务器瘫痪，数据交换极慢，清缓存迁移nas文件服务器后解决问题</p>
+<p>2014-11-27：discuz清空dll不能直接使用。。。。 </p>
+<p>2014-12-02：support文件 zed 中兴通讯学院反馈问题support的zed文件大面积不能使用，临时解决方案：删除包括spt_down3/下的所有文件。</p>
+<p> 中兴通讯学院反应tsm同步到support上部分文档不能打开</p>
+<p>原因：同步时过滤了“监控”，“监听”，“monitor”字段  </p>
+<p>2014-12-03：1.新上线政企工单不能关单</p>
+<p>原因：主表中email字段为空时依然将空值传给email进行处理</p>
+<p> 2.licence生成序列号有问题 3.</p>
+<p>2014-12-04：手机质量单当前处理人无法找到该单,因为出现了select * from (select r.title,r.title from xxx)这种形式的sql导致出错</p>
+<p>手机项目里odi数据同步 ec项目同步问题。</p>
+<p>2014-12-09 王志10153799 无法在提交政企协助单时新增用户。原因：权限使用的是客户请求单那边的320，应该使用政企的权限。使用错误 。</p>
+<p>支持组组长没有指派工程师的操作项 ，数据库权限验证通不过 </p>
+<p>2014-12-16 科特迪瓦英文名包含引号导致某用户查询出错</p>
+<p>2014-12-25 部署mobile support的问题以修复漏洞。</p>
+<p>账号：spt10104767</p>
+<p>密码：nmsgy0147 测试环境密码：666666</p>
+<p>2014-12-25 版本发布出现空格，对版本名称trim以解决此问题。 </p>
+<p>2015-01-06 版本文件数据库上有体现上传，但实际不能下载，原因（可能原因）：文件上传失败，但数据写入失败。</p>
+<p>2015-03-04</p>
+<p>2015-03-10 </p>
+<p>关闭超期统计错误，此处状态没有及时更新，日期调整一天后触发更新后数据恢复（谢学龙已经看过此问题）。</p>
+<p>超期统计错误2： <strong>单据3月28号超期，单据状态处理中，系统此时却判断单据已超期</strong></p>
+<p> **<br>**</p>
+<p> <strong>2015-3-11 callcenter 重大bug，测试时，需要通过修改url参数防止浏览器缓存页面。</strong></p>
+<p> **<br>**</p>
+<p> <strong>2015-3-13 计划任务</strong> 0x80041315 出错导致老系统邮件都未发出</p>
+<p>2015-4-2</p>
+<p>itp登陆： 10144907  mmwjl.535419590dmol：0096000726,an123456W5</p>
+<p>政企备件测试：10012013</p>
+<p>filezilla 用户名：密码：</p>
+<p>2015-01-19 版本文件又出故障：提示找不到目录 原因 云存储服务器出现故障，版本材料是存放在云存储上的</p>
+<p>2014-12-24 16:29:44 邵昊智10169702 对 武砚10114128 说：</p>
+<p>1030104/Awhin814</p>
+<p>2014-12-24 16:30:39 武砚10114128 对 邵昊智10169702 说：</p>
+<p>WirelessAdmin</p>
+<p>2014-12-24 16:30:45 武砚10114128 对 邵昊智10169702 说：</p>
+<p>Wireless@dMin</p>
+<p>2014-12-24 16:30:52 武砚10114128 对 邵昊智10169702 说：</p>
+<p>192.168.170.22</p>
+<p> <strong>2015-5-13 知识库打包失败 知识库打包工具OLPHandle部署在网通服务器。未知原因打包时出错，需要重启</strong></p>
+<p> <strong>java出错信息如下</strong></p>
+<p>java.lang.ArrayIndexOutOfBoundsException: 2<br>     at com.zte.index.CreateIndex.main(CreateIndex.java:281)<br>     at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)<br>     at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)<br>     at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)<br>     at java.lang.reflect.Method.invoke(Unknown Source)<br>     at com.exe4j.runtime.LauncherEngine.launch(Unknown Source)<br>     at com.exe4j.runtime.WinLauncher.main(Unknown Source)</p>
+<p>sql报错如下：</p>
+<h3 id="ORA-00976-此处不允许指定的伪列或运算符"><a href="#ORA-00976-此处不允许指定的伪列或运算符" class="headerlink" title="ORA-00976: 此处不允许指定的伪列或运算符"></a><a href="http://www.baidu.com/link?url=nKf8hKXb-8yvF9NNSMBlfnYQVFW0fn-UtBe0b-eWw-zUB4bzN7MvkwM4-4NNLg_80LepuKSTrm7-f16VvGB4fK" target="_blank" rel="noopener">ORA-00976: <em>此处不允许指定的伪列或运算符</em></a></h3><h3 id="Bug-13496250-Unexpected-ORA-976-using-LEVEL-PRIOR-ROWNUM-in-an-ANSI-“ON”-filter-predicate"><a href="#Bug-13496250-Unexpected-ORA-976-using-LEVEL-PRIOR-ROWNUM-in-an-ANSI-“ON”-filter-predicate" class="headerlink" title="Bug 13496250  Unexpected ORA-976 using LEVEL / PRIOR / ROWNUM in an ANSI “ON” filter predicate"></a>Bug 13496250  Unexpected ORA-976 using LEVEL / PRIOR / ROWNUM in an ANSI “ON” filter predicate</h3><h3 id="当sql-在一个where-条件中使用-LEVEL-PRIOR-ROWNUM-关键字-配-on-关键字的时候可能会出错！"><a href="#当sql-在一个where-条件中使用-LEVEL-PRIOR-ROWNUM-关键字-配-on-关键字的时候可能会出错！" class="headerlink" title="当sql 在一个where 条件中使用  LEVEL / PRIOR / ROWNUM 关键字 配 on 关键字的时候可能会出错！"></a>当sql 在一个where 条件中使用  LEVEL / PRIOR / ROWNUM 关键字 配 on 关键字的时候可能会出错！</h3><h3 id="SELECT"><a href="#SELECT" class="headerlink" title="SELECT *"></a>SELECT *</h3><h3 id="FROM-select-1-col1-from-dual"><a href="#FROM-select-1-col1-from-dual" class="headerlink" title="FROM (select 1 col1 from dual)"></a>FROM (select 1 col1 from dual)</h3><h3 id="JOIN-select-1-col2-from-dual"><a href="#JOIN-select-1-col2-from-dual" class="headerlink" title="JOIN (select 1 col2 from dual)"></a>JOIN (select 1 col2 from dual)</h3><h3 id="ON-col1-col2"><a href="#ON-col1-col2" class="headerlink" title="ON col1 = col2"></a>ON col1 = col2</h3><h3 id="AND-col2-in-SELECT-col3"><a href="#AND-col2-in-SELECT-col3" class="headerlink" title="AND col2 in (SELECT col3"></a>AND col2 in (SELECT col3</h3><h3 id="FROM-level-test"><a href="#FROM-level-test" class="headerlink" title="FROM       level_test"></a>FROM       level_test</h3><h3 id="WHERE-LEVEL-IN-1-2"><a href="#WHERE-LEVEL-IN-1-2" class="headerlink" title="WHERE  LEVEL IN (1, 2)"></a>WHERE  LEVEL IN (1, 2)</h3><h3 id="START-WITH-col4-0"><a href="#START-WITH-col4-0" class="headerlink" title="START WITH col4 = 0"></a>START WITH col4 = 0</h3><h3 id="CONNECT-BY-col4-PRIOR-col3-lt-这样的用法"><a href="#CONNECT-BY-col4-PRIOR-col3-lt-这样的用法" class="headerlink" title="**  CONNECT BY col4 = PRIOR col3);&lt;====这样的用法**"></a>**  CONNECT BY col4 = PRIOR col3);&lt;====这样的用法**</h3><h3 id="解决办法："><a href="#解决办法：" class="headerlink" title="解决办法："></a>解决办法：</h3><pre><code>**Workaround**
+Typically, the SQL can be re-phrased to move the affected filter
+predicate / sub-query from the ANSI ON condition clause to a 
+WHERE clause.
+eg: 
+ SELECT *
+   FROM (select 1 col1 from dual) 
+   JOIN (select 1 col2 from dual) 
+     ON col1 = col2 
+  WHERE col2 in (SELECT col3
+                       FROM       level_test
+                       WHERE  LEVEL IN (1, 2)
+                       START WITH col4 = 0
+                       CONNECT BY col4 = PRIOR col3);</code></pre><p>恢复数据方法：</p>
+<p>2015-5-18 </p>
+<p>客户单位未同步 </p>
+<p>原因：老系统timeservice没有开启，timeservice中需要人事账号（任意可用账号都行？）运行webservice服务</p>
+<p>老系统datacenter可以看到产品 callcenter看不到，因为产品层级乱了</p>
+<p>版本下载地址：<a href="http://ensupport.zte.com.cn/encallcenter/Application/CNV45/V3/VersionUpgrade/VersionManager/ViewVersionInfo.aspx?VerId=234579" target="_blank" rel="noopener">http://ensupport.zte.com.cn/encallcenter/Application/CNV45/V3/VersionUpgrade/VersionManager/ViewVersionInfo.aspx?VerId=234579</a></p>
+<p><a href="http://csc.zte.com.cn/CallCenter/Application/VERSIONUPGRADE/Plan/VerDownloadCheck.aspx?RegID=3637500" target="_blank" rel="noopener">http://csc.zte.com.cn/CallCenter/Application/VERSIONUPGRADE/Plan/VerDownloadCheck.aspx?RegID=3637500</a></p>
+<p> <strong>2015-6-12</strong>  </p>
+<p>邮件有时无法发送，邮件表中不能查到记录</p>
+<p>callcenter.csc_basic_sendmail   callcenter.call_sendmail </p>
+<p>可能原因：clob字段导致的  OCI 调用中的参数无效</p>
+<p>2015-6-23</p>
+<p>自定义查询 应完成时间没有增加排除时长 需要修改sql？</p>
+<p>2015-6-25 </p>
+<p>技术实施单编号重复问题，部分编号突然生成得很大，具体</p>
+<p>数据库监控：<a href="http://itmserver.zte.intra:1920/" target="_blank" rel="noopener">http://itmserver.zte.intra:1920/</a> </p>
+<p>2015-10-22 安全审计</p>
+<p><a href="https://10.30.7.65/" target="_blank" rel="noopener">https://10.30.7.65/</a></p>
+<p>帐号为：IT00056151</p>
+<p>密码为：IT_56151</p>
+<p>sqlid查询：</p>
+<p> select to_char(SQL_TEXT) from v$sql@ecccsc where sql_id=’f0q0w7b28nk61’;</p>
+<p>链接字符串修改 web.config sqlmap.xml ssb_facility.xml</p>
+<p><a href="http://192.168.170.22/VersionFileServicelog/" target="_blank" rel="noopener">http://192.168.170.22/VersionFileServicelog/</a></p>
+<p><a href="http://192.168.170.22/iis_log/" target="_blank" rel="noopener">http://192.168.170.22/iis_log/</a></p>
+<p><a href="http://192.168.164.146/csclog/" target="_blank" rel="noopener">http://192.168.164.146/csclog/</a></p>
+<p><a href="http://192.168.170.34/csclog/" target="_blank" rel="noopener">http://192.168.170.34/csclog/</a></p>
+<p><a href="http://10.30.3.228/timersvclog" target="_blank" rel="noopener">http://10.30.3.228/timersvclog</a></p>
+<p><a href="http://10.30.3.228/csclog" target="_blank" rel="noopener">http://10.30.3.228/csclog</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#ORA-00976-此处不允许指定的伪列或运算符"><span class="toc-number">1.</span> <span class="toc-text">ORA-00976: 此处不允许指定的伪列或运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bug-13496250-Unexpected-ORA-976-using-LEVEL-PRIOR-ROWNUM-in-an-ANSI-“ON”-filter-predicate"><span class="toc-number">2.</span> <span class="toc-text">Bug 13496250  Unexpected ORA-976 using LEVEL &#x2F; PRIOR &#x2F; ROWNUM in an ANSI “ON” filter predicate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#当sql-在一个where-条件中使用-LEVEL-PRIOR-ROWNUM-关键字-配-on-关键字的时候可能会出错！"><span class="toc-number">3.</span> <span class="toc-text">当sql 在一个where 条件中使用  LEVEL &#x2F; PRIOR &#x2F; ROWNUM 关键字 配 on 关键字的时候可能会出错！</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SELECT"><span class="toc-number">4.</span> <span class="toc-text">SELECT *</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FROM-select-1-col1-from-dual"><span class="toc-number">5.</span> <span class="toc-text">FROM (select 1 col1 from dual)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JOIN-select-1-col2-from-dual"><span class="toc-number">6.</span> <span class="toc-text">JOIN (select 1 col2 from dual)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ON-col1-col2"><span class="toc-number">7.</span> <span class="toc-text">ON col1 &#x3D; col2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AND-col2-in-SELECT-col3"><span class="toc-number">8.</span> <span class="toc-text">AND col2 in (SELECT col3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FROM-level-test"><span class="toc-number">9.</span> <span class="toc-text">FROM       level_test</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WHERE-LEVEL-IN-1-2"><span class="toc-number">10.</span> <span class="toc-text">WHERE  LEVEL IN (1, 2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#START-WITH-col4-0"><span class="toc-number">11.</span> <span class="toc-text">START WITH col4 &#x3D; 0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CONNECT-BY-col4-PRIOR-col3-lt-这样的用法"><span class="toc-number">12.</span> <span class="toc-text">**  CONNECT BY col4 &#x3D; PRIOR col3);&lt;&#x3D;&#x3D;&#x3D;&#x3D;这样的用法**</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决办法："><span class="toc-number">13.</span> <span class="toc-text">解决办法：</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&text=运维问题" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&title=运维问题" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&is_video=false&description=运维问题" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=运维问题&body=Check out this article: http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&title=运维问题" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&title=运维问题" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&title=运维问题" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&title=运维问题" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&name=运维问题&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/&t=运维问题" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

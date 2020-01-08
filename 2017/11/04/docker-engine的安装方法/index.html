@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="docker-engine的安装方法 Get Docker CE for CentOSEstimated reading time: 10 minutes To get started with Docker CE on CentOS, make sure you meet the prerequisites, then install Docker. PrerequisitesDocker EE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker-engine的安装方法">
+<meta property="og:url" content="http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="docker-engine的安装方法 Get Docker CE for CentOSEstimated reading time: 10 minutes To get started with Docker CE on CentOS, make sure you meet the prerequisites, then install Docker. PrerequisitesDocker EE">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-11-03T23:01:37.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.824Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>docker-engine的安装方法</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/10/26/DinktoPDF/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&text=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&title=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&is_video=false&description=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=docker-engine的安装方法&body=Check out this article: http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&title=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&title=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&title=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&title=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&name=docker-engine的安装方法&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&t=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Get-Docker-CE-for-CentOS"><span class="toc-number">1.</span> <span class="toc-text">Get Docker CE for CentOS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Prerequisites"><span class="toc-number">1.1.</span> <span class="toc-text">Prerequisites</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-EE-customers"><span class="toc-number">1.1.1.</span> <span class="toc-text">Docker EE customers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OS-requirements"><span class="toc-number">1.1.2.</span> <span class="toc-text">OS requirements</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Uninstall-old-versions"><span class="toc-number">1.1.3.</span> <span class="toc-text">Uninstall old versions</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Install-Docker-CE"><span class="toc-number">1.2.</span> <span class="toc-text">Install Docker CE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Install-using-the-repository"><span class="toc-number">1.2.1.</span> <span class="toc-text">Install using the repository</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SET-UP-THE-REPOSITORY"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">SET UP THE REPOSITORY</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#INSTALL-DOCKER-CE"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">INSTALL DOCKER CE</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UPGRADE-DOCKER-CE"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">UPGRADE DOCKER CE</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Install-from-a-package"><span class="toc-number">1.2.2.</span> <span class="toc-text">Install from a package</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#UPGRADE-DOCKER-CE-1"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">UPGRADE DOCKER CE</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Install-using-the-convenience-script"><span class="toc-number">1.2.3.</span> <span class="toc-text">Install using the convenience script</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#UPGRADE-DOCKER-AFTER-USING-THE-CONVENIENCE-SCRIPT"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">UPGRADE DOCKER AFTER USING THE CONVENIENCE SCRIPT</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Uninstall-Docker-CE"><span class="toc-number">1.3.</span> <span class="toc-text">Uninstall Docker CE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Next-steps"><span class="toc-number">1.4.</span> <span class="toc-text">Next steps</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        docker-engine的安装方法
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-11-03T23:01:37.000Z" itemprop="datePublished">2017-11-04</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>docker-engine的安装方法</p>
+<h1 id="Get-Docker-CE-for-CentOS"><a href="#Get-Docker-CE-for-CentOS" class="headerlink" title="Get Docker CE for CentOS"></a>Get Docker CE for CentOS</h1><p>Estimated reading time: 10 minutes</p>
+<p>To get started with Docker CE on CentOS, make sure you <a href="https://docs.docker.com/install/linux/docker-ce/centos/#prerequisites" target="_blank" rel="noopener">meet the prerequisites</a>, then <a href="https://docs.docker.com/install/linux/docker-ce/centos/#install-docker-ce" target="_blank" rel="noopener">install Docker</a>.</p>
+<h2 id="Prerequisites"><a href="#Prerequisites" class="headerlink" title="Prerequisites"></a>Prerequisites</h2><h3 id="Docker-EE-customers"><a href="#Docker-EE-customers" class="headerlink" title="Docker EE customers"></a>Docker EE customers</h3><p>To install Docker Enterprise Edition (Docker EE), go to <a href="https://docs.docker.com/install/linux/docker-ee/centos/" target="_blank" rel="noopener">Get Docker EE for CentOS</a> instead of this topic.</p>
+<p>To learn more about Docker EE, see <a href="https://www.docker.com/enterprise-edition/" target="_blank" rel="noopener">Docker Enterprise Edition</a>.</p>
+<h3 id="OS-requirements"><a href="#OS-requirements" class="headerlink" title="OS requirements"></a>OS requirements</h3><p>To install Docker CE, you need a maintained version of CentOS 7. Archived versions aren’t supported or tested.</p>
+<p>The centos-extras repository must be enabled. This repository is enabled by default, but if you have disabled it, you need to <a href="https://wiki.centos.org/AdditionalResources/Repositories" target="_blank" rel="noopener">re-enable it</a>.</p>
+<p>The overlay2 storage driver is recommended.</p>
+<h3 id="Uninstall-old-versions"><a href="#Uninstall-old-versions" class="headerlink" title="Uninstall old versions"></a>Uninstall old versions</h3><p>Older versions of Docker were called docker or docker-engine. If these are installed, uninstall them, along with associated dependencies.</p>
+<p>$ sudo yum remove docker \</p>
+<p>docker-client \</p>
+<p>docker-client-latest \</p>
+<p>docker-common \</p>
+<p>docker-latest \</p>
+<p>docker-latest-logrotate \</p>
+<p>docker-logrotate \</p>
+<p>docker-selinux \</p>
+<p>docker-engine-selinux \</p>
+<p>docker-engine</p>
+<p>It’s OK if yum reports that none of these packages are installed.</p>
+<p>The contents of /var/lib/docker/, including images, containers, volumes, and networks, are preserved. The Docker CE package is now called docker-ce.</p>
+<h2 id="Install-Docker-CE"><a href="#Install-Docker-CE" class="headerlink" title="Install Docker CE"></a>Install Docker CE</h2><p>You can install Docker CE in different ways, depending on your needs:</p>
+<ul>
+<li>Most users <a href="https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-repository" target="_blank" rel="noopener">set up Docker’s repositories</a> and install from them, for ease of installation and upgrade tasks. This is the recommended approach.</li>
+<li>Some users download the RPM package and <a href="https://docs.docker.com/install/linux/docker-ce/centos/#install-from-a-package" target="_blank" rel="noopener">install it manually</a> and manage upgrades completely manually. This is useful in situations such as installing Docker on air-gapped systems with no access to the internet.</li>
+<li>In testing and development environments, some users choose to use automated <a href="https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-convenience-script" target="_blank" rel="noopener">convenience scripts</a> to install Docker.</li>
+</ul>
+<h3 id="Install-using-the-repository"><a href="#Install-using-the-repository" class="headerlink" title="Install using the repository"></a>Install using the repository</h3><p>Before you install Docker CE for the first time on a new host machine, you need to set up the Docker repository. Afterward, you can install and update Docker from the repository.</p>
+<h4 id="SET-UP-THE-REPOSITORY"><a href="#SET-UP-THE-REPOSITORY" class="headerlink" title="SET UP THE REPOSITORY"></a>SET UP THE REPOSITORY</h4><ol>
+<li>Install required packages. yum-utils provides the yum-config-manager utility, and device-mapper-persistent-data and lvm2are required by the devicemapper storage driver.  </li>
+</ol>
+<p>$ sudo yum install -y yum-utils \</p>
+<p>device-mapper-persistent-data \</p>
+<p>lvm2</p>
+<ol start="2">
+<li>Use the following command to set up the stable repository. You always need the stable repository, even if you want to install builds from the edge or test repositories as well.  </li>
+</ol>
+<p>$ sudo yum-config-manager \</p>
+<p>--add-repo \</p>
+<p><a href="https://download.docker.com/linux/centos/docker-ce.repo" target="_blank" rel="noopener">https://download.docker.com/linux/centos/docker-ce.repo</a></p>
+<ol start="3">
+<li>Optional: Enable the edge and test repositories. These repositories are included in the docker.repo file above but are disabled by default. You can enable them alongside the stable repository.  </li>
+</ol>
+<p>$ sudo yum-config-manager --enable docker-ce-edge</p>
+<p>$ sudo yum-config-manager --enable docker-ce-test</p>
+<p>You can disable the edge or test repository by running the yum-config-manager command with the --disable flag. To re-enable it, use the --enable flag. The following command disables the edge repository.  </p>
+<p>$ sudo yum-config-manager --disable docker-ce-edge</p>
+<p>Note: Starting with Docker 17.06, stable releases are also pushed to the edge and test repositories.</p>
+<p><a href="https://docs.docker.com/install/" target="_blank" rel="noopener">Learn about</a><a href="https://docs.docker.com/install/" target="_blank" rel="noopener"> </a><a href="https://docs.docker.com/install/" target="_blank" rel="noopener">stable</a><a href="https://docs.docker.com/install/" target="_blank" rel="noopener"> </a><a href="https://docs.docker.com/install/" target="_blank" rel="noopener">and</a><a href="https://docs.docker.com/install/" target="_blank" rel="noopener"> </a><a href="https://docs.docker.com/install/" target="_blank" rel="noopener">edge</a><a href="https://docs.docker.com/install/" target="_blank" rel="noopener"> </a><a href="https://docs.docker.com/install/" target="_blank" rel="noopener">builds</a>.</p>
+<h4 id="INSTALL-DOCKER-CE"><a href="#INSTALL-DOCKER-CE" class="headerlink" title="INSTALL DOCKER CE"></a>INSTALL DOCKER CE</h4><ol>
+<li>Install the latest version of Docker CE, or go to the next step to install a specific version.  </li>
+</ol>
+<p>$ sudo yum install docker-ce</p>
+<p>Warning: If you have multiple Docker repositories enabled, installing or updating without specifying a version in the yum install or yum update command always installs the highest possible version, which may not be appropriate for your stability needs.</p>
+<p>If this is the first time you are installing a package from a recently added repository, you are prompted to accept the GPG key, and the key’s fingerprint is shown. Verify that the fingerprint is correct, and if so, accept the key. The fingerprint should match060A 61C5 1B55 8A7F 742B 77AA C52F EB6B 621E 9F35.<br>Docker is installed but not started. The docker group is created, but no users are added to the group.<br>  2. On production systems, you should install a specific version of Docker CE instead of always using the latest. List the available versions. This example uses the sort -r command to sort the results by version number, highest to lowest, and is truncated.  </p>
+<p>$ yum list docker-ce --showduplicates | sort -r</p>
+<p>docker-ce.x86_64 17.12.ce-1.el7.centos docker-ce-stable</p>
+<p>The contents of the list depend upon which repositories are enabled, and are specific to your version of CentOS (indicated by the .el7 suffix on the version, in this example). Choose a specific version to install. The second column is the version string. You can use the entire version string, but you need to include at least to the first hyphen. The third column is the repository name, which indicates which repository the package is from and by extension its stability level. To install a specific version, append the version string to the package name and separate them by a hyphen (-).  </p>
+<p>Note: The version string is the package name plus the version up to the first hyphen. In the example above, the fully qualified package name is docker-ce-17.06.1.ce.</p>
+<p>$ sudo yum install <FULLY-QUALIFIED-PACKAGE-NAME></p>
+<ol start="3">
+<li>Start Docker.  </li>
+</ol>
+<p>$ sudo systemctl start docker</p>
+<ol start="4">
+<li>Verify that docker is installed correctly by running the hello-world image.  </li>
+</ol>
+<p>$ sudo docker run hello-world</p>
+<p>This command downloads a test image and runs it in a container. When the container runs, it prints an informational message and exits.</p>
+<p>Docker CE is installed and running. You need to use sudo to run Docker commands. Continue to <a href="https://docs.docker.com/install/linux/linux-postinstall/" target="_blank" rel="noopener">Linux postinstall</a> to allow non-privileged users to run Docker commands and for other optional configuration steps.</p>
+<h4 id="UPGRADE-DOCKER-CE"><a href="#UPGRADE-DOCKER-CE" class="headerlink" title="UPGRADE DOCKER CE"></a>UPGRADE DOCKER CE</h4><p>To upgrade Docker CE, follow the <a href="https://docs.docker.com/install/linux/docker-ce/centos/#install-docker" target="_blank" rel="noopener">installation instructions</a>, choosing the new version you want to install.</p>
+<h3 id="Install-from-a-package"><a href="#Install-from-a-package" class="headerlink" title="Install from a package"></a>Install from a package</h3><p>If you cannot use Docker’s repository to install Docker, you can download the .rpm file for your release and install it manually. You need to download a new file each time you want to upgrade Docker.</p>
+<ol>
+<li>Go to <a href="https://download.docker.com/linux/centos/7/x86_64/stable/Packages/" target="_blank" rel="noopener">https://download.docker.com/linux/centos/7/x86_64/stable/Packages/</a> and download the .rpm file for the Docker version you want to install.  </li>
+</ol>
+<p>Note: To install an edge package, change the word stable in the above URL to edge. <a href="https://docs.docker.com/install/" target="_blank" rel="noopener">Learn about</a><a href="https://docs.docker.com/install/" target="_blank" rel="noopener"> </a><a href="https://docs.docker.com/install/" target="_blank" rel="noopener">stable</a><a href="https://docs.docker.com/install/" target="_blank" rel="noopener"> </a><a href="https://docs.docker.com/install/" target="_blank" rel="noopener">and</a><a href="https://docs.docker.com/install/" target="_blank" rel="noopener"> </a><a href="https://docs.docker.com/install/" target="_blank" rel="noopener">edge</a><a href="https://docs.docker.com/install/" target="_blank" rel="noopener">channels</a>.</p>
+<ol start="2">
+<li>Install Docker CE, changing the path below to the path where you downloaded the Docker package.  </li>
+</ol>
+<p>$ sudo yum install /path/to/package.rpm</p>
+<p>Docker is installed but not started. The docker group is created, but no users are added to the group.<br>  3. Start Docker.  </p>
+<p>$ sudo systemctl start docker</p>
+<ol start="4">
+<li>Verify that docker is installed correctly by running the hello-world image.  </li>
+</ol>
+<p>$ sudo docker run hello-world</p>
+<p>This command downloads a test image and runs it in a container. When the container runs, it prints an informational message and exits.</p>
+<p>Docker CE is installed and running. You need to use sudo to run Docker commands. Continue to <a href="https://docs.docker.com/install/linux/linux-postinstall/" target="_blank" rel="noopener">Post-installation steps for Linux</a> to allow non-privileged users to run Docker commands and for other optional configuration steps.</p>
+<h4 id="UPGRADE-DOCKER-CE-1"><a href="#UPGRADE-DOCKER-CE-1" class="headerlink" title="UPGRADE DOCKER CE"></a>UPGRADE DOCKER CE</h4><p>To upgrade Docker CE, download the newer package file and repeat the <a href="https://docs.docker.com/install/linux/docker-ce/centos/#install-from-a-package" target="_blank" rel="noopener">installation procedure</a>, using yum -y upgrade instead of yum -y install, and pointing to the new file.</p>
+<h3 id="Install-using-the-convenience-script"><a href="#Install-using-the-convenience-script" class="headerlink" title="Install using the convenience script"></a>Install using the convenience script</h3><p>Docker provides convenience scripts at <a href="https://get.docker.com/" target="_blank" rel="noopener">get.docker.com</a> and <a href="https://test.docker.com/" target="_blank" rel="noopener">test.docker.com</a> for installing edge and testing versions of Docker CE into development environments quickly and non-interactively. The source code for the scripts is in the <a href="https://github.com/docker/docker-install" target="_blank" rel="noopener">docker-install</a><a href="https://github.com/docker/docker-install" target="_blank" rel="noopener"> </a><a href="https://github.com/docker/docker-install" target="_blank" rel="noopener">repository</a>. Using these scripts is not recommended for production environments, and you should understand the potential risks before you use them:</p>
+<ul>
+<li>The scripts require root or sudo privileges to run. Therefore, you should carefully examine and audit the scripts before running them.</li>
+<li>The scripts attempt to detect your Linux distribution and version and configure your package management system for you. In addition, the scripts do not allow you to customize any installation parameters. This may lead to an unsupported configuration, either from Docker’s point of view or from your own organization’s guidelines and standards.</li>
+<li>The scripts install all dependencies and recommendations of the package manager without asking for confirmation. This may install a large number of packages, depending on the current configuration of your host machine.</li>
+<li>The script does not provide options to specify which version of Docker to install, and installs the latest version that is released in the “edge” channel.</li>
+<li>Do not use the convenience script if Docker has already been installed on the host machine using another mechanism.</li>
+</ul>
+<p>This example uses the script at <a href="https://get.docker.com/" target="_blank" rel="noopener">get.docker.com</a> to install the latest release of Docker CE on Linux. To install the latest testing version, use <a href="https://test.docker.com/" target="_blank" rel="noopener">test.docker.com</a> instead. In each of the commands below, replace each occurrence of get with test.</p>
+<blockquote>
+<p>Warning:</p>
+<p>Always examine scripts downloaded from the internet before running them locally.</p>
+</blockquote>
+<p>$ curl -fsSL<a href="http://get.docker.com/" target="_blank" rel="noopener">get.docker.com</a>-o get-docker.sh</p>
+<p>$ sudo sh get-docker.sh</p>
+<output truncated>
+
+
+
+
+<p>If you would like to use Docker as a non-root user, you should now consider</p>
+<p>adding your user to the “docker” group with something like:</p>
+<p>sudo usermod -aG docker your-user</p>
+<p>Remember to log out and back in for this to take effect!</p>
+<p>WARNING: Adding a user to the “docker” group grants the ability to run</p>
+<p>containers which can be used to obtain root privileges on the</p>
+<p>docker host.</p>
+<p>Refer to <a href="https://docs.docker.com/engine/security/security/#docker-daemon-attack-surface" target="_blank" rel="noopener">https://docs.docker.com/engine/security/security/#docker-daemon-attack-surface</a></p>
+<p>for more information.</p>
+<p>Docker CE is installed. It starts automatically on DEB-based distributions. On RPM-based distributions, you need to start it manually using the appropriate systemctl or service command. As the message indicates, non-root users can’t run Docker commands by default.</p>
+<h4 id="UPGRADE-DOCKER-AFTER-USING-THE-CONVENIENCE-SCRIPT"><a href="#UPGRADE-DOCKER-AFTER-USING-THE-CONVENIENCE-SCRIPT" class="headerlink" title="UPGRADE DOCKER AFTER USING THE CONVENIENCE SCRIPT"></a>UPGRADE DOCKER AFTER USING THE CONVENIENCE SCRIPT</h4><p>If you installed Docker using the convenience script, you should upgrade Docker using your package manager directly. There is no advantage to re-running the convenience script, and it can cause issues if it attempts to re-add repositories which have already been added to the host machine.</p>
+<h2 id="Uninstall-Docker-CE"><a href="#Uninstall-Docker-CE" class="headerlink" title="Uninstall Docker CE"></a>Uninstall Docker CE</h2><ol>
+<li>Uninstall the Docker package:  </li>
+</ol>
+<p>$ sudo yum remove docker-ce</p>
+<ol start="2">
+<li>Images, containers, volumes, or customized configuration files on your host are not automatically removed. To delete all images, containers, and volumes:  </li>
+</ol>
+<p>$ sudo rm -rf /var/lib/docker</p>
+<p>You must delete any edited configuration files manually.</p>
+<h2 id="Next-steps"><a href="#Next-steps" class="headerlink" title="Next steps"></a>Next steps</h2><ul>
+<li>Continue to <a href="https://docs.docker.com/install/linux/linux-postinstall/" target="_blank" rel="noopener">Post-installation steps for Linux</a></li>
+<li>Continue with the <a href="https://docs.docker.com/engine/userguide/" target="_blank" rel="noopener">User Guide</a>.</li>
+</ul>
+<p><a href="https://docs.docker.com/glossary/?term=requirements" target="_blank" rel="noopener">requirements</a>, <a href="https://docs.docker.com/glossary/?term=apt" target="_blank" rel="noopener">apt</a>, <a href="https://docs.docker.com/glossary/?term=installation" target="_blank" rel="noopener">installation</a>, <a href="https://docs.docker.com/glossary/?term=centos" target="_blank" rel="noopener">centos</a>, <a href="https://docs.docker.com/glossary/?term=rpm" target="_blank" rel="noopener">rpm</a>, <a href="https://docs.docker.com/glossary/?term=install" target="_blank" rel="noopener">install</a>, <a href="https://docs.docker.com/glossary/?term=uninstall" target="_blank" rel="noopener">uninstall</a>, <a href="https://docs.docker.com/glossary/?term=upgrade" target="_blank" rel="noopener">upgrade</a>, <a href="https://docs.docker.com/glossary/?term=update" target="_blank" rel="noopener">update</a></p>
+<p>Rate this page:</p>
+<p>43</p>
+<p>3</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Get-Docker-CE-for-CentOS"><span class="toc-number">1.</span> <span class="toc-text">Get Docker CE for CentOS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Prerequisites"><span class="toc-number">1.1.</span> <span class="toc-text">Prerequisites</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-EE-customers"><span class="toc-number">1.1.1.</span> <span class="toc-text">Docker EE customers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OS-requirements"><span class="toc-number">1.1.2.</span> <span class="toc-text">OS requirements</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Uninstall-old-versions"><span class="toc-number">1.1.3.</span> <span class="toc-text">Uninstall old versions</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Install-Docker-CE"><span class="toc-number">1.2.</span> <span class="toc-text">Install Docker CE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Install-using-the-repository"><span class="toc-number">1.2.1.</span> <span class="toc-text">Install using the repository</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SET-UP-THE-REPOSITORY"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">SET UP THE REPOSITORY</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#INSTALL-DOCKER-CE"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">INSTALL DOCKER CE</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UPGRADE-DOCKER-CE"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">UPGRADE DOCKER CE</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Install-from-a-package"><span class="toc-number">1.2.2.</span> <span class="toc-text">Install from a package</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#UPGRADE-DOCKER-CE-1"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">UPGRADE DOCKER CE</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Install-using-the-convenience-script"><span class="toc-number">1.2.3.</span> <span class="toc-text">Install using the convenience script</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#UPGRADE-DOCKER-AFTER-USING-THE-CONVENIENCE-SCRIPT"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">UPGRADE DOCKER AFTER USING THE CONVENIENCE SCRIPT</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Uninstall-Docker-CE"><span class="toc-number">1.3.</span> <span class="toc-text">Uninstall Docker CE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Next-steps"><span class="toc-number">1.4.</span> <span class="toc-text">Next steps</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&text=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&title=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&is_video=false&description=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=docker-engine的安装方法&body=Check out this article: http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&title=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&title=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&title=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&title=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&name=docker-engine的安装方法&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/&t=docker-engine的安装方法" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="对web api中异步方法好处的解释，比较全面 原文https:&#x2F;&#x2F;msdn.microsoft.com&#x2F;en-us&#x2F;magazine&#x2F;dn802603.aspx 大多数有关 async&#x2F;await 的在线资源假定您正在开发客户端应用程序，但在服务器上有 async 的位置吗？可以非常肯定地回答“有”。本文是对 ASP.NET 上异步请求的概念性概述，并提供了对最佳在线资源的引用。我不打算介绍 a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对webapi中异步方法好处的解释，比较全面">
+<meta property="og:url" content="http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="对web api中异步方法好处的解释，比较全面 原文https:&#x2F;&#x2F;msdn.microsoft.com&#x2F;en-us&#x2F;magazine&#x2F;dn802603.aspx 大多数有关 async&#x2F;await 的在线资源假定您正在开发客户端应用程序，但在服务器上有 async 的位置吗？可以非常肯定地回答“有”。本文是对 ASP.NET 上异步请求的概念性概述，并提供了对最佳在线资源的引用。我不打算介绍 a">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-06-26T11:58:59.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.796Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>对webapi中异步方法好处的解释，比较全面</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/06/28/%E9%9B%86%E6%88%90%E6%A8%A1%E5%BC%8F%E7%BB%8F%E5%85%B8%E6%A8%A1%E5%BC%8Fkestrel%E5%92%8Ciis/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/06/17/%E4%BD%BF%E7%94%A8FluentAPI(EntityFramework)/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&text=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&title=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&is_video=false&description=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=对webapi中异步方法好处的解释，比较全面&body=Check out this article: http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&title=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&title=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&title=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&title=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&name=对webapi中异步方法好处的解释，比较全面&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&t=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#同步与异步请求处理"><span class="toc-number">1.</span> <span class="toc-text">同步与异步请求处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么不增加线程池的大小？"><span class="toc-number">2.</span> <span class="toc-text">为什么不增加线程池的大小？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程执行异步工作怎么样？"><span class="toc-number">3.</span> <span class="toc-text">线程执行异步工作怎么样？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么没有了异步处理程序？"><span class="toc-number">4.</span> <span class="toc-text">为什么没有了异步处理程序？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#异步代码不是灵丹妙药"><span class="toc-number">5.</span> <span class="toc-text">异步代码不是灵丹妙药</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在开始之前"><span class="toc-number">6.</span> <span class="toc-text">在开始之前</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于中止请求的提示"><span class="toc-number">7.</span> <span class="toc-text">关于中止请求的提示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Async-支持的现状"><span class="toc-number">8.</span> <span class="toc-text">Async 支持的现状</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#尊重安全网"><span class="toc-number">9.</span> <span class="toc-text">尊重安全网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始使用"><span class="toc-number">10.</span> <span class="toc-text">开始使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">11.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        对webapi中异步方法好处的解释，比较全面
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-06-26T11:58:59.000Z" itemprop="datePublished">2018-06-26</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>对web api中异步方法好处的解释，比较全面</p>
+<p>原文<a href="https://msdn.microsoft.com/en-us/magazine/dn802603.aspx" target="_blank" rel="noopener">https://msdn.microsoft.com/en-us/magazine/dn802603.aspx</a></p>
+<p>大多数有关 async/await 的在线资源假定您正在开发客户端应用程序，但在服务器上有 async 的位置吗？可以非常肯定地回答“有”。本文是对 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 上异步请求的概念性概述，并提供了对最佳在线资源的引用。我不打算介绍 async 或 await 的语法；因为我已经在一篇介绍性的博客文章 ( <a href="http://bit.ly/19IkogW" target="_blank" rel="noopener">bit.ly/19IkogW</a>) 以及一篇关于 async 最佳做法的文章 ( <a href="https://msdn.microsoft.com/magazine/jj991977" target="_blank" rel="noopener">msdn.microsoft.com/magazine/jj991977</a>) 中介绍过了。本文将特别重点介绍 async 在 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 上的工作原理。</p>
+<p>对于客户端应用程序，如 Windows 应用商店、Windows 桌面和 Windows Phone 应用程序，async 的主要优点是出色的响应能力。这些类型的应用程序使用 async 主要是为了保证用户界面的响应能力。对于服务器应用程序，async 异步的主要优点是不错的可扩展性。Node.js 可扩展性的关键是其固有的异步本质；Open Web Interface for .NET (OWIN) 针对异步进行了全新设计；<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 也可以是异步的。Async：不仅仅适用于 UI 应用程序！</p>
+<h2 id="同步与异步请求处理"><a href="#同步与异步请求处理" class="headerlink" title="同步与异步请求处理"></a>同步与异步请求处理</h2><p>在深入探讨异步请求处理程序之前，我想简要地回顾同步请求处理程序在 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 上的工作原理。在本例中，假设系统中的请求依赖于一些外部资源，如数据库或 Web API。当收到请求时，<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 将其中的一个线程池线程分配给该请求。因为它是同步编写，所以请求处理程序将同步调用该外部资源。这将阻止请求线程，直到返回对外部资源的调用。图 1 说明了具有两个线程的线程池，其中有一个线程被阻止，正在等待外部资源。</p>
+<p>图 1 同步等待外部资源</p>
+<p>最后，返回该外部资源的调用，并且请求线程恢复处理该请求。当完成该请求，且准备好发送响应时，请求线程将返回到线程池中。</p>
+<p>这一切好倒是好，但是您的 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 服务器获得的请求总会超出它的线程能够处理的数量。这时候，额外的请求必须等到有线程可用时才能够运行。图 2 说明的仍是该双线程服务器，此时它收到三个请求。</p>
+<p>图 2 收到三个请求的双线程服务器</p>
+<p>在这种情况下，前两个请求都被分配到线程池中的线程。每个请求都调用外部资源，于是阻止了它们的线程。第三个请求必须等待有线程可用时，才可以开始进行处理，但该请求已经在系统中。它的计时器一直在工作，它正处于发生 HTTP 错误 503（服务不可用）的危险之中。</p>
+<p>但是对此考虑一下：这第三个请求正在等待可用线程，与此同时系统中的另外两个线程实际上什么都没做。这些线程受到阻止，都在等待返回外部调用。它们确实没有做任何实际工作；它们不处于运行状态，也不占用任何 CPU 时间。这些线程被白白浪费掉，但还有请求处于需要中。以下是异步请求解决的情况。</p>
+<p>异步请求处理程序的操作方式与此不同。当收到请求时，<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 将其中的一个线程池线程分配给该请求。这一次，请求处理程序将异步调用该外部资源。当返回对外部资源的调用之前，已将此请求线程返回到线程池中。图 3 说明当请求在异步等待外部资源时具有两个线程的线程池。</p>
+<p>图 3 异步等待外部资源</p>
+<p>重要的区别在于，在进行异步调用的过程中，已将请求线程返回到线程池中。当线程处于线程池中时，它不再与该请求相关联。此时，当返回外部资源调用时，<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 将其线程池中的一个线程重新分配给该请求。该线程将继续处理该请求。当请求完成时，该线程再次返回到线程池中。注意，对于同步处理程序，同一线程会用于该请求的整个生命周期；相反，对于异步处理程序，可以将不同的线程分配给同一请求（在不同的时间）。</p>
+<p>现在，如果三个请求都进来，服务器就可以轻松处理了。因为每当请求在等待异步工作时，线程就会被释放到线程池中，它们可以自由处理新的以及现有的请求。异步请求可以让数量较少的线程去处理数量较多的请求。因此，<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 上的异步代码的主要优点是出色的可扩展性。</p>
+<h2 id="为什么不增加线程池的大小？"><a href="#为什么不增加线程池的大小？" class="headerlink" title="为什么不增加线程池的大小？"></a>为什么不增加线程池的大小？</h2><p>此时，总是会被问到：为什么不增加线程池的大小？答案有两个：与阻止线程池线程相比，异步代码扩展得更深层且更快。</p>
+<p>异步代码的扩展性超过阻止线程，这是因为它使用的内存更少；在现代操作系统上每个线程池线程具有 1MB 的堆栈，外加一个不分页的内核堆栈。这听起来好像很多，但当您的服务器上有一大堆线程时，会发现其实不够用。与此相反，异步操作的内存开销要小得多。因此，使用异步操作的请求比使用阻止线程的请求面临更少的内存压力。异步代码使您可以将更多的内存用于其他任务（例如缓存）。</p>
+<p>异步代码在速度上比阻止线程更快，因为线程池的注入速度有限。截至发稿时，该速度为每两秒钟一个线程。注入速度有限是件好事；它避免了持续的线程构建和破坏。然而，考虑一下请求蜂拥而至时会发生什么。同步代码很容易就会陷入瘫痪，因为请求将用光所有可用的线程，其余请求必须等待线程池有新的线程注入。而另一方面，异步代码不需要有这样的限制；它是“始终开放”的，可以这么说。异步代码能够更出色地响应请求量突然波动。</p>
+<p>请记住，异步代码不会取代线程池。不应该只有线程池或异步代码；而是要同时拥有线程池和异步代码。异步代码可以让您的应用程序充分利用线程池。它使用现有的线程池，并把它提高到 11。</p>
+<h2 id="线程执行异步工作怎么样？"><a href="#线程执行异步工作怎么样？" class="headerlink" title="线程执行异步工作怎么样？"></a>线程执行异步工作怎么样？</h2><p>我一直被人问到这个问题。这意味着，必须有一些线程阻止对外部资源进行 I/O 调用。因此，异步代码释放请求线程，但这只能以牺牲系统中另一个线程为代价吧？没有，一点关系也没有。</p>
+<p>要了解异步请求为什么扩展，我将跟踪一个异步 I/O 调用的（简化）示例。假设有一个请求需要写入到文件中。请求线程调用异步写入方法。WriteAsync 由基类库 (BCL) 实现，并使用其异步 I/O 的完成端口。因此，WriteAsync 调用会作为异步文件写入传递到 OS 中。然后，OS 与驱动程序堆栈进行通信，同时传递数据以写入到 I/O 请求数据包 (IRP) 中。</p>
+<p>现在，有趣的事情发生了：如果设备驱动程序不能立即处理 IRP，就必须异步进行处理。因此，驱动程序告诉磁盘开始写入，并将“挂起”响应返回到 OS 中。OS 将“挂起”响应传递到 BCL，然后 BCL 将一个不完整的任务返回到请求处理代码。请求处理代码等待将不完整的任务从该方法等处返回的任务。最后，请求处理代码最终向 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 返回一个不完整的任务，并且请求线程被释放回线程池中。</p>
+<p>现在，考虑系统的当前状态。已经分配了各种 I/O 结构（例如，任务实例和 IRP），而且它们都处在挂起/不完整的状态。然而，没有任何线程因等待写入操作完成而受到阻止。<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a>、BCL、OS 以及设备驱动程序都没有专门用于异步工作的线程。</p>
+<p>当磁盘完成写入数据时，它通过中断通知其驱动程序。该驱动程序会通知 OS 该 IRP 已经完成，并且 OS 会通过完成端口通知 BCL。线程池线程通过完成从 WriteAsync 返回的任务来响应该通知；这反过来又恢复异步请求代码。在该完成通知阶段中，短期“借用”了一些线程，但实际上没有线程在写入过程中受到阻止。</p>
+<p>本示例经过极大地简化，但是要点突出：真正的异步工作并不需要线程。实际推送字节也无需占用 CPU 时间。还有一个辅助课程要了解。考虑一下在设备驱动程序的世界里，设备驱动程序如何做才能立即或异步处理 IRP。同步处理是不是一个选项。在设备驱动程序级别，所有重要的 I/O 都是异步的。许多开发人员的思维模式都是把用于 I/O 操作的“普通 API”认为是同步的，异步 API 作为一层建立在普通的同步 API 上。然而，这恰恰相反：实际上，普通 API是异步的；使用异步 I/O 实现的是正是同步 API！</p>
+<h2 id="为什么没有了异步处理程序？"><a href="#为什么没有了异步处理程序？" class="headerlink" title="为什么没有了异步处理程序？"></a>为什么没有了异步处理程序？</h2><p>如果异步请求处理是如此完美，那它为什么还不可用？事实上，异步代码非常适合扩展，因此从 Microsoft .NET Framework 形成之初到现在，<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 平台一直支持异步处理程序和模块。<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 2.0 引入了异步网页，<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> MVC 2 中 MVC 得到了异步控制器。</p>
+<p>然而，最近，异步代码在编写上总是有些问题，并且难于维护。许多公司便决定同步开发代码、支付更大的服务器场或更昂贵的托管，这样就会简单一些。现在，出现了逆转：在 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 4.5 中，使用 async 和 await 的异步代码几乎与编写同步代码一样简单。由于大型系统迁移到云托管并要求更加有规模，越来越多的公司开始青睐 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 上的 async 和 await。</p>
+<h2 id="异步代码不是灵丹妙药"><a href="#异步代码不是灵丹妙药" class="headerlink" title="异步代码不是灵丹妙药"></a>异步代码不是灵丹妙药</h2><p>异步请求处理尽管很强大，但它不会解决所有问题。关于 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 上的 async 和 await 可以做什么的问题，存在一些常见的误解。</p>
+<p>当一些开发人员了解 async 和 await 后，他们认为这是服务器代码“让步”于客户端（例如浏览器）的一种方式。然而，<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 上的 async 和 await 只“让步”于 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 运行时；HTTP 协议保持不变，您对每个请求仍只有一个响应。如果在 async/await 之前您需要 SignalR 或 AJAX 或 UpdatePanel，那么在 async/await 之后仍然需要 SignalR 或 AJAX 或 UpdatePanel。</p>
+<p>使用 async 和 await 的异步请求处理可以帮助扩大您的应用程序规模。然而，这是在一台服务器上的扩展；您可能仍然需要对扩展进行规划。如果您确实需要扩展体系结构，将仍然需要考虑无状态的幂等请求和可靠的队列。Async/await 多少有所帮助：它们使您能够充分利用服务器资源，所以您不需要经常进行扩展。但是，如果您确实需要向外扩展，您将需要一个合适的分布式体系结构。</p>
+<p><a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 上的 async 和 await 都是关于 I/O 的。它们非常适合读取和写入文件、数据库记录和 REST API。然而，它们不能很好地执行占用大量 CPU 的任务。您可以通过等待 Task.Run 开始一些背景工作，但这样做没有任何意义。事实上，通过启发式干扰 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 线程池会损害您的可扩展性。如果您要在 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 上执行占用大量 CPU 的工作，最好的办法是直接在请求线程上执行该工作。通常，不要将工作排队送到 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 上的线程池。</p>
+<p>最后，在整体上考虑系统的可扩展性。十年前，常见的体系结构要有一个可与后端的 SQL Server 数据库进行通信的 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Web 服务器。在这种简单的体系结构中，通常数据库服务器是可扩展性的瓶颈，而不是 Web 服务器。让您的数据库调用异步可能起不到帮助作用；当然您可以用它们来扩展 Web 服务器，但数据库服务器将阻止整个系统的扩展。</p>
+<p>Rick Anderson 在他精彩的博客文章中针对异步数据库调用给出案例，“我的数据库调用应该是异步的吗？”( <a href="http://bit.ly/1rw66UB" target="_blank" rel="noopener">bit.ly/1rw66UB</a>)。以下是两点支持论据：首先，异步代码有难度（因而开发人员的时间成本比只是购买较大的服务器要高）；其次，如果数据库后端是瓶颈，那么扩展 Web 服务器没有什么意义。在写这篇文章时，这两方面的论据非常有道理，但随着时间的推移这两个论据的意义已经慢慢弱化。首先，使用 async 和 await 编写异步代码更加容易了。其次，随着全球逐步采用云计算，网站的数据后端逐渐得到扩展。诸如 Microsoft Azure SQL 数据库、NoSQL 以及其他 API 之类的现代后端与单个 SQL Server 相比可以得到更进一步的扩展，从而将瓶颈又推回 Web 服务器。在这种情况下，async/await 可以通过扩展 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 带来巨大的优势。</p>
+<h2 id="在开始之前"><a href="#在开始之前" class="headerlink" title="在开始之前"></a>在开始之前</h2><p>首先您需要知道只有 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 4.5 支持 async 和 await。有一个叫做 Microsoft.Bcl.Async 的 NuGet 程序包可为 .NET Framework 4 启用 async 和 await，但并不使用它；这将无法正常工作！其原因是，为了能与 async 和 await 更好地一起工作，<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 本身必须更改其管理异步请求处理的方式；NuGet 程序包中包含编译器需要的所有类型，但不会修补 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 运行时。没有解决方法；您需要 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 4.5 或更高版本。</p>
+<p>接下来，要知道，<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 4.5 在服务器上引入了“quirks 模式”。如果您创建一个新的 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 4.5 项目，则不必担心。但是，如果要将现有的项目升级到 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 4.5，所有 quirk 都将被打开。我建议您通过编辑 web.config 并将 httpRuntime.targetFramework 设置为 4.5 把它们全部关闭。如果使用此设置的应用程序失败（并且您不想花时间去修复它），至少您可以通过为 aspnet:UseTaskFriendlySynchronizationContext 的 appSetting 键添加值“true”来获取 async/await 工作。如果您将 httpRuntime.targetFramework 设置为 4.5，则 appSetting 键不必要。Web 开发团队已在<a href="http://bit.ly/1pbmnzK" target="_blank" rel="noopener">bit.ly/1pbmnzK</a> 发表一篇关于这一新的“quirks 模式”的详细信息的博客。提示: 如果您看到出现奇怪的行为或例外情况，并且您的调用堆栈包括 LegacyAspNetSynchronizationContext，那么您的应用程序正在这个“quirks 模式”下运行。LegacyAspNetSynchronizationContext 与异步不兼容；您在 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 4.5 上需要常规的 AspNetSynchronizationContext。</p>
+<p>在 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 4.5 中，所有的 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 设置都针对异步请求设置了很好的默认值，但也有几个其他设置您可能要更改。首先是 IIS 设置：考虑将 IIS/HTTP.sys 的队列限制（应用程序池|高级设置|队列长度）从默认的 1,000 提高到 5,000。另一个是 .NET 运行时设置：ServicePointManager.DefaultConnectionLimit，它的默认值是内核数量的 12 倍。DefaultConnectionLimit 限制到同一主机名的传出连接数。</p>
+<h2 id="关于中止请求的提示"><a href="#关于中止请求的提示" class="headerlink" title="关于中止请求的提示"></a>关于中止请求的提示</h2><p>当 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 同步处理一个请求时，它有一个非常简单的机制可以中止请求（例如，如果请求超出其超时值）：它会中止该请求的工作线程。这是有道理的，因为在同步领域，每个请求从开始到结束都使用同一个工作线程。中止线程对于 AppDomain 的长期稳定性而言尚不完美，因此默认情况下 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 将定期回收您的应用程序，以保持干净。</p>
+<p>对于异步请求，如果要中止请求，<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 并不会中止工作线程。相反，它会取消使用 CancellationToken 的请求。异步请求处理程序应该接受并遵守取消标记。大多数较新的框架（包括 Web API、MVC 和 SignalR）将构建并直接向您传递 CancellationToken；您需要做的就是把它声明为一个参数。您也可以直接访问 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 标记；例如，HttpRequest.TimedOutToken 是当请求超时时取消的一个 CancellationToken。</p>
+<p>随着应用程序迁移到云，中止请求就显得更为重要。基于云的应用程序也越来越依赖于可能占用任意时间量的外部服务。例如，一种标准模式是使用指数回退来重试外部请求；如果您的应用程序依赖于类似这样的多种服务，对您的请求处理在整体上应用一个超时上限不失为一个好方法。</p>
+<h2 id="Async-支持的现状"><a href="#Async-支持的现状" class="headerlink" title="Async 支持的现状"></a>Async 支持的现状</h2><p>针对 async 的兼容性问题，已对许多库进行了更新。在版本 6 中已将 async 支持添加到实体框架（在 EntityFramework NuGet 程序包中）。不过，当以异步方式运行时，您必须要小心操作以避免延迟加载，因为延迟加载总是以同步方式执行。HttpClient（在 <a href="http://microsoft.net.http/" target="_blank" rel="noopener">Microsoft.Net.Http</a> NuGet 程序包中）是采用 async 理念设计而成的现代 HTTP 客户端，是调用外部 REST API 的理想选择；是 HttpWebRequest 和 WebClient 的现代版替代品。在 2.1 版本中，Microsoft Azure 存储客户端库（在 WindowsAzure.Storage NuGet 程序包中）添加了异步支持。</p>
+<p>较新的框架（如 Web API 和 SignalR）对 async 和 await 提供全面的支持。个别 Web API 已围绕 async 支持建立起整个管道：不仅有异步控制器，还有异步筛选器和处理程序。Web API 和 SignalR 有一个很平凡的异步故事：您可以“放手去做”然后“就会成功”。</p>
+<p>这给我们带来了一个令人伤感的故事：如今，<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> MVC 只是部分支持 async 和 await。有基本的支持——异步控制器的操作和取消工作正常。<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 网站上有关于如何使用 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> MVC 中的异步控制器操作的精彩教程 ( <a href="http://bit.ly/1m1LXTx" target="_blank" rel="noopener">bit.ly/1m1LXTx</a>)；这对于 MVC 上的 async 入门是绝佳的资源。不幸的是，<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> MVC （目前）不支持异步筛选器 ( <a href="http://bit.ly/1oAyHLc" target="_blank" rel="noopener">bit.ly/1oAyHLc</a>) 和异步子操作 ( <a href="http://bit.ly/1px47RG" target="_blank" rel="noopener">bit.ly/1px47RG</a>)。</p>
+<p><a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Web 窗体是一个较旧的框架，但它也充分支持 async 和 await。并且，<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 网站上有关异步 Web 窗体的教程也是入门的绝佳资源 ( <a href="http://bit.ly/Ydho7W" target="_blank" rel="noopener">bit.ly/Ydho7W</a>)。有了 Web 窗体，异步支持可以选择加入。您必须先将 Page.Async 设置为 true，然后您可以使用 PageAsyncTask 通过该页面注册异步工作（或者，您可以使用 async void 事件处理程序）。PageAsyncTask 也支持取消。</p>
+<p>如果您有一个自定义 HTTP 处理程序或 HTTP 模块，那么 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 现在也可以支持它们的异步版本。HTTP 处理程序是通过 HttpTaskAsyncHandler ( <a href="http://bit.ly/1nWpWFj" target="_blank" rel="noopener">bit.ly/1nWpWFj</a>) 进行支持的，HTTP 模块是通过 EventHandlerTaskAsyncHelper ( <a href="http://bit.ly/1m1Sn4O" target="_blank" rel="noopener">bit.ly/1m1Sn4O</a>) 进行支持的。</p>
+<p>截至发稿时，<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 团队正在开发名为 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> vNext 的一个新项目。在 vNext 中，默认情况下整个管道是异步的。目前，该计划将 MVC 和 Web API 合并到能够全面支持 async/await（包括异步筛选器和异步视图组件）的单一框架中。其他异步就绪框架（如 SignalR）会在 vNext 中找到一个自然的家。当然，未来是 async 的天下。</p>
+<h2 id="尊重安全网"><a href="#尊重安全网" class="headerlink" title="尊重安全网"></a>尊重安全网</h2><p><a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 4.5 中引入了几个新的“安全网”，帮助您捕捉应用程序中的异步问题。这些是默认情况下存在的，应当保留。</p>
+<p>当同步处理程序试图执行异步工作时，您的 InvalidOperationException 会收到这样的消息，“此时不能开始异步操作”。有两个主要原因导致出现此异常。第一，Web 窗体页有异步事件处理程序，但忽略了将 Page.Async 设置为 true。第二，同步代码调用 async void 方法。这是也是避免 async void 的另一个原因。</p>
+<p>另一个安全网适用于异步处理程序：当异步处理程序完成请求，但 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 检测到异步工作尚未完成时，您的 InvalidOperationException 会收到这样的消息，“异步模块或处理程序已完成，但异步操作仍然处于挂起状态”。这通常是由于异步代码调用 async void 方法而导致的，但也可能是因为不当使用基于事件的异步模式 (EAP) 组件 ( <a href="http://bit.ly/19VdUWu" target="_blank" rel="noopener">bit.ly/19VdUWu</a>)。</p>
+<p>您还可以使用一个选项来关闭这两个安全网：HttpContext.AllowAsyncDuringSyncStages（也可以在 web.config 中对它进行设置）。Internet 上的一些页面建议您在看到这些异常时进行这样的设置。我完全不同意。说真的，我不知道这怎么可行。禁用安全网是一个可怕的想法。我能够想到的唯一可能的原因是，您的代码可能已经进行了一些非常先进的异步处理（远超我曾经尝试过的范围），您是一个多线程处理的天才。所以，如果您已经阅读了整篇文章，边打着呵欠边想，“拜托，我可不是菜鸟”，那么我想你可以考虑禁用安全网。而对于我们中的其他人，这是一个非常危险的选项，除非您完全知晓后果，否则不应进行此设置。</p>
+<h2 id="开始使用"><a href="#开始使用" class="headerlink" title="开始使用"></a>开始使用</h2><p>终于到最后了！准备好开始使用 async 和 await 了吗？我很欣赏您的耐心。</p>
+<p>首先，查看本文的“异步代码不是灵丹妙药”一节以确保 async/await 对您的体系结构是有益的。接下来，将您的应用程序更新到 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 4.5 并关闭 quirks 模式（此时若只为确保不发生中断，运行它也可以）。这时，您便可以开始真正的同步/等待工作了。</p>
+<p>从“叶”开始。想想您的请求如何进行处理并标识任何基于 I/O 的操作，特别是基于网络的操作。常见的示例是数据库查询和命令，以及对其他 Web 服务和 API 的调用。选择一个来开始，并做一些调查来查找使用 async/await 执行该操作的最佳选择。.NET Framework 4.5 中有许多内置 BCL 类型目前都已异步就绪；例如，SmtpClient 具有 SendMailAsync 方法。某些类型可以提供异步就绪更换；例如，HttpWebRequest 和 Web 客户端可以用 HttpClient 来更换。如需要，请升级您的库版本；例如，EF6 中的实体框架具有异步兼容方法。</p>
+<p>但是，要避免库中的“假异步”。假异步是这样一种现象：一个组件中具有一个异步就绪 API，而它只是通过将同步 API 封装在线程池线程内来实现的。这对于实现 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 上的可扩展性适得其反。假异步的一个典型示例就是 Newtonsoft <a href="http://json.net/" target="_blank" rel="noopener">JSON.NET</a>，一个其他方面很出色的库。最好不调用（假）异步版本来执行 JSON 的序列化；只需换做调用同步版本即可。假异步的一个棘手示例就是 BCL 文件流。当打开一个文件流时，必须以显式方式打开以便于异步访问；否则，它会使用假异步，同步阻止文件读取和写入操作中的线程池线程。</p>
+<p>选择一个“叶”之后，就可以开始使用代码中调用该 API 的方法，使之成为通过等待调用异步就绪 API 的异步方法。如果您调用的 API 支持 CancellationToken，您的方法应该采用 CancellationToken 并将其传递给 API 方法。</p>
+<p>只要将一个方法标记为异步，就应该更改其返回类型：void 变为“Task”，非 void 类型 T 变为“Task<T>”。您会发现，所有该方法的调用者都需要变为异步，以使它们能够等待任务，等等。此外，将 Async 附加到您方法的名称中，以遵循基于任务的异步模式约定 ( <a href="http://bit.ly/1uBKGKR" target="_blank" rel="noopener">bit.ly/1uBKGKR</a>)。</p>
+<p>允许 async/await 模式将您的调用堆栈向“Trunk”进行扩展。在 Trunk 中，您的代码将与 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 框架（MVC、Web 窗体，Web API）相连接。阅读本文前面所述的“异步支持的现状”一节中的相关教程，将您的异步代码与框架进行集成。</p>
+<p>顺便找出任何本地线程的状态。由于异步请求可能会更改线程，所以本地线程状态（如 ThreadStaticAttribute、ThreadLocal<T>、线程数据插槽和 CallContext.GetData/SetData）将不可用。如果可能的话，请使用 HttpContext.Items 进行更换；或者您可以将不可变的数据存储在 CallContext.LogicalGetData/LogicalSetData 中。</p>
+<p>以下是我发现的有用技巧：您可以（暂时）复制您的代码来创建一个垂直分区。利用这种技术，您不用将同步方法更改为异步；可以复制整个同步方法，然后将副本改为异步。然后，您可以让大多数应用程序保持使用同步方法，只创建异步的一个小垂直片即可。如果您想把异步作为概念证明来进行探索或只针对应用程序的一部分执行负载测试来体验怎样扩展您的系统，这会是一个很棒的主意。您可以具有一个完全异步的请求（或页面），而应用程序的其余部分保持为同步。当然，您不希望对每一个方法都保留副本；最终，所有的 I/O 绑定代码都将是异步的，可以删除同步副本。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>我希望本文能够帮助您了解 <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> 上的异步请求的基础概念。使用 async 和 await，可以使编写能够最大限度地利用其服务器资源的 Web 应用程序、服务和 API 变得比以往任何时候都更容易。Async 真是太棒了！</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#同步与异步请求处理"><span class="toc-number">1.</span> <span class="toc-text">同步与异步请求处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么不增加线程池的大小？"><span class="toc-number">2.</span> <span class="toc-text">为什么不增加线程池的大小？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程执行异步工作怎么样？"><span class="toc-number">3.</span> <span class="toc-text">线程执行异步工作怎么样？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么没有了异步处理程序？"><span class="toc-number">4.</span> <span class="toc-text">为什么没有了异步处理程序？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#异步代码不是灵丹妙药"><span class="toc-number">5.</span> <span class="toc-text">异步代码不是灵丹妙药</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在开始之前"><span class="toc-number">6.</span> <span class="toc-text">在开始之前</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于中止请求的提示"><span class="toc-number">7.</span> <span class="toc-text">关于中止请求的提示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Async-支持的现状"><span class="toc-number">8.</span> <span class="toc-text">Async 支持的现状</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#尊重安全网"><span class="toc-number">9.</span> <span class="toc-text">尊重安全网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始使用"><span class="toc-number">10.</span> <span class="toc-text">开始使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">11.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&text=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&title=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&is_video=false&description=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=对webapi中异步方法好处的解释，比较全面&body=Check out this article: http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&title=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&title=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&title=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&title=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&name=对webapi中异步方法好处的解释，比较全面&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/06/26/%E5%AF%B9webapi%E4%B8%AD%E5%BC%82%E6%AD%A5%E6%96%B9%E6%B3%95%E5%A5%BD%E5%A4%84%E7%9A%84%E8%A7%A3%E9%87%8A%EF%BC%8C%E6%AF%94%E8%BE%83%E5%85%A8%E9%9D%A2/&t=对webapi中异步方法好处的解释，比较全面" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

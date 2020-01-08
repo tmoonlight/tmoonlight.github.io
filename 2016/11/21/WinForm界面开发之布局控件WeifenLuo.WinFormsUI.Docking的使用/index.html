@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="WinForm界面开发之布局控件”WeifenLuo.WinFormsUI.Docking”的使用本篇介绍Winform程序开发中的布局界面的设计，介绍如何在我的共享软件中使用布局控件”WeifenLuo.WinFormsUI.Docking”。 布局控件”WeifenLuo.WinFormsUI.Docking”是一个非常棒的开源控件，用过的人都深有体会，该控件之强大、美观、不亚于商业控件。而且">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用">
+<meta property="og:url" content="http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="WinForm界面开发之布局控件”WeifenLuo.WinFormsUI.Docking”的使用本篇介绍Winform程序开发中的布局界面的设计，介绍如何在我的共享软件中使用布局控件”WeifenLuo.WinFormsUI.Docking”。 布局控件”WeifenLuo.WinFormsUI.Docking”是一个非常棒的开源控件，用过的人都深有体会，该控件之强大、美观、不亚于商业控件。而且">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-11-20T21:38:13.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.872Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2016/11/23/%E7%8E%B0%E4%BB%A3.net%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84-ABP%E6%A1%86%E6%9E%B6/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2016/11/09/%E6%94%B9%E5%96%84%E7%A8%8B%E5%BA%8F%E5%91%98%E7%94%9F%E6%B4%BB%E8%B4%A8%E9%87%8F%E7%9A%843+10%E4%B9%A0%E6%83%AF/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&text=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&title=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&is_video=false&description=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用&body=Check out this article: http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&title=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&title=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&title=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&title=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&name=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&t=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#WinForm界面开发之布局控件”WeifenLuo-WinFormsUI-Docking”的使用"><span class="toc-number">1.</span> <span class="toc-text">WinForm界面开发之布局控件”WeifenLuo.WinFormsUI.Docking”的使用</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-11-20T21:38:13.000Z" itemprop="datePublished">2016-11-21</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="WinForm界面开发之布局控件”WeifenLuo-WinFormsUI-Docking”的使用"><a href="#WinForm界面开发之布局控件”WeifenLuo-WinFormsUI-Docking”的使用" class="headerlink" title="WinForm界面开发之布局控件”WeifenLuo.WinFormsUI.Docking”的使用"></a><a href="http://www.cnblogs.com/wuhuacong/archive/2009/07/09/1520082.html" target="_blank" rel="noopener">WinForm界面开发之布局控件”WeifenLuo.WinFormsUI.Docking”的使用</a></h2><p>本篇介绍Winform程序开发中的布局界面的设计，介绍如何在我的共享软件中使用布局控件”WeifenLuo.WinFormsUI.Docking”。</p>
+<p>布局控件”WeifenLuo.WinFormsUI.Docking”是一个非常棒的开源控件，用过的人都深有体会，该控件之强大、美观、不亚于商业控件。而且控件使用也是比较简单的。先看看控件使用的程序界面展示效果。</p>
+<p>配电网络可视化管理系统的界面截图：</p>
+<p>深田之星送水管理系统网络版的界面截图：</p>
+<p>我在几个共享软件都使用了该布局控件，我们先以“深田之星送水管理系统网络版”这款软件为例，介绍如何完成该界面的设计及显示的。</p>
+<p>1、首先，我们添加一个主界面窗体，命名为MainForm，该窗体IsMdiContainer设置为True，也就是设置为多文档窗体格式。拖拉布局控件”WeifenLuo.WinFormsUI.Docking.DockPanel”到主窗体MainForm中，并设置下面几个属性：</p>
+<p>Dock为Fill、DocumentStyle为DockingMdi、RightToLeftLayout为True。</p>
+<p>这几个属性的意思应该不难，Dock就是 覆盖整个MDI窗体的区域，DocumentStyle为多文档类型、RightToLeftLayout是指新打开的窗口都停靠在右边区域。</p>
+<p>我们看看设计界面视图如下所示。</p>
+<p>2、主界面其实基本上就可以了，另外我们看到“送水管理系统网络版”的界面中有一个左边的工具栏，它其实也是在一个停靠的窗体中的，我们增加一个窗体用来承载相关的工具快捷键按钮展示。命名为MainToolWindow的窗体，继承自WeifenLuo.WinFormsUI.Docking.DockContent.</p>
+<p>其中的“HideOnClose”属性很重要，该属性一般设置为True，就是指你关闭窗口时，窗体只是隐藏而不是真的关闭。</p>
+<p>左边的窗口MainToolWindow实现停靠的代码是在MainForm的构造函数或者Load函数中加载即可。</p>
+<p>mainToolWin.Show(this.dockPanel, DockState.DockLeft);</p>
+<p> 3、对于工具窗口我们已经完成了，但是主业务窗口还没有做，也就是下面的部分内容。</p>
+<p>为了方便，我们定义一个基类窗体，命名为BaseForm，继承自DockContent，如下所示</p>
+<p>public class BaseForm : DockContent</p>
+<p>然后每个业务窗口继承BaseForm即可。</p>
+<p>4、剩下的内容就是如何在主窗体MainForm中展示相关的业务窗口了，展示的代码如下所示</p>
+<pre><code>public partial class MainForm : Form
+
+{
+
+    #region 属性字段
+
+
+
+
+     private MainToolWindow mainToolWin = new MainToolWindow();
+
+    private FrmProduct frmProduct = new FrmProduct();
+
+    private FrmCustomer frmCustomer = new FrmCustomer();
+
+    private FrmOrder frmOrder = new FrmOrder();
+
+    private FrmStock frmStock = new FrmStock();
+
+    private FrmComingCall frmComingCall = new FrmComingCall();
+
+    private FrmDeliving frmDeliving = new FrmDeliving();
+
+    private FrmTicketHistory frmHistory = new FrmTicketHistory(); 
+
+
+
+
+    #endregion
+
+
+
+
+    public MainForm()
+
+    {
+
+        InitializeComponent();
+
+
+
+
+        SplashScreen.Splasher.Status = &quot;正在展示相关的内容&quot;;
+
+        System.Threading.Thread.Sleep(100);
+
+
+
+
+        mainToolWin.Show(this.dockPanel, DockState.DockLeft);
+
+        frmComingCall.Show(this.dockPanel);
+
+        frmDeliving.Show(this.dockPanel);
+
+        frmHistory.Show(this.dockPanel);
+
+        frmStock.Show(this.dockPanel);
+
+        frmProduct.Show(this.dockPanel);
+
+        frmCustomer.Show(this.dockPanel);
+
+        frmOrder.Show(this.dockPanel);
+
+
+
+
+        SplashScreen.Splasher.Status = &quot;初始化完毕&quot;;
+
+        System.Threading.Thread.Sleep(50);
+
+
+
+
+        SplashScreen.Splasher.Close();
+
+    }</code></pre><p>5.下面贴出基本窗口的基本操作事件函数</p>
+<pre><code>private void menu_Window_CloseAll_Click(object sender, EventArgs e)
+
+{
+
+    CloseAllDocuments();
+
+}
+
+
+
+
+private void menu_Window_CloseOther_Click(object sender, EventArgs e)
+
+{
+
+    if (dockPanel.DocumentStyle == DocumentStyle.SystemMdi)
+
+    {
+
+        Form activeMdi = ActiveMdiChild;
+
+        foreach (Form form in MdiChildren)
+
+        {
+
+            if (form != activeMdi)
+
+            {
+
+                form.Close();
+
+            }
+
+        }
+
+    }
+
+    else
+
+    {
+
+        foreach (IDockContent document in dockPanel.DocumentsToArray())
+
+        {
+
+            if (!document.DockHandler.IsActivated)
+
+            {
+
+                document.DockHandler.Close();
+
+            }
+
+        }
+
+    }
+
+}
+
+
+
+
+private DockContent FindDocument(string text)
+
+{
+
+    if (dockPanel.DocumentStyle == DocumentStyle.SystemMdi)
+
+    {
+
+        foreach (Form form in MdiChildren)
+
+        {
+
+            if (form.Text == text)
+
+            {
+
+                return form as DockContent;
+
+            }
+
+        }
+
+
+
+
+        return null;
+
+    }
+
+    else
+
+    {
+
+        foreach (DockContent content in dockPanel.Documents)
+
+        {
+
+            if (content.DockHandler.TabText == text)
+
+            {
+
+                return content;
+
+            }
+
+        }
+
+
+
+
+        return null;
+
+    }
+
+}
+
+
+
+
+public DockContent ShowContent(string caption, Type formType)
+
+{
+
+    DockContent frm = FindDocument(caption);
+
+    if (frm == null)
+
+    {
+
+        frm = ChildWinManagement.LoadMdiForm(Portal.gc.MainDialog, formType) as DockContent;
+
+    }
+
+
+
+
+    frm.Show(this.dockPanel);
+
+    frm.BringToFront();
+
+    return frm;
+
+}
+
+
+
+
+public void CloseAllDocuments()
+
+{
+
+    if (dockPanel.DocumentStyle == DocumentStyle.SystemMdi)
+
+    {
+
+        foreach (Form form in MdiChildren)
+
+        {
+
+            form.Close();
+
+        }
+
+    }
+
+    else
+
+    {
+
+        IDockContent[] documents = dockPanel.DocumentsToArray();
+
+        foreach (IDockContent content in documents)
+
+        {
+
+            content.DockHandler.Close();
+
+        }
+
+    }
+
+} </code></pre><p>最后呈上该控件文件，大家可以下来玩玩。</p>
+<p><a href="http://files.cnblogs.com/wuhuacong/WeifenLuo.WinFormsUI.Docking.rar" target="_blank" rel="noopener">http://files.cnblogs.com/wuhuacong/WeifenLuo.WinFormsUI.Docking.rar</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#WinForm界面开发之布局控件”WeifenLuo-WinFormsUI-Docking”的使用"><span class="toc-number">1.</span> <span class="toc-text">WinForm界面开发之布局控件”WeifenLuo.WinFormsUI.Docking”的使用</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&text=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&title=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&is_video=false&description=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用&body=Check out this article: http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&title=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&title=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&title=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&title=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&name=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2016/11/21/WinForm%E7%95%8C%E9%9D%A2%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E6%8E%A7%E4%BB%B6WeifenLuo.WinFormsUI.Docking%E7%9A%84%E4%BD%BF%E7%94%A8/&t=WinForm界面开发之布局控件WeifenLuo.WinFormsUI.Docking的使用" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

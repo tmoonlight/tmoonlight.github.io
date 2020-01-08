@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="1.dotnet core安装 2.dotnet 运行 dotnet build dotnet new dotnet new –help dotnet run dotnet add package 3. 引用log4net 引用swagger dotnet add Swashbuckle.AspNetCore(注意这里有个坑，引用的名字一定要带core的，否则会引用上一个4.6版本的swagger">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dotnetcore安装swagger并部署到docker中">
+<meta property="og:url" content="http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="1.dotnet core安装 2.dotnet 运行 dotnet build dotnet new dotnet new –help dotnet run dotnet add package 3. 引用log4net 引用swagger dotnet add Swashbuckle.AspNetCore(注意这里有个坑，引用的名字一定要带core的，否则会引用上一个4.6版本的swagger">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-02-23T22:15:41.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.808Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>dotnetcore安装swagger并部署到docker中</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/02/28/%E5%B9%BF%E5%B7%9Eerp%E8%BF%81%E7%A7%BB/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/02/18/ASP.NETCoreWebApi%E8%BF%94%E5%9B%9E%E7%BB%9F%E4%B8%80%E6%A0%BC%E5%BC%8F%E5%8F%82%E6%95%B0/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&text=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&title=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&is_video=false&description=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=dotnetcore安装swagger并部署到docker中&body=Check out this article: http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&title=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&title=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&title=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&title=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&name=dotnetcore安装swagger并部署到docker中&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&t=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#vim-etc-yum-repos-d-docker-repo"><span class="toc-number">1.</span> <span class="toc-text">vim &#x2F;etc&#x2F;yum.repos.d&#x2F;docker.repo</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#yum-install-docker-engine-y"><span class="toc-number">2.</span> <span class="toc-text">yum install docker-engine -y</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        dotnetcore安装swagger并部署到docker中
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-02-23T22:15:41.000Z" itemprop="datePublished">2018-02-24</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>1.dotnet core安装</p>
+<p>2.dotnet 运行</p>
+<p>dotnet build</p>
+<p>dotnet new</p>
+<p>dotnet new –help</p>
+<p>dotnet run</p>
+<p>dotnet add package</p>
+<p>3.</p>
+<p>引用log4net</p>
+<p>引用swagger</p>
+<p>dotnet add Swashbuckle.AspNetCore(注意这里有个坑，引用的名字一定要带core的，否则会引用上一个4.6版本的swagger，但是无法使用)</p>
+<p> vscode中使用如下插件userdefinedsnippets自动生成注释</p>
+<p>加入这一条就能生成xml文件</p>
+<p><GenerateDocumentationFile>true</GenerateDocumentationFile></p>
+<p>有时会需要做一些额外的工作<a href="http://wmpratt.com/dotnet-publish-where-are-my-xml-docs/" target="_blank" rel="noopener">http://wmpratt.com/dotnet-publish-where-are-my-xml-docs/</a></p>
+<p>configureService中加入public void Configure(IApplicationBuilder app)</p>
+<p>public void ConfigureServices(IServiceCollection services)</p>
+<p>{</p>
+<pre><code>services.AddDbContext&lt;TodoContext&gt;(opt =&gt; opt.UseInMemoryDatabase(&quot;TodoList&quot;));
+
+services.AddMvc();
+
+
+
+
+// Register the Swagger generator, defining one or more Swagger documents
+
+services.AddSwaggerGen(c =&gt;
+
+{
+
+    c.SwaggerDoc(&quot;v1&quot;, new Info { Title = &quot;My API&quot;, Version = &quot;v1&quot; });
+
+});</code></pre><p>}</p>
+<p>startup的configure中加入</p>
+<p>using Swashbuckle.AspNetCore.Swagger;</p>
+<p>public void Configure(IApplicationBuilder app)</p>
+<p>{</p>
+<pre><code>// Enable middleware to serve generated Swagger as a JSON endpoint.
+
+app.UseSwagger();
+
+
+
+
+// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+
+app.UseSwaggerUI(c =&gt;
+
+{
+
+    c.SwaggerEndpoint(&quot;/swagger/v1/swagger.json&quot;, &quot;My API V1&quot;);
+
+});
+
+
+
+
+app.UseMvc();</code></pre><p>}</p>
+<p>vs所有都是通过配置来实现</p>
+<p>dockerfile</p>
+<p>部署<a href="http://asp.net/" target="_blank" rel="noopener">asp.net</a> core 到 docker</p>
+<p><a href="https://github.com/dotnet/dotnet-docker" target="_blank" rel="noopener">https://github.com/dotnet/dotnet-docker</a></p>
+<p>docker版本升级是一个坑，直接安装的版本很旧</p>
+<p>注意，官方需要升级到17.06</p>
+<p>yum update</p>
+<h1 id="vim-etc-yum-repos-d-docker-repo"><a href="#vim-etc-yum-repos-d-docker-repo" class="headerlink" title="vim /etc/yum.repos.d/docker.repo"></a>vim /etc/yum.repos.d/docker.repo</h1><p>//添加以下内容</p>
+<p>[dockerrepo]</p>
+<p>name=Docker Repository</p>
+<p>baseurl=<a href="https://yum.dockerproject.org/repo/main/centos/7/" target="_blank" rel="noopener">https://yum.dockerproject.org/repo/main/centos/7/</a></p>
+<p>enabled=1</p>
+<p>gpgcheck=1</p>
+<p>gpgkey=<a href="https://yum.dockerproject.org/gpg" target="_blank" rel="noopener">https://yum.dockerproject.org/gpg</a></p>
+<h1 id="yum-install-docker-engine-y"><a href="#yum-install-docker-engine-y" class="headerlink" title="yum install docker-engine -y"></a>yum install docker-engine -y</h1><p>安装完之后出错，查日志提示</p>
+<p>3月 10 23:07:04 centos1 systemd[1]: Unit docker.service entered failed state.</p>
+<p>3月 10 23:07:04 centos1 systemd[1]: docker.service failed.</p>
+<p>3月 10 23:07:04 centos1 systemd[1]: docker.service holdoff time over, scheduling restart.</p>
+<p>3月 10 23:07:04 centos1 systemd[1]: start request repeated too quickly for docker.service</p>
+<p>3月 10 23:07:04 centos1 systemd[1]: Failed to start Docker Application Container Engine.</p>
+<p>====================================</p>
+<p>这个可以通过如下方式解决:</p>
+<p>查看文件系统 /etc/docker/daemon.json 有没有这个文件，没有测创建它包括二级目录 docker</p>
+<p>在daemon.json文件中输入以下内容:</p>
+<p>{ “storage-driver”: “devicemapper” }</p>
+<p>如果daemon.json文件包含格式不正确的JSON，Docker将无法启动。</p>
+<p>======================================</p>
+<p>docker run -it –rm -p 5000:80 –name aspnetcore_sample aspnetapp</p>
+<p>（对外端口：容器中服务的端口）</p>
+<p>docker ps查看所有运行的镜像</p>
+<p>docker stat进行docker监控</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#vim-etc-yum-repos-d-docker-repo"><span class="toc-number">1.</span> <span class="toc-text">vim &#x2F;etc&#x2F;yum.repos.d&#x2F;docker.repo</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#yum-install-docker-engine-y"><span class="toc-number">2.</span> <span class="toc-text">yum install docker-engine -y</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&text=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&title=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&is_video=false&description=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=dotnetcore安装swagger并部署到docker中&body=Check out this article: http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&title=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&title=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&title=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&title=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&name=dotnetcore安装swagger并部署到docker中&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/02/24/dotnetcore%E5%AE%89%E8%A3%85swagger%E5%B9%B6%E9%83%A8%E7%BD%B2%E5%88%B0docker%E4%B8%AD/&t=dotnetcore安装swagger并部署到docker中" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="The difference char* the pointer and char[] the array is how you interact with them after you create them. If you are just printing the two examples will perform exactly the same. They both generate d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht">
+<meta property="og:url" content="http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="The difference char* the pointer and char[] the array is how you interact with them after you create them. If you are just printing the two examples will perform exactly the same. They both generate d">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2014-08-18T23:08:40.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.999Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2014/08/21/%E5%90%8C%E6%97%B6%E7%94%9F%E6%88%90%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&text=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&title=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&is_video=false&description=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht&body=Check out this article: http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&title=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&title=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&title=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&title=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&name=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&t=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2014-08-18T23:08:40.000Z" itemprop="datePublished">2014-08-19</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>The difference char* the pointer and char[] the array is how you interact with them after you create them.</p>
+<p>If you are just printing the two examples will perform exactly the same. They both generate data in memory, {h,e,l,l,o,/0}.</p>
+<p>The fundamental difference is that in one char* you are assigning it to a pointer, which is a variable. In char[] you are assigning it to an array which is not a variable.</p>
+<p>char[] is a structure, it is specific section of memory, it allows for things like indexing, but it always will start at the address that currently hold’s ‘h’.</p>
+<p>char* is a variable. It was initialize with a number, but we can change number using mathematical operators such as ++, because it is essentially an integer.</p>
+<p>So here’s one example, where the pointer would be much more efficient than an array. Say for whatever reason we wanted the string to say “ello” instead of “hello”. With a pointer all we need to do is shift the pointer one to the “right”</p>
+<p>char* p = “hello”; p++;</p>
+<p>This is a very fast operation and runs in Big O of 1 (literally in this case, i is one very fast operation)</p>
+<p>But with char[], we can’t change where the array starts, we actually therefore need to do something much less efficient, we need to loop through the entire word and for every index change the char in memory. It would look something like this. (manually done instead of looping for clarity)</p>
+<p>char s[] = “hello”; s[0] = ‘e’ s[1] = ‘l’ s[2] = ‘l’ s[3] = ‘o’ s[4] = ‘/0’</p>
+<p>This is a far slower operation running in “big O of n”.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&text=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&title=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&is_video=false&description=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht&body=Check out this article: http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&title=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&title=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&title=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&title=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&name=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2014/08/19/Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht/&t=Thedifferencecharthepointerandchar[]thearrayishowyouinteractwitht" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

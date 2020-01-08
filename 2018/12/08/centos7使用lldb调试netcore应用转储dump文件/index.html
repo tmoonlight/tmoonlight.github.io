@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="centos7使用lldb调试netcore应用转储dump文件centos7下安装lldb，dotnet netcore 进程生成转储文件，并使用lldb进行分析 随着netcore应用在linux上部署的应用越来越多，碰到cpu 100%，内存暴涨的情况也一直偶有发生，在windows平台下进程管理器右键转储，下载到本地使用windbg或者直接vs分析都比较方便。而在linux平台下因为一直接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="centos7使用lldb调试netcore应用转储dump文件">
+<meta property="og:url" content="http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="centos7使用lldb调试netcore应用转储dump文件centos7下安装lldb，dotnet netcore 进程生成转储文件，并使用lldb进行分析 随着netcore应用在linux上部署的应用越来越多，碰到cpu 100%，内存暴涨的情况也一直偶有发生，在windows平台下进程管理器右键转储，下载到本地使用windbg或者直接vs分析都比较方便。而在linux平台下因为一直接">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/161654/201807/161654-20180704151020965-1687090778.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/161654/201807/161654-20180704151440896-1612390692.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/161654/201807/161654-20180704151619729-1519177395.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/161654/201807/161654-20180704151814294-1932178897.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/161654/201807/161654-20180704153813201-95317407.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/161654/201807/161654-20180704154518229-981075031.png">
+<meta property="article:published_time" content="2018-12-07T17:13:07.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.753Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images2018.cnblogs.com/blog/161654/201807/161654-20180704151020965-1687090778.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>centos7使用lldb调试netcore应用转储dump文件</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/12/11/Docker%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/11/27/%E5%B8%B8%E8%A7%84%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E4%B8%AD%E9%9C%80%E8%A6%81%E5%8C%85%E5%90%AB%E7%9A%84%E7%BB%84%E4%BB%B6/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&text=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&title=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&is_video=false&description=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=centos7使用lldb调试netcore应用转储dump文件&body=Check out this article: http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&title=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&title=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&title=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&title=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&name=centos7使用lldb调试netcore应用转储dump文件&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&t=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#centos7使用lldb调试netcore应用转储dump文件"><span class="toc-number">1.</span> <span class="toc-text">centos7使用lldb调试netcore应用转储dump文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#centos7下安装lldb，dotnet-netcore-进程生成转储文件，并使用lldb进行分析"><span class="toc-number">1.1.</span> <span class="toc-text">centos7下安装lldb，dotnet netcore 进程生成转储文件，并使用lldb进行分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#测试目标程序"><span class="toc-number">1.1.1.</span> <span class="toc-text">测试目标程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#centos7-升级GCC，安装cmake"><span class="toc-number">1.1.2.</span> <span class="toc-text">centos7 升级GCC，安装cmake</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#centos7下安装lldb调试工具"><span class="toc-number">1.1.3.</span> <span class="toc-text">centos7下安装lldb调试工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dotnet-netcore应用如何生成内存转储文件"><span class="toc-number">1.1.4.</span> <span class="toc-text">dotnet netcore应用如何生成内存转储文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用lldb调试分析netcore应用内存转储文件"><span class="toc-number">1.1.5.</span> <span class="toc-text">使用lldb调试分析netcore应用内存转储文件</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        centos7使用lldb调试netcore应用转储dump文件
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-12-07T17:13:07.000Z" itemprop="datePublished">2018-12-08</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="centos7使用lldb调试netcore应用转储dump文件"><a href="#centos7使用lldb调试netcore应用转储dump文件" class="headerlink" title="centos7使用lldb调试netcore应用转储dump文件"></a><a href="https://www.cnblogs.com/calvinK/p/9263696.html" target="_blank" rel="noopener">centos7使用lldb调试netcore应用转储dump文件</a></h1><h2 id="centos7下安装lldb，dotnet-netcore-进程生成转储文件，并使用lldb进行分析"><a href="#centos7下安装lldb，dotnet-netcore-进程生成转储文件，并使用lldb进行分析" class="headerlink" title="centos7下安装lldb，dotnet netcore 进程生成转储文件，并使用lldb进行分析"></a>centos7下安装lldb，dotnet netcore 进程生成转储文件，并使用lldb进行分析</h2><blockquote>
+<p>随着netcore应用在linux上部署的应用越来越多，碰到cpu 100%，内存暴涨的情况也一直偶有发生，在windows平台下进程管理器右键转储，下载到本地使用windbg或者直接vs分析都比较方便。而在linux平台下因为一直接触的不深，所以对这一块也一直没有比较好的了解。所以接下来的文章将对在centos7下安装lldb，生成转储以及调试分析进行一些简单说明。</p>
+<p>还有就是一般产线的机器也不太会有可以直接调试的机会，所以真出现问题也只能在产线机器dump进程，然后下载到本地来慢慢分析。</p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>环境说明：</p>
+<p>os：centos7</p>
+<p>dotnet :2.1.1。查看官方文档2.0.0只能使用lldb 3.6；2.1以上必须是3.9.0；所以特别要注意版本问题，一个是createdump 2.0的有bug会失败。二个是dotnet版本和lldb版本要匹配</p>
+<p>被调试分析的应用也是用2.1跑起来的。</p>
+</blockquote>
+</blockquote>
+<h3 id="测试目标程序"><a href="#测试目标程序" class="headerlink" title="测试目标程序"></a>测试目标程序</h3><p>yum install dotnet-sdk-2.1dotnet new mvc</p>
+<p>vi /mvc.csproj</p>
+<p>#netcoreapp2.0 to netcoreapp2.1</p>
+<p>#PackageReference Include=”Microsoft.AspNetCore.All” Version=”2.0.0” to Version=”2.1.1”dotnet restoredotnet builddotnet ./bin/Debug/netcoreapp2.1/mvc.dll</p>
+<h3 id="centos7-升级GCC，安装cmake"><a href="#centos7-升级GCC，安装cmake" class="headerlink" title="centos7 升级GCC，安装cmake"></a>centos7 升级GCC，安装cmake</h3><p><a href="https://www.cnblogs.com/calvinK/p/9263297.html" target="_blank" rel="noopener">centos7 升级GCC版本到7.3.0</a></p>
+<p><a href="https://www.cnblogs.com/calvinK/p/9263320.html" target="_blank" rel="noopener">centos7 安装cmake</a></p>
+<h3 id="centos7下安装lldb调试工具"><a href="#centos7下安装lldb调试工具" class="headerlink" title="centos7下安装lldb调试工具"></a>centos7下安装lldb调试工具</h3><blockquote>
+<p>最开始直接使用给力网友的脚本进行安装(脚本地址查看文章结尾参考资料)，后发现3.9.1不能调试分析netcore应用，必须要3.9.0，所以在给力网友的脚本上略作修改后使用。修改后脚本地址<a href="https://github.com/czd890/shell/blob/master/llvm_clang_lldb/3.9.0/llvm_clang_install.sh" target="_blank" rel="noopener">https://github.com/czd890/shell/blob/master/llvm_clang_lldb/3.9.0/llvm_clang_install.sh</a>。主要修改几个地方：把lldb，libunwind移动到build_llvm_toolchain中，一次性安装。check_and_download方法中检查本地是否已下载源码包的检查略作修改，只判断指定版本，编译的时候修改为make -j8（我本地机器8核)。</p>
+</blockquote>
+<p>脚本大概思路就是下载如下所表示的组件所有源码，除llvm外的其他组件源代码解压到llvm/tools目录下,这样子源代码就全部准备好</p>
+<p>BUILD_TARGET_COMPOMENTS=”llvm clang compiler_rt libcxx libcxxabi clang_tools_extra lldb lld libunwind”;</p>
+<p>接下来就是编译的过程了。</p>
+<p>#安装一些必要的依赖组件</p>
+<p>yum install libedit-devel libxml2-devel ncurses-devel python-devel swig</p>
+<p>#执行根据给力网友的脚本修改后的脚本</p>
+<p>当然如果脚本下载速度慢，也是可以自己下载后上传的目录的。具体下载地址查看文章尾部参考资料 llvm，clang，lldb源代码下载地址(3.9.0)</p>
+<p>准备源代码差不多就如下图。然后 sh llvm_clang_install.sh开始执行脚本；</p>
+<p>默认安装目录在 PREFIX_DIR=/usr/local/llvm-$LLVM_VERSION;。也就是是 /usr/local/llvm-3.9.0;可以在脚本的最开始对此进行修改。</p>
+<p><img src="https://images2018.cnblogs.com/blog/161654/201807/161654-20180704151020965-1687090778.png" alt=""></p>
+<p>开始执行，又是一段漫长的等待时间，8核并发编译，耗费了估计得有1-2个小时。</p>
+<p><img src="https://images2018.cnblogs.com/blog/161654/201807/161654-20180704151440896-1612390692.png" alt=""></p>
+<p>刀片机的CPU都跑满了！！！</p>
+<p><img src="https://images2018.cnblogs.com/blog/161654/201807/161654-20180704151619729-1519177395.png" alt=""></p>
+<p>出去吃完饭后回来，就看到完成拉。具体的path路径可以选择加不加都可以，加的话，直接/etc/profile export PATH=$PATH:llvm-path/bin即可</p>
+<p><img src="https://images2018.cnblogs.com/blog/161654/201807/161654-20180704151814294-1932178897.png" alt=""></p>
+<p>lldb安装完成，我们的工作就完成一大半拉。</p>
+<h3 id="dotnet-netcore应用如何生成内存转储文件"><a href="#dotnet-netcore应用如何生成内存转储文件" class="headerlink" title="dotnet netcore应用如何生成内存转储文件"></a>dotnet netcore应用如何生成内存转储文件</h3><p>/usr/share/dotnet/shared/<a href="http://microsoft.netcore.app/" target="_blank" rel="noopener">Microsoft.NETCore.App/</a>2.1.1/createdump 9364</p>
+<p><img src="https://images2018.cnblogs.com/blog/161654/201807/161654-20180704153813201-95317407.png" alt=""></p>
+<p>具体命令解释</p>
+<p>createdump [options] pid</p>
+<p>-f, –name - dump path and file name. The pid can be placed in the name with %d. The default is “/tmp/coredump.%d”</p>
+<p>-n, –normal - create minidump (default).</p>
+<p>-h, –withheap - create minidump with heap.</p>
+<p>-t, –triage - create triage minidump.</p>
+<p>-u, –full - create full core dump.</p>
+<p>-d, –diag - enable diagnostic messages.</p>
+<h3 id="使用lldb调试分析netcore应用内存转储文件"><a href="#使用lldb调试分析netcore应用内存转储文件" class="headerlink" title="使用lldb调试分析netcore应用内存转储文件"></a>使用lldb调试分析netcore应用内存转储文件</h3><p>#官方文档上是这样写的。</p>
+<p>/usr/local/llvm-3.9.0/bin/lldb -O “settings set target.exec-search-paths /usr/share/dotnet/shared/<a href="http://microsoft.netcore.app/" target="_blank" rel="noopener">Microsoft.NETCore.App/</a>2.1.1” \</p>
+<p>-o “plugin load /usr/share/dotnet/shared/<a href="http://microsoft.netcore.app/" target="_blank" rel="noopener">Microsoft.NETCore.App/</a>2.1.1/libsosplugin.so” \</p>
+<p>--core /opt/dump\_file/mvcdumpmindump /usr/share/dotnet/dotnet</p>
+<p>#网友调试参考博客上是这样写的。</p>
+<p>/usr/local/llvm-3.9.0/bin/lldb dotnet \</p>
+<p>-c /opt/dump\_file/mvcdumpmindump \</p>
+<p>-o “plugin load /usr/share/dotnet/shared/<a href="http://microsoft.netcore.app/" target="_blank" rel="noopener">Microsoft.NETCore.App/</a>2.1.1/libsosplugin.so”</p>
+<p>2种写法都是可行的。然后具体的调试分析指令什么的都在<a href="https://github.com/dotnet/coreclr/blob/master/Documentation/building/debugging-instructions.md#sos-commands" target="_blank" rel="noopener">coreclr调试说明指导文档</a>有说明。</p>
+<p><img src="https://images2018.cnblogs.com/blog/161654/201807/161654-20180704154518229-981075031.png" alt=""></p>
+<p>参考资料：</p>
+<p>coreclr调试说明指导文档</p>
+<p><a href="https://github.com/dotnet/coreclr/blob/master/Documentation/building/debugging-instructions.md" target="_blank" rel="noopener">https://github.com/dotnet/coreclr/blob/master/Documentation/building/debugging-instructions.md</a></p>
+<p>coreclr生成dmp说明指导文档</p>
+<p><a href="https://github.com/dotnet/coreclr/blob/master/Documentation/botr/xplat-minidump-generation.md" target="_blank" rel="noopener">https://github.com/dotnet/coreclr/blob/master/Documentation/botr/xplat-minidump-generation.md</a></p>
+<p>llvm，clang，lldb源代码下载地址(3.9.0)</p>
+<p><a href="http://releases.llvm.org/download.html#3.9.0" target="_blank" rel="noopener">http://releases.llvm.org/download.html#3.9.0</a></p>
+<p>lldb源码安装指导文档</p>
+<p><a href="http://lldb.llvm.org/build.html#BuildingLldbOnLinux" target="_blank" rel="noopener">http://lldb.llvm.org/build.html#BuildingLldbOnLinux</a></p>
+<p>llvm源码安装指导文档</p>
+<p><a href="http://releases.llvm.org/3.9.0/docs/GettingStarted.html" target="_blank" rel="noopener">http://releases.llvm.org/3.9.0/docs/GettingStarted.html</a></p>
+<p>网友centos7安装llvm，clang，lldb等给力脚本</p>
+<p><a href="https://github.com/owent-utils/bash-shell/blob/master/LLVM%26Clang%20Installer/3.9/installer.sh" target="_blank" rel="noopener">https://github.com/owent-utils/bash-shell/blob/master/LLVM%26Clang%20Installer/3.9/installer.sh</a></p>
+<p>网友调试参考博客文章</p>
+<p><a href="https://faithlife.codes/blog/2018/01/using-sos/" target="_blank" rel="noopener">使用SOS调试工具检查应用程序状态</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#centos7使用lldb调试netcore应用转储dump文件"><span class="toc-number">1.</span> <span class="toc-text">centos7使用lldb调试netcore应用转储dump文件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#centos7下安装lldb，dotnet-netcore-进程生成转储文件，并使用lldb进行分析"><span class="toc-number">1.1.</span> <span class="toc-text">centos7下安装lldb，dotnet netcore 进程生成转储文件，并使用lldb进行分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#测试目标程序"><span class="toc-number">1.1.1.</span> <span class="toc-text">测试目标程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#centos7-升级GCC，安装cmake"><span class="toc-number">1.1.2.</span> <span class="toc-text">centos7 升级GCC，安装cmake</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#centos7下安装lldb调试工具"><span class="toc-number">1.1.3.</span> <span class="toc-text">centos7下安装lldb调试工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dotnet-netcore应用如何生成内存转储文件"><span class="toc-number">1.1.4.</span> <span class="toc-text">dotnet netcore应用如何生成内存转储文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用lldb调试分析netcore应用内存转储文件"><span class="toc-number">1.1.5.</span> <span class="toc-text">使用lldb调试分析netcore应用内存转储文件</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&text=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&title=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&is_video=false&description=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=centos7使用lldb调试netcore应用转储dump文件&body=Check out this article: http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&title=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&title=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&title=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&title=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&name=centos7使用lldb调试netcore应用转储dump文件&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/12/08/centos7%E4%BD%BF%E7%94%A8lldb%E8%B0%83%E8%AF%95netcore%E5%BA%94%E7%94%A8%E8%BD%AC%E5%82%A8dump%E6%96%87%E4%BB%B6/&t=centos7使用lldb调试netcore应用转储dump文件" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

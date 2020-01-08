@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="服务端使用 rpm -e –nodeps java-1.8.0-openjdk-1.8.0.191.b12-1.el7_6.x86_64 702945 nohupssserver -p 443 -k 8675309 -t 600 -m rc4-md5&gt; &#x2F;dev&#x2F;null 2&gt;&amp;1 &amp;CentOS命令行使用shadowsocks代理的方法原创 2016年04月11日 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shadowsocks相关">
+<meta property="og:url" content="http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="服务端使用 rpm -e –nodeps java-1.8.0-openjdk-1.8.0.191.b12-1.el7_6.x86_64 702945 nohupssserver -p 443 -k 8675309 -t 600 -m rc4-md5&gt; &#x2F;dev&#x2F;null 2&gt;&amp;1 &amp;CentOS命令行使用shadowsocks代理的方法原创 2016年04月11日 1">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2014-03-28T19:30:06.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:15.017Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>shadowsocks相关</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2014/04/08/%E5%A4%9A%E7%BA%BF%E7%A8%8Bbug%E8%A7%A3%E5%86%B3%E8%AE%B0%E5%BD%95/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2014/03/17/%E5%9C%A8.NETCore%E4%B8%AD%E8%AE%BE%E8%AE%A1%E8%87%AA%E5%B7%B1%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%AE%BF%E4%B8%BB%EF%BC%88ServiceHosting%EF%BC%89%E6%A1%86%E6%9E%B6/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&text=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&title=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&is_video=false&description=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=shadowsocks相关&body=Check out this article: http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&title=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&title=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&title=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&title=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&name=shadowsocks相关&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&t=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nohup"><span class="toc-number">2.</span> <span class="toc-text">nohup</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ssserver-p-443-k-8675309-t-600-m-rc4-md5"><span class="toc-number">3.</span> <span class="toc-text">ssserver -p 443 -k 8675309 -t 600 -m rc4-md5</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#gt-dev-null-2-gt-amp-1-amp"><span class="toc-number">4.</span> <span class="toc-text">&gt; &#x2F;dev&#x2F;null 2&gt;&amp;1 &amp;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-1"><span class="toc-number">5.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-2"><span class="toc-number">6.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-3"><span class="toc-number">7.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CentOS命令行使用shadowsocks代理的方法"><span class="toc-number">8.</span> <span class="toc-text">CentOS命令行使用shadowsocks代理的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装客户端shadowsocks"><span class="toc-number">8.0.1.</span> <span class="toc-text">安装客户端shadowsocks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Privoxy"><span class="toc-number">8.0.2.</span> <span class="toc-text">安装Privoxy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置-etc-profile"><span class="toc-number">8.0.3.</span> <span class="toc-text">配置&#x2F;etc&#x2F;profile</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        shadowsocks相关
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2014-03-28T19:30:06.000Z" itemprop="datePublished">2014-03-29</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>服务端使用</p>
+<p>rpm -e –nodeps java-1.8.0-openjdk-1.8.0.191.b12-1.el7_6.x86_64</p>
+<p>702945</p>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="nohup"><a href="#nohup" class="headerlink" title="nohup"></a>nohup</h1><h1 id="ssserver-p-443-k-8675309-t-600-m-rc4-md5"><a href="#ssserver-p-443-k-8675309-t-600-m-rc4-md5" class="headerlink" title="ssserver -p 443 -k 8675309 -t 600 -m rc4-md5"></a>ssserver -p 443 -k 8675309 -t 600 -m rc4-md5</h1><h1 id="gt-dev-null-2-gt-amp-1-amp"><a href="#gt-dev-null-2-gt-amp-1-amp" class="headerlink" title="&gt; /dev/null 2&gt;&amp;1 &amp;"></a>&gt; /dev/null 2&gt;&amp;1 &amp;</h1><h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><h1 id="-2"><a href="#-2" class="headerlink" title=""></a></h1><h1 id="-3"><a href="#-3" class="headerlink" title=""></a></h1><h1 id="CentOS命令行使用shadowsocks代理的方法"><a href="#CentOS命令行使用shadowsocks代理的方法" class="headerlink" title="CentOS命令行使用shadowsocks代理的方法"></a>CentOS命令行使用shadowsocks代理的方法</h1><p>原创 2016年04月11日 14:32:57</p>
+<p>标签：</p>
+<p><a href="http://so.csdn.net/so/search/s.do?q=centos&t=blog" target="_blank" rel="noopener">centos</a> /</p>
+<p><a href="http://so.csdn.net/so/search/s.do?q=shadowsock&t=blog" target="_blank" rel="noopener">shadowsock</a></p>
+<p>背景：<a href="http://www.codedream.top/?p=152" target="_blank" rel="noopener">前文</a>介绍了客户端为iOS，Android，Mac，Windows时，使用shadowsocks客户端的方法。本文介绍客户端为CentOS(一般linux环境)时，（尤其是命令行里的命令）使用shadowsocks的方法。 </p>
+<h3 id="安装客户端shadowsocks"><a href="#安装客户端shadowsocks" class="headerlink" title="安装客户端shadowsocks"></a>安装客户端shadowsocks</h3><p>其实shadowsocks安装时是不分客户端还是服务器端的，只不过安装后有两个脚本一个是sslocal代表以客户端模式工作，一个是ssserver代表以服务器端模式工作。</p>
+<p>yum install python-pip</p>
+<p>pip install shadowsocks</p>
+<p>1</p>
+<p>2</p>
+<p>依次执行上述两个命令，先安装python的pip，然后安装shadowsocks。然后执行下述命令后台启动： </p>
+<p>nohup sslocal -s your_server_ip -p your_server_port -l 1080 -k your_server_passwd -t 600 -m rc4-md5 &gt; /dev/null 2&gt;&amp;1 &amp;</p>
+<p>注意 </p>
+<p>1,使用的是sslocal这个命令，表示shadowsocks以客户端模式工作 </p>
+<p>2,将上述命令里的your_server_ip,your_server_port,your_server_passwd换成自己的，这三个分别代表服务器ip，服务器上shadowsocks的端口以及密码.后面的rc4-md5加密方式也要换成跟server端一致。 </p>
+<p>3,前面的nohub表示后台执行，否则将会阻塞shell端口. </p>
+<p>为了更方便，建议新建一个.json的文件，将上述信息放里面,如新建/etc/shadowsocks.json文件，内容为：</p>
+<p>{</p>
+<p>“server”:”your_server_ip”, #ss服务器IP</p>
+<p>“server_port”:your_server_port, #端口</p>
+<p>“local_address”: “127.0.0.1”, #本地ip</p>
+<p>“local_port”:1080, #本地端口</p>
+<p>“password”:”your_server_passwd”,#连接ss密码</p>
+<p>“timeout”:300, #等待超时</p>
+<p>“method”:”rc4-md5”, #加密方式</p>
+<p>“fast_open”: false, # true 或 false。如果你的服务器 Linux 内核在3.7+，可以开启 fast_open 以降低延迟。开启方法： echo 3 &gt; /proc/sys/net/ipv4/tcp_fastopen 开启之后，将 fast_open 的配置设置为 true 即可</p>
+<p>“workers”: 1 # 工作线程数</p>
+<p>}</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>然后运行nohup sslocal -c /etc/shadowsocks.json /dev/null 2&gt;&amp;1 &amp;启动shadowsocks。 </p>
+<p>如果想增加开启自动启动，执行：echo “ nohup sslocal -c /etc/shadowsocks.json /dev/null 2&gt;&amp;1 &amp;” /etc/rc.local </p>
+<p>执行ps aux |grep sslocal |grep -v “grep”查看后台sslocal是否运行。</p>
+<h3 id="安装Privoxy"><a href="#安装Privoxy" class="headerlink" title="安装Privoxy"></a>安装Privoxy</h3><p>上述安好了shadowsocks，但它是socks5代理，我门在shell里执行的命令，发起的网络请求现在还不支持socks5代理，只支持http／https代理。为了我门需要安装privoxy代理，它能把电脑上所有http请求转发给shadowsocks。 </p>
+<p>访问官网<a href="http://www.privoxy.org/" target="_blank" rel="noopener">http://www.privoxy.org/</a>获得Privoxy的最新源码:privoxy-3.0.24-stable-src.tar.gz,执行tar -zxvf privoxy-3.0.24-stable-src.tar.gz解压，然后cd privoxy-3.0.24-stable进去。 </p>
+<p>安装前需要执行useradd privoxy创建一个用户privoxy，然后依次执行如下三条命令:</p>
+<p>autoheader &amp;&amp; autoconf</p>
+<p>./configure</p>
+<p>make &amp;&amp; make install</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>查看vim /usr/local/etc/privoxy/config文件，先搜索关键字:listen-address找到listen-address 127.0.0.1:8118这一句，保证这一句没有注释，8118就是将来http代理要输入的端口。然后搜索forward-socks5t,将forward-socks5t / 127.0.0.1:1080 .此句的注释去掉. </p>
+<p>执行如下命令启动privoxy，参考<a href="https://www.privoxy.org/user-manual/startup.html" target="_blank" rel="noopener">官网,不同的平台对应不同的方法</a>: </p>
+<p>privoxy –user privoxy /usr/local/etc/privoxy/config</p>
+<h3 id="配置-etc-profile"><a href="#配置-etc-profile" class="headerlink" title="配置/etc/profile"></a>配置/etc/profile</h3><p>执行vim /etc/profile,添加如下三句:</p>
+<p>export http_proxy=<a href="http://127.0.0.1:8118" target="_blank" rel="noopener">http://127.0.0.1:8118</a></p>
+<p>export https_proxy=<a href="http://127.0.0.1:8118" target="_blank" rel="noopener">http://127.0.0.1:8118</a></p>
+<p>export ftp_proxy=<a href="http://127.0.0.1:8118" target="_blank" rel="noopener">http://127.0.0.1:8118</a></p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>第三句ftp的代理根据需要，不需要的话可以不添加.然后source /etc/profile，执行curl <a href="http://www.google.com/" target="_blank" rel="noopener">www.google.com</a>或wget <a href="http://www.google.com/" target="_blank" rel="noopener">www.google.com</a>判断是否成功访问。</p>
+<p>注意:此处不要用ping命令来检测</p>
+<p>如果不能访问，请重启机器，依次打开shadowsocks和privoxy再测试.</p>
+<p>nohup sslocal -c /etc/shadowsocks.json /dev/null 2&gt;&amp;1 &amp;</p>
+<p>privoxy --user privoxy /usr/local/etc/privoxy/config</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>备注：如果不需要用代理了，记得把bash里的配置注释上，免得把流量跑完了。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nohup"><span class="toc-number">2.</span> <span class="toc-text">nohup</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ssserver-p-443-k-8675309-t-600-m-rc4-md5"><span class="toc-number">3.</span> <span class="toc-text">ssserver -p 443 -k 8675309 -t 600 -m rc4-md5</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#gt-dev-null-2-gt-amp-1-amp"><span class="toc-number">4.</span> <span class="toc-text">&gt; &#x2F;dev&#x2F;null 2&gt;&amp;1 &amp;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-1"><span class="toc-number">5.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-2"><span class="toc-number">6.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#-3"><span class="toc-number">7.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CentOS命令行使用shadowsocks代理的方法"><span class="toc-number">8.</span> <span class="toc-text">CentOS命令行使用shadowsocks代理的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装客户端shadowsocks"><span class="toc-number">8.0.1.</span> <span class="toc-text">安装客户端shadowsocks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Privoxy"><span class="toc-number">8.0.2.</span> <span class="toc-text">安装Privoxy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置-etc-profile"><span class="toc-number">8.0.3.</span> <span class="toc-text">配置&#x2F;etc&#x2F;profile</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&text=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&title=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&is_video=false&description=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=shadowsocks相关&body=Check out this article: http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&title=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&title=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&title=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&title=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&name=shadowsocks相关&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2014/03/29/shadowsocks%E7%9B%B8%E5%85%B3/&t=shadowsocks相关" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method ‘dataSource’ threw exception; nested exception is java.lang.IllegalStateException: Cannot load driver class: com.microsoft.sq">
+<meta property="og:type" content="article">
+<meta property="og:title" content="eurekamybatis配置报错">
+<meta property="og:url" content="http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method ‘dataSource’ threw exception; nested exception is java.lang.IllegalStateException: Cannot load driver class: com.microsoft.sq">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-07-15T16:11:02.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.720Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>eurekamybatis配置报错</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/07/27/%E6%9E%B6%E6%9E%84/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/07/15/Maven%E7%94%A8%E6%B3%95/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&text=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&title=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&is_video=false&description=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=eurekamybatis配置报错&body=Check out this article: http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&title=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&title=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&title=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&title=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&name=eurekamybatis配置报错&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&t=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        eurekamybatis配置报错
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-07-15T16:11:02.000Z" itemprop="datePublished">2019-07-16</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method ‘dataSource’ threw exception; nested exception is java.lang.IllegalStateException: Cannot load driver class: com.microsoft.sqlserver.jdbc.SQLServerDriver</p>
+<p>org.springframework.beans.factory.BeanCreationException: Error creating bean with name ‘dataSource’ defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method ‘dataSource’ threw exception; nested exception is java.lang.IllegalStateException: Cannot load driver class: com.microsoft.sqlserver.jdbc.SQLServerDriver</p>
+<p>之前报这个错是因为mybatis注入的对象里有两个叫datasource的，这次不知道为啥 </p>
+<p>-———–过段时间又好了？</p>
+<p>java.lang.IllegalArgumentException: Result Maps collection does not contain value for tmoonlight.srvone.dao.CustomerMapper.BaseResultMap</p>
+<p>没有配置mapper扫描路径导致的</p>
+<p> 又一次出现：Result Maps collection does not contain value for CustomerMapper.BaseResultMap</p>
+<p>这是因为：</p>
+<p>对:</p>
+<p>@Select({</p>
+<p>“select”,</p>
+<p>“id, Name, CardNo, Descriot, CtfTp, CtfId, Gender, Birthday, Address, Zip, Dirty, “,</p>
+<p>“District1, District2, District3, District4, District5, District6, FirstNm, LastNm, “,</p>
+<p>“Duty, Mobile, Tel, Fax, EMail, Nation, Taste, Education, Company, CTel, CAddress, “,</p>
+<p>“CZip, Family, Version”,</p>
+<p>“from crm_customer”,</p>
+<p>“where id = #{id,jdbcType=INTEGER}”</p>
+<p>})</p>
+<p>@ResultMap(“tmoonlight.srvone.dao.CustomerMapper.BaseResultMap”)</p>
+<p>Customer selectByPrimaryKey(Integer id);</p>
+<p>错:</p>
+<p>@Select({</p>
+<p>“select”,</p>
+<p>“id, Name, CardNo, Descriot, CtfTp, CtfId, Gender, Birthday, Address, Zip, Dirty, “,</p>
+<p>“District1, District2, District3, District4, District5, District6, FirstNm, LastNm, “,</p>
+<p>“Duty, Mobile, Tel, Fax, EMail, Nation, Taste, Education, Company, CTel, CAddress, “,</p>
+<p>“CZip, Family, Version”,</p>
+<p>“from crm_customer”,</p>
+<p>“where id = #{id,jdbcType=INTEGER}”</p>
+<p>})</p>
+<p>@ResultMap(“CustomerMapper.BaseResultMap”)</p>
+<p>Customer selectByPrimaryKey(Integer id);</p>
+<p>为毛这个前缀会被搞没就不得而知了！坑！java的项目复制修改需要谨慎！</p>
+<p>Cause: java.lang.IllegalArgumentException: Result Maps collection already contains value for tmoonlight.rchat.dao.CustomerMapper.BaseResultMap</p>
+<p>mapper同时生成两坨导致，因为使用代码生成器增量加到了xml后面</p>
+<p>如下图 eurekaserver红色，引用不进来（按官网的pom文件可以搞定）</p>
+<?xml version="1.0" encoding="UTF-8"?><p>&lt;project xmlns=”<a href="http://maven.apache.org/POM/4.0.0" target="_blank" rel="noopener">http://maven.apache.org/POM/4.0.0</a>“ xmlns:xsi=”<a href="http://www.w3.org/2001/XMLSchema-instance" target="_blank" rel="noopener">http://www.w3.org/2001/XMLSchema-instance</a>“</p>
+<p>xsi:schemaLocation=”<a href="http://maven.apache.org/POM/4.0.0" target="_blank" rel="noopener">http://maven.apache.org/POM/4.0.0</a><a href="http://maven.apache.org/xsd/maven-4.0.0.xsd" target="_blank" rel="noopener">http://maven.apache.org/xsd/maven-4.0.0.xsd</a>“&gt;</p>
+<p><modelVersion>4.0.0</modelVersion></p>
+<p><groupId>com.example</groupId></p>
+<p><artifactId>eureka-service</artifactId></p>
+<p><version>0.0.1-SNAPSHOT</version></p>
+<p><packaging>jar</packaging></p>
+<parent>
+
+<p><groupId>org.springframework.boot</groupId></p>
+<p><artifactId>spring-boot-starter-parent</artifactId></p>
+<p><version>2.0.5.RELEASE</version></p>
+<p><relativePath/> <!-- lookup parent from repository --></p>
+</parent>
+
+
+
+
+<properties>
+
+<p>&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;</p>
+<p>&lt;java.version&gt;1.8&lt;/java.version&gt;</p>
+</properties>
+
+
+
+
+<dependencies>
+
+<dependency>
+
+<p><groupId>org.springframework.cloud</groupId></p>
+<p><artifactId>spring-cloud-starter-netflix-eureka-server</artifactId></p>
+</dependency>
+
+
+
+
+<dependency>
+
+<p><groupId>org.springframework.boot</groupId></p>
+<p><artifactId>spring-boot-starter-test</artifactId></p>
+<p><scope>test</scope></p>
+</dependency>
+
+</dependencies>
+
+
+
+
+<dependencyManagement>
+
+<dependencies>
+
+<dependency>
+
+<p><groupId>org.springframework.cloud</groupId></p>
+<p><artifactId>spring-cloud-dependencies</artifactId></p>
+<p><version>Finchley.SR1</version></p>
+<p><type>pom</type></p>
+<p><scope>import</scope></p>
+</dependency>
+
+</dependencies>
+
+</dependencyManagement>
+
+
+
+
+<build>
+
+<plugins>
+
+<plugin>
+
+<p><groupId>org.springframework.boot</groupId></p>
+<p><artifactId>spring-boot-maven-plugin</artifactId></p>
+</plugin>
+
+</plugins>
+
+</build>
+
+
+
+
+<repositories>
+
+<repository>
+
+<p><id>spring-milestones</id></p>
+<p><name>Spring Milestones</name></p>
+<p><url><a href="https://repo.spring.io/libs-milestone" target="_blank" rel="noopener">https://repo.spring.io/libs-milestone</a></url></p>
+<snapshots>
+
+<p><enabled>false</enabled></p>
+</snapshots>
+
+</repository>
+
+</repositories>
+
+
+
+
+</project>
+
+<p>eureka-client/pom.xml</p>
+<?xml version="1.0" encoding="UTF-8"?><p>&lt;project xmlns=”<a href="http://maven.apache.org/POM/4.0.0" target="_blank" rel="noopener">http://maven.apache.org/POM/4.0.0</a>“ xmlns:xsi=”<a href="http://www.w3.org/2001/XMLSchema-instance" target="_blank" rel="noopener">http://www.w3.org/2001/XMLSchema-instance</a>“</p>
+<p>xsi:schemaLocation=”<a href="http://maven.apache.org/POM/4.0.0" target="_blank" rel="noopener">http://maven.apache.org/POM/4.0.0</a><a href="http://maven.apache.org/xsd/maven-4.0.0.xsd" target="_blank" rel="noopener">http://maven.apache.org/xsd/maven-4.0.0.xsd</a>“&gt;</p>
+<p><modelVersion>4.0.0</modelVersion></p>
+<p><groupId>com.example</groupId></p>
+<p><artifactId>eureka-client</artifactId></p>
+<p><version>0.0.1-SNAPSHOT</version></p>
+<p><packaging>jar</packaging></p>
+<parent>
+
+<p><groupId>org.springframework.boot</groupId></p>
+<p><artifactId>spring-boot-starter-parent</artifactId></p>
+<p><version>2.0.5.RELEASE</version></p>
+<p><relativePath/> <!-- lookup parent from repository --></p>
+</parent>
+
+
+
+
+<properties>
+
+<p>&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;</p>
+<p>&lt;java.version&gt;1.8&lt;/java.version&gt;</p>
+</properties>
+
+
+
+
+<dependencies>
+
+<dependency>
+
+<p><groupId>org.springframework.cloud</groupId></p>
+<p><artifactId>spring-cloud-starter-netflix-eureka-client</artifactId></p>
+</dependency>
+
+
+
+
+<dependency>
+
+<p><groupId>org.springframework.boot</groupId></p>
+<p><artifactId>spring-boot-starter-test</artifactId></p>
+<p><scope>test</scope></p>
+</dependency>
+
+<dependency>
+
+<p><groupId>org.springframework.cloud</groupId></p>
+<p><artifactId>spring-cloud-starter-netflix-eureka-server</artifactId></p>
+<p><scope>test</scope></p>
+</dependency>
+
+</dependencies>
+
+
+
+
+<dependencyManagement>
+
+<dependencies>
+
+<dependency>
+
+<p><groupId>org.springframework.cloud</groupId></p>
+<p><artifactId>spring-cloud-dependencies</artifactId></p>
+<p><version>Finchley.SR1</version></p>
+<p><type>pom</type></p>
+<p><scope>import</scope></p>
+</dependency>
+
+</dependencies>
+
+</dependencyManagement>
+
+
+
+
+<build>
+
+<plugins>
+
+<plugin>
+
+<p><groupId>org.springframework.boot</groupId></p>
+<p><artifactId>spring-boot-maven-plugin</artifactId></p>
+</plugin>
+
+</plugins>
+
+</build>
+
+
+
+
+<repositories>
+
+<repository>
+
+<p><id>spring-milestones</id></p>
+<p><name>Spring Milestones</name></p>
+<p><url><a href="https://repo.spring.io/libs-milestone" target="_blank" rel="noopener">https://repo.spring.io/libs-milestone</a></url></p>
+<snapshots>
+
+<p><enabled>false</enabled></p>
+</snapshots>
+
+</repository>
+
+</repositories>
+
+
+
+
+</project>
+
+<p>com.sun.jersey.api.client.ClientHandlerException: <a href="http://java.net.connectexception/" target="_blank" rel="noopener">java.net.ConnectException</a>: Connection refused: connect </p>
+<p>1.直接建立server 出错</p>
+<p>eureka:</p>
+<p>client:</p>
+<p>register-with-eureka: false</p>
+<p>fetch-registry: false </p>
+<p>可解决</p>
+<p>2.配了eurekaclient，但没加Eurekaclient导致无法运行</p>
+<p>eurekaserver org.apache.catalina.LifecycleException: Failed to start component </p>
+<p>没看到后面的错误，实际上是端口被占用</p>
+<p>feign 无法注入</p>
+<p>2018-10-21 11:55:16.423  INFO 10144 — [  restartedMain] ConditionEvaluationReportLoggingListener :</p>
+<p>Error starting ApplicationContext. To display the conditions report re-run your application with ‘debug’ enabled.</p>
+<p>2018-10-21 11:55:16.645 ERROR 10144 — [  restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   :</p>
+<hr>
+<p>APPLICATION FAILED TO START</p>
+<hr>
+<p>Description:</p>
+<p>Field remoteService in tmoonlight.srvapi.service.DemoServiceImpl required a bean of type ‘tmoonlight.srvapi.rpc.RemoteService’ that could not be found.</p>
+<p>有时候有彩色有时候没了？不知道，先加一个配置可以变彩色</p>
+<p>多项目启动，使用dashboard，多项目启动时ideaj会提示你是否打开这个多启动管理的界面</p>
+<p>为什么有时候spring启动时树叶 有时候没了？</p>
+<p>已解决，在配置里手动配就行了，之前没有树叶可能时没有在pom里加入springboot相关组件</p>
+<p>feign本来可以调用的，突然又出个这玩意？</p>
+<p><a href="http://com.netflix.client.clientexception/" target="_blank" rel="noopener">com.netflix.client.ClientException</a>: Load balancer does not have available server for client: ShaoSrvOne</p>
+<p>ribbon.eager-load.enabled=true 解决了</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&text=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&title=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&is_video=false&description=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=eurekamybatis配置报错&body=Check out this article: http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&title=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&title=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&title=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&title=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&name=eurekamybatis配置报错&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2019/07/16/eurekamybatis%E9%85%8D%E7%BD%AE%E6%8A%A5%E9%94%99/&t=eurekamybatis配置报错" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

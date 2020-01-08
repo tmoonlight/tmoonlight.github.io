@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="unity3d的四元数 Quaternion 四元数在电脑图形学中用于表示物体的旋转，在unity中由x,y,z,w 表示四个值。 四元数是最简单的超复数。 复数是由实数加上元素 i 组成，其中i^2 &#x3D; -1 ,。 相似地，四元数都是由实数加上三个元素 i、j、k 组成，而且它们有如下的关系： i^2 &#x3D; j^2 &#x3D; k^2 &#x3D; ijk &#x3D; -1 , 每个四元数都是 1、i、j 和 k 的线性组">
+<meta property="og:type" content="article">
+<meta property="og:title" content="unity3d的四元数Quaternion">
+<meta property="og:url" content="http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="unity3d的四元数 Quaternion 四元数在电脑图形学中用于表示物体的旋转，在unity中由x,y,z,w 表示四个值。 四元数是最简单的超复数。 复数是由实数加上元素 i 组成，其中i^2 &#x3D; -1 ,。 相似地，四元数都是由实数加上三个元素 i、j、k 组成，而且它们有如下的关系： i^2 &#x3D; j^2 &#x3D; k^2 &#x3D; ijk &#x3D; -1 , 每个四元数都是 1、i、j 和 k 的线性组">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2015-01-26T18:53:06.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.967Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>unity3d的四元数Quaternion</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/01/27/%E7%9F%A5%E8%AF%86%E7%82%B9%E5%A4%87%E5%BF%98(%E5%9D%90%E6%A0%87)/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/01/15/unity3d%E5%9B%9B%E5%85%83%E6%95%B0-CSDN%E5%8D%9A%E5%AE%A2/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&text=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&title=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&is_video=false&description=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=unity3d的四元数Quaternion&body=Check out this article: http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&title=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&title=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&title=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&title=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&name=unity3d的四元数Quaternion&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&t=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        unity3d的四元数Quaternion
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2015-01-26T18:53:06.000Z" itemprop="datePublished">2015-01-27</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p><strong>unity3d的四元数 Quaternion</strong></p>
+<p>四元数在电脑图形学中用于表示物体的旋转，在unity中由x,y,z,w 表示四个值。</p>
+<p>四元数是最简单的超复数。 复数是由实数加上元素 i 组成，其中i^2 = -1 ,。 相似地，四元数都是由实数加上三个元素 i、j、k 组成，而且它们有如下的关系： i^2 = j^2 = k^2 = ijk = -1 , 每个四元数都是 1、i、j 和 k 的线性组合，即是四元数一般可表示为a + bi + cj + dk ,。</p>
+<p>具体的四元数知识可从百度、维基等网站了解。</p>
+<p><a href="http://baike.baidu.com/view/319754.htm" target="_blank" rel="noopener">http://baike.baidu.com/view/319754.htm</a></p>
+<p>现在只说说在unity3D中如何使用Quaternion来表达物体的旋转。</p>
+<p>基本的旋转我们可以用脚本内置旋转函数transform.Rotate()来实现。</p>
+<p>function Rotate (eulerAngles : Vector3, relativeTo : Space = Space.Self) : void</p>
+<p>但是当我们希望对旋转角度进行一些计算的时候，就要用到四元数Quaternion了。我对高等数学来说就菜鸟一个，只能用最朴素的方法看效果了。</p>
+<p>Quaternion的变量比较少也没什么可说的，大家一看都明白。唯一要说的就是xyzw的取值范围是[-1,1],物体并不是旋转一周就所有数值回归初始值，而是两周。</p>
+<p>初始值： (0,0,0,1)</p>
+<p>沿着y轴旋转：180°(0,1,0,0) 360°（0,0,0,-1）540°(0,-1,0,0) 720°(0,0,0,1)</p>
+<p>沿着x轴旋转：180°(-1,0,0,0) 360°（0,0,0,-1）540°(1,0,0,0) 720°(0,0,0,1)</p>
+<p>无旋转的写法是Quaternion.identify</p>
+<p>现在开始研究Quaternion的函数都有什么用。</p>
+<p>函数</p>
+<p>1）function ToAngleAxis (out angle : float, out axis : Vector3) : void</p>
+<p>Description</p>
+<p>Converts a rotation to angle-axis representation</p>
+<p>这个函数的作用就是返回物体的旋转角度（物体的z轴和世界坐标z轴的夹角）和三维旋转轴的向量到变量out angle 和out axis</p>
+<p>脚本：</p>
+<p>var a=0.0;</p>
+<p>var b=Vector3.zero;</p>
+<p>transform.rotation.ToAngleAxis(a,b);</p>
+<p>输入：transform.localEularAngles=(0,0,0);</p>
+<p>输出： a=0, b=(1,0,0);</p>
+<p>输入：transform.localEularAngles=(0,90,0);</p>
+<p>输出：a=90, b=(0,1,0);</p>
+<p>输入：transform.localEularAngles=(270,0,0);</p>
+<p>输出：a=90, b=(-1,0,0)</p>
+<p>2）function SetFromToRotation (fromDirection : Vector3, toDirection : Vector3) : void</p>
+<p>Description</p>
+<p>Creates a rotation which rotates from fromDirection to toDirection.</p>
+<p>这个函数的作用是把物体的fromDirection旋转到toDirection</p>
+<p>脚本：</p>
+<p>var a:Vector3;</p>
+<p>var b:Vector3;</p>
+<p>var q:Quaternion;</p>
+<p>var headUpDir:Vector3;</p>
+<p>q.SetFromToRotation(a,b);</p>
+<p>transform.rotation=q;</p>
+<p>headUpDir=transform.TransformDirection(Vector3.Forward);</p>
+<p>输入：a=Vector3(0,0,1); b=Vector3(0,1,0)//把z轴朝向y轴</p>
+<p>输出： q=(-0.7,0,0,0.7); headUpDir=(0,1,0)</p>
+<p>输入：a=Vector3(0,0,1); b=Vector3(1,0,0)//把z轴朝向x轴</p>
+<p>输出： q=(0,0.7,0,0.7); headUpDir=(1,0,0)</p>
+<p>输入：a=Vector3(0,1,0); b=Vector3(1,0,0)//把y轴朝向x轴</p>
+<p>输出： q=(0,0,-0.7,0.7); headUpDir=(0,0,1)</p>
+<p>3）function SetLookRotation (view : Vector3, up : Vector3 = Vector3.up) : void</p>
+<p>Description</p>
+<p>Creates a rotation that looks along forward with the the head upwards along upwards</p>
+<p>Logs an error if the forward direction is zero.</p>
+<p>这个函数建立一个旋转使z轴朝向view y轴朝向up。这个功能让我想起了Maya里的一种摄像机lol，大家自己玩好了，很有趣。</p>
+<p>脚本：</p>
+<p>var obj1: Transform;</p>
+<p>var obj2: Transform;</p>
+<p>var q:Quaternion;</p>
+<p>q.SetLookRotation(obj1.position, obj2.position);</p>
+<p>transform.rotation=q;</p>
+<p>然后大家拖动obj1和obj2就可以看到物体永远保持z轴朝向obj1， 并且以obj2的位置来保持y轴的倾斜度。</p>
+<p>傻逗我玩了半天 哈哈^^ 这个功能挺实用的。</p>
+<p>4）function ToString () : string</p>
+<p>Description</p>
+<p>Returns a nicely formatted string of the Quaternion</p>
+<p>这个一般用不着吧？看不懂的一边查字典去~</p>
+<p>Class Functions</p>
+<p>1）四元数乘法 *</p>
+<p>建议非特别了解的人群就不要用了。</p>
+<p>作用很简单，c=a*b (c,a,b∈Quaternion)可以理解为 ∠c=∠a+∠b</p>
+<p>但是a<em>b 和b</em>a效果不一样的。</p>
+<p>2) == 和 !=</p>
+<p>不解释了</p>
+<p>3）static function Dot (a : Quaternion, b : Quaternion) : float</p>
+<p>Description</p>
+<p>The dot product between two rotations</p>
+<p>点积，返回一个float. 感觉用处不大。Vector3.Angle()比较常用。</p>
+<p>4）static function AngleAxis (angle : float, axis : Vector3) : Quaternion</p>
+<p>Description</p>
+<p>Creates a rotation which rotates angle degrees around axis.</p>
+<p>物体沿指定轴向axis旋转角度angle, 很实用的一个函数也是。</p>
+<p>脚本：</p>
+<p>var obj1: Transform;</p>
+<p>var obj2: Transform;</p>
+<p>var q:Quaternion;</p>
+<p>//物体沿obj2的z轴旋转，角度等于obj1的z轴。</p>
+<p>q=Quaternion.AngleAxis(obj1.localEularAngle.z, obj2.TransformDirection(Vector3.forward));</p>
+<p>transform.rotation=q;</p>
+<p>5）static function FromToRotation (fromDirection : Vector3, toDirection : Vector3) : Quaternion</p>
+<p>Description</p>
+<p>Creates a rotation which rotates from fromDirection to toDirection.</p>
+<p>Usually you use this to rotate a transform so that one of its axes eg. the y-axis – follows a target direction toDirection in world space.</p>
+<p>跟SetFromToRotation差不多，区别是可以返回一个Quaternion。通常用来让transform的一个轴向(例如 y轴)与toDirection在世界坐标中同步。</p>
+<p>6）static function LookRotation (forward : Vector3, upwards : Vector3 = Vector3.up) : Quaternion</p>
+<p>Description</p>
+<p>Creates a rotation that looks along forward with the the head upwards along upwards</p>
+<p>Logs an error if the forward direction is zero.</p>
+<p>跟SetLootRotation差不多，区别是可以返回一个Quaternion。</p>
+<p>7）static function Slerp (from : Quaternion, to : Quaternion, t : float) : Quaternion</p>
+<p>Description</p>
+<p>Spherically interpolates from towards to by t.</p>
+<p>从from 转换到to，移动距离为t。 也是很常用的一个函数，用法比较多，个人感觉比较难控制。当两个quaternion接近时，转换的速度会比较慢。</p>
+<p>脚本：</p>
+<p>var obj1: Transform;</p>
+<p>var t=0.1;</p>
+<p>var q:Quaternion;</p>
+<p>//让物体旋转到与obj1相同的方向</p>
+<p>q=Quaternion.Slerp(transform.rotation, obj1.rotation,t);</p>
+<p>transform.rotation=q;</p>
+<p>根据我个人推测，可能t 代表的是from 和to 之间距离的比例。 为此我做了实验并证明了这一点即：</p>
+<p>q=Quaternion.Slerp(a,b,t);</p>
+<p>q,a,b∈Quaternion</p>
+<p>t[0,1]</p>
+<p>q=a+(b-a)*t</p>
+<p>并且t最大有效范围为0~1</p>
+<p>脚本：</p>
+<p>var obj1: Transform;</p>
+<p>var obj2：Transform；</p>
+<p>var t=0.1;</p>
+<p>var q:Quaternion;</p>
+<p>//让物体obj1和obj2 朝向不同的方向，然后改变t</p>
+<p>q=Quaternion.Slerp(obj1.rotation, obj2.rotation,t);</p>
+<p>transform.rotation=q;</p>
+<p>t+=Input.GetAxis(“horizontal”)<em>0.1</em>Time.deltaTime；</p>
+<p>7）static function Lerp (a : Quaternion, b : Quaternion, t : float) : Quaternion</p>
+<p>Description</p>
+<p>Interpolates from towards to by t and normalizes the result afterwards.</p>
+<p>This is faster than Slerp but looks worse if the rotations are far apart</p>
+<p>跟Slerp相似，且比Slerp快，.但是如果旋转角度相距很远则会看起来很差。</p>
+<p>8）static function Inverse (rotation : Quaternion) : Quaternion</p>
+<p>Description</p>
+<p>Returns the Inverse of rotation.</p>
+<p>返回与rotation相反的方向</p>
+<p>9）static function Angle (a : Quaternion, b : Quaternion) : float</p>
+<p>Description</p>
+<p>Returns the angle in degrees between two rotations a and b.</p>
+<p>计算两个旋转之间的夹角。跟Vector3.Angle() 作用一样。</p>
+<p>10）static function Euler (x : float, y : float, z : float) : Quaternion</p>
+<p>Description</p>
+<p>Returns a rotation that rotates z degrees around the z axis, x degrees around the x axis, and y degrees around the y axis (in that order).</p>
+<p>把旋转角度变成对应的Quaternion</p>
+<p>以上就是Quaternion的所有函数了。</p>
+<p>关于应用，就说一个，其他的有需要再补充。</p>
+<p>Slerp 函数是非常常用的一个函数，用来产生旋转。</p>
+<p>static function Slerp (from : Quaternion, to : Quaternion, t : float) : Quaternion</p>
+<p>对于新手来说，最难的莫过于如何用它产生一个匀速的旋转。如果想用它产生匀速转动，最简单的办法就是把form和to固定，然后匀速增加t</p>
+<p>脚本：</p>
+<p>var obj1: Transform;</p>
+<p>var obj2：Transform；</p>
+<p>var speed:float;</p>
+<p>var t=0.1;</p>
+<p>var q:Quaternion;</p>
+<p>q=Quaternion.Slerp(obj1.rotation, obj2.rotation,t);</p>
+<p>transform.rotation=q;</p>
+<p>t+=Time.deltaTime;</p>
+<p>但是这并不能解决所有情况。 很多时候from 和to都不是固定的，而且上一个脚本也不能保证所有角度下的旋转速度一致。所以我写了这个脚本来保证可以应付大多数情况。</p>
+<p>脚本：</p>
+<p>var target: Transform;</p>
+<p>var rotateSpeed=30.0;</p>
+<p>var t=float;</p>
+<p>var q:Quaternion;</p>
+<p>var wantedRotation=Quaternion.FromToRotation(transform.position,target.position);</p>
+<p>t=rotateSpeed/Quaternion.Angle(transform.rotation,wantedRotation)*Time.deltaTime;</p>
+<p>q=Quaternion.Slerp(transform.rotation, target.rotation,t);</p>
+<p>transform.rotation=q;</p>
+<p>这个脚本可以保证物体的旋转速度永远是rotateSpeed。</p>
+<p>第七行用旋转速度除以两者之间的夹角得到一个比例。</p>
+<p>如果自身坐标和目标之间的夹角是X度，我们想以s=30度每秒的速度旋转到目标的方向,则每秒旋转的角度的比例为s/X。 再乘以每次旋转的时间Time.deltaTime我们就得到了用来匀速旋转的t值</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&text=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&title=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&is_video=false&description=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=unity3d的四元数Quaternion&body=Check out this article: http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&title=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&title=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&title=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&title=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&name=unity3d的四元数Quaternion&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2015/01/27/unity3d%E7%9A%84%E5%9B%9B%E5%85%83%E6%95%B0Quaternion/&t=unity3d的四元数Quaternion" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

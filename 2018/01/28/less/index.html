@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="概述 Less （Leaner Style Sheets 的缩写） 是一门向后兼容的 CSS 扩展语言。这里呈现的是 Less 的官方文档（中文版），包含了 Less 语言以及利用 JavaScript 开发的用于将 Less 样式转换成 CSS 样式的 Less.js 工具。  因为 Less 和 CSS 非常像，学习很容易。而且 Less 仅对 CSS 语言增加了少许方便的扩展，这就是 Les">
+<meta property="og:type" content="article">
+<meta property="og:title" content="less">
+<meta property="og:url" content="http://yoursite.com/2018/01/28/less/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="概述 Less （Leaner Style Sheets 的缩写） 是一门向后兼容的 CSS 扩展语言。这里呈现的是 Less 的官方文档（中文版），包含了 Less 语言以及利用 JavaScript 开发的用于将 Less 样式转换成 CSS 样式的 Less.js 工具。  因为 Less 和 CSS 非常像，学习很容易。而且 Less 仅对 CSS 语言增加了少许方便的扩展，这就是 Les">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-01-28T01:07:37.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.813Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>less</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/01/29/sqllikein%E8%AF%AD%E5%8F%A5%E8%8E%B7%E5%8F%96%E4%BB%A5%E9%80%97%E5%8F%B7%E5%88%86%E5%89%B2%E7%9A%84%E5%AD%97%E6%AE%B5%E5%86%85%E7%9A%84%E6%95%B0%E6%8D%AE/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/01/18/%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/01/28/less/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/01/28/less/&text=less" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/01/28/less/&title=less" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/01/28/less/&is_video=false&description=less" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=less&body=Check out this article: http://yoursite.com/2018/01/28/less/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/01/28/less/&title=less" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/01/28/less/&title=less" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/01/28/less/&title=less" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/01/28/less/&title=less" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/01/28/less/&name=less&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/01/28/less/&t=less" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#概述"><span class="toc-number">2.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#变量（Variables）"><span class="toc-number">3.</span> <span class="toc-text">变量（Variables）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#混合（Mixins）"><span class="toc-number">4.</span> <span class="toc-text">混合（Mixins）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#嵌套（Nesting）"><span class="toc-number">5.</span> <span class="toc-text">嵌套（Nesting）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Nested-At-Rules-and-Bubbling"><span class="toc-number">5.1.</span> <span class="toc-text">Nested At-Rules and Bubbling</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#运算（Operations）"><span class="toc-number">6.</span> <span class="toc-text">运算（Operations）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#calc-特例"><span class="toc-number">6.1.</span> <span class="toc-text">calc() 特例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Escaping"><span class="toc-number">7.</span> <span class="toc-text">Escaping</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#函数（Functions）"><span class="toc-number">8.</span> <span class="toc-text">函数（Functions）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Namespaces-and-Accessors"><span class="toc-number">9.</span> <span class="toc-text">Namespaces and Accessors</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#作用域（Scope）"><span class="toc-number">10.</span> <span class="toc-text">作用域（Scope）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注释（Comments）"><span class="toc-number">11.</span> <span class="toc-text">注释（Comments）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#导入（Importing）"><span class="toc-number">12.</span> <span class="toc-text">导入（Importing）</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        less
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-01-28T01:07:37.000Z" itemprop="datePublished">2018-01-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><blockquote>
+<p>Less （Leaner Style Sheets 的缩写） 是一门向后兼容的 CSS 扩展语言。这里呈现的是 Less 的官方文档（中文版），包含了 Less 语言以及利用 JavaScript 开发的用于将 Less 样式转换成 CSS 样式的 Less.js 工具。</p>
+</blockquote>
+<p>因为 Less 和 CSS 非常像，学习很容易。而且 Less 仅对 CSS 语言增加了少许方便的扩展，这就是 Less 如此易学的原因之一。</p>
+<ul>
+<li>For detailed documentation on Less language features, see <a href="https://less.bootcss.com/features/" target="_blank" rel="noopener">Features</a></li>
+<li>For a list of Less Built-in functions, see <a href="https://less.bootcss.com/functions/" target="_blank" rel="noopener">Functions</a></li>
+<li>For detailed usage instructions, see <a href="https://less.bootcss.com/usage/" target="_blank" rel="noopener">Using Less.js</a></li>
+<li>For third-party tools for Less, see <a href="https://less.bootcss.com/tools/" target="_blank" rel="noopener">Tools</a></li>
+</ul>
+<p>What does Less add to CSS? Here’s a quick overview of features.</p>
+<h1 id="变量（Variables）"><a href="#变量（Variables）" class="headerlink" title="变量（Variables）"></a>变量（Variables）</h1><p>These are pretty self-explanatory:</p>
+<p>@nice-blue: #5B83AD;</p>
+<p>@light-blue: @nice-blue + #111;</p>
+<p>#header {</p>
+<p>color: @light-blue;</p>
+<p>}</p>
+<p>编译为：</p>
+<p>#header {</p>
+<p>color: #6c94be;</p>
+<p>}</p>
+<p><a href="https://less.bootcss.com/features/#variables-feature" target="_blank" rel="noopener">Learn More About Variables</a></p>
+<h1 id="混合（Mixins）"><a href="#混合（Mixins）" class="headerlink" title="混合（Mixins）"></a>混合（Mixins）</h1><p>Mixins are a way of including (“mixing in”) a bunch of properties from one rule-set into another rule-set. So say we have the following class:</p>
+<p>.bordered {</p>
+<p>border-top: dotted 1px black;</p>
+<p>border-bottom: solid 2px black;</p>
+<p>}</p>
+<p>And we want to use these properties inside other rule-sets. Well, we just have to drop in the name of the class where we want the properties, like so:</p>
+<p>#menu a {</p>
+<p>color: #111;</p>
+<p>.bordered;</p>
+<p>}</p>
+<p>.post a {</p>
+<p>color: red;</p>
+<p>.bordered;</p>
+<p>}</p>
+<p>The properties of the .bordered class will now appear in both #menu a and .post a. (Note that you can also use #ids as mixins.)</p>
+<p><a href="https://less.bootcss.com/features/#mixins-feature" target="_blank" rel="noopener">Learn More About Mixins</a></p>
+<h1 id="嵌套（Nesting）"><a href="#嵌套（Nesting）" class="headerlink" title="嵌套（Nesting）"></a>嵌套（Nesting）</h1><p>Less gives you the ability to use nesting instead of, or in combination with cascading. Let’s say we have the following CSS:</p>
+<p>#header {</p>
+<p>color: black;</p>
+<p>}</p>
+<p>#header .navigation {</p>
+<p>font-size: 12px;</p>
+<p>}</p>
+<p>#header .logo {</p>
+<p>width: 300px;</p>
+<p>}</p>
+<p>In Less, we can also write it this way:</p>
+<p>#header {</p>
+<p>color: black;</p>
+<p>.navigation {</p>
+<p>font-size: 12px;</p>
+<p>}</p>
+<p>.logo {</p>
+<p>width: 300px;</p>
+<p>}</p>
+<p>}</p>
+<p>The resulting code is more concise, and mimics the structure of your HTML.</p>
+<p>You can also bundle pseudo-selectors with your mixins using this method. Here’s the classic clearfix hack, rewritten as a mixin (&amp; represents the current selector parent):</p>
+<p>.clearfix {</p>
+<p>display: block;</p>
+<p>zoom: 1;</p>
+<p>&amp;:after {</p>
+<p>content: “ “;</p>
+<p>display: block;</p>
+<p>font-size: 0;</p>
+<p>height: 0;</p>
+<p>clear: both;</p>
+<p>visibility: hidden;</p>
+<p>}</p>
+<p>}</p>
+<p><a href="https://less.bootcss.com/features/#parent-selectors-feature" target="_blank" rel="noopener">Learn More About Parent Selectors</a></p>
+<h2 id="Nested-At-Rules-and-Bubbling"><a href="#Nested-At-Rules-and-Bubbling" class="headerlink" title="Nested At-Rules and Bubbling"></a>Nested At-Rules and Bubbling</h2><p>At-rules such as @media or @supports can be nested in the same way as selectors. The at-rule is placed on top and relative order against other elements inside the same ruleset remains unchanged. This is called bubbling.</p>
+<p>.component {</p>
+<p>width: 300px;</p>
+<p>@media (min-width: 768px) {</p>
+<p>width: 600px;</p>
+<p>@media (min-resolution: 192dpi) {</p>
+<p>background-image: url(/img/retina2x.png);</p>
+<p>}</p>
+<p>}</p>
+<p>@media (min-width: 1280px) {</p>
+<p>width: 800px;</p>
+<p>}</p>
+<p>}</p>
+<p>编译为：</p>
+<p>.component {</p>
+<p>width: 300px;</p>
+<p>}</p>
+<p>@media (min-width: 768px) {</p>
+<p>.component {</p>
+<p>width: 600px;</p>
+<p>}</p>
+<p>}</p>
+<p>@media (min-width: 768px) and (min-resolution: 192dpi) {</p>
+<p>.component {</p>
+<p>background-image: url(/img/retina2x.png);</p>
+<p>}</p>
+<p>}</p>
+<p>@media (min-width: 1280px) {</p>
+<p>.component {</p>
+<p>width: 800px;</p>
+<p>}</p>
+<p>}</p>
+<h1 id="运算（Operations）"><a href="#运算（Operations）" class="headerlink" title="运算（Operations）"></a>运算（Operations）</h1><p>Arithmetical operations +, -, *, / can operate on any number, color or variable. If it is possible, mathematical operations take units into account and convert numbers before adding, subtracting or comparing them. The result has leftmost explicitly stated unit type. If the conversion is impossible or not meaningful, units are ignored. Example of impossible conversion: px to cm or rad to %.</p>
+<p>// numbers are converted into the same units@conversion-1: 5cm + 10mm; // result is 6cm@conversion-2: 2 - 3cm - 5mm; // result is -1.5cm</p>
+<p>// conversion is impossible@incompatible-units: 2 + 5px - 3cm; // result is 4px</p>
+<p>// example with variables@base: 5%;</p>
+<p>@filler: @base * 2; // result is 10%@other: @base + @filler; // result is 15%</p>
+<p>Multiplication and division do not convert numbers. It would not be meaningful in most cases - a length multiplied by a length gives an area and css does not support specifying areas. Less will operate on numbers as they are and assign explicitly stated unit type to the result.</p>
+<p>@base: 2cm * 3mm; // result is 6cm</p>
+<p>You can also do arithemtic on colors:</p>
+<p>@color: #224488 / 2; //results in #112244background-color: #112244 + #111; // result is #223355</p>
+<p>However, you may find Less’s <a href="https://less.bootcss.com/functions/#color-operations" target="_blank" rel="noopener">Color Functions</a> more useful.</p>
+<h2 id="calc-特例"><a href="#calc-特例" class="headerlink" title="calc() 特例"></a>calc() 特例</h2><p>Released <a href="https://github.com/less/less.js/blob/master/CHANGELOG.md" target="_blank" rel="noopener">v3.0.0</a></p>
+<p>为了与 CSS 保持兼容，calc() 并不对数学表达式进行计算，但是在嵌套函数中会计算变量和数学公式的值。</p>
+<p>@var: 50vh/2;</p>
+<p>width: calc(50% + (@var - 20px)); // result is calc(50% + (25vh - 20px))</p>
+<h1 id="Escaping"><a href="#Escaping" class="headerlink" title="Escaping"></a>Escaping</h1><p>Escaping allows you to use any arbitrary string as property or variable value. Anything inside ~”anything” or ~’anything’ is used as is with no changes except <a href="https://less.bootcss.com/features/#variables-feature-variable-interpolation" target="_blank" rel="noopener">interpolation</a>.</p>
+<p>@min768: ~”(min-width: 768px)”;</p>
+<p>.element {</p>
+<p>@media @min768 {</p>
+<p>font-size: 1.2rem;</p>
+<p>}</p>
+<p>}</p>
+<p>编译为：</p>
+<p>@media (min-width: 768px) {</p>
+<p>.element {</p>
+<p>font-size: 1.2rem;</p>
+<p>}</p>
+<p>}</p>
+<h1 id="函数（Functions）"><a href="#函数（Functions）" class="headerlink" title="函数（Functions）"></a>函数（Functions）</h1><p>Less 内置了多种函数用于转换颜色、处理字符串、算术运算等。这些函数在<a href="https://less.bootcss.com/functions/" target="_blank" rel="noopener">函数手册</a>中有详细介绍。</p>
+<p>函数的用法非常简单。下面这个例子将介绍如何利用 percentage 函数将 0.5 转换为 50%，将颜色饱和度增加 5%，以及颜色亮度降低 25% 并且色相值增加 8 等用法：</p>
+<p>@base: #f04615;</p>
+<p>@width: 0.5;</p>
+<p>.class {</p>
+<p>width: percentage(@width); // returns <code>50%</code></p>
+<p>color: saturate(@base, 5%);</p>
+<p>background-color: spin(lighten(@base, 25%), 8);</p>
+<p>}</p>
+<p><a href="https://less.bootcss.com/functions/" target="_blank" rel="noopener">参见：函数手册</a></p>
+<h1 id="Namespaces-and-Accessors"><a href="#Namespaces-and-Accessors" class="headerlink" title="Namespaces and Accessors"></a>Namespaces and Accessors</h1><p>(Not to be confused with <a href="http://www.w3.org/TR/css3-namespace/" target="_blank" rel="noopener">CSS</a><a href="http://www.w3.org/TR/css3-namespace/" target="_blank" rel="noopener"> </a><a href="http://www.w3.org/TR/css3-namespace/" target="_blank" rel="noopener">@namespace</a> or <a href="http://www.w3.org/TR/css3-selectors/#typenmsp" target="_blank" rel="noopener">namespace selectors</a>).</p>
+<p>Sometimes, you may want to group your mixins, for organizational purposes, or just to offer some encapsulation. You can do this pretty intuitively in Less.Say you want to bundle some mixins and variables under #bundle, for later reuse or distributing:</p>
+<p>#bundle() {</p>
+<p>.button {</p>
+<p>display: block;</p>
+<p>border: 1px solid black;</p>
+<p>background-color: grey;</p>
+<p>&amp;:hover {</p>
+<p>background-color: white</p>
+<p>}</p>
+<p>}</p>
+<p>.tab { … }</p>
+<p>.citation { … }</p>
+<p>}</p>
+<p>Now if we want to mixin the .button class in our #header a, we can do:</p>
+<p>#header a {</p>
+<p>color: orange;</p>
+<p>#bundle &gt; .button; // can also be written as #bundle.button</p>
+<p>}</p>
+<p>Note: append () to your namespace if you don’t want it to appear in your CSS output i.e. #bundle .tab.</p>
+<p>Also note that variables declared within a namespace will be scoped to that namespace only and will not be available outside of the scope via the same syntax that you would use to reference a mixin (#Namespace &gt; .mixin-name). So, for example, you can’t do the following: #Namespace &gt; @this-will-not-work.</p>
+<h1 id="作用域（Scope）"><a href="#作用域（Scope）" class="headerlink" title="作用域（Scope）"></a>作用域（Scope）</h1><p>Scope in Less is very similar to that of programming languages. Variables and mixins are first looked for locally, and if they aren’t found, the compiler will look in the parent scope, and so on.</p>
+<p>@var: red;</p>
+<p>#page {</p>
+<p>@var: white;</p>
+<p>#header {</p>
+<p>color: @var; // white</p>
+<p>}</p>
+<p>}</p>
+<p>Mixin and variable definitions do not have to be placed before a line where they are referenced. So the following Less code is identical to the previous example:</p>
+<p>@var: red;</p>
+<p>#page {</p>
+<p>#header {</p>
+<p>color: @var; // white</p>
+<p>}</p>
+<p>@var: white;</p>
+<p>}</p>
+<p><a href="https://less.bootcss.com/features/#variables-feature-lazy-loading" target="_blank" rel="noopener">参见：懒加载</a></p>
+<h1 id="注释（Comments）"><a href="#注释（Comments）" class="headerlink" title="注释（Comments）"></a>注释（Comments）</h1><p>块注释和行注释都可以使用：</p>
+<p>/* 一个块注释</p>
+<ul>
+<li>style comment! */@var: red;</li>
+</ul>
+<p>// 这一行被注释掉了！@var: white;</p>
+<h1 id="导入（Importing）"><a href="#导入（Importing）" class="headerlink" title="导入（Importing）"></a>导入（Importing）</h1><p>“导入”的工作方式和你预期的一样。你可以导入一个 .less 文件，此文件中的所有变量就可以全部使用了。如果导入的文件是 .less 扩展名，则可以将扩展名省略掉：</p>
+<p>@import “library”; // library.less@import “typo.css”;</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#概述"><span class="toc-number">2.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#变量（Variables）"><span class="toc-number">3.</span> <span class="toc-text">变量（Variables）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#混合（Mixins）"><span class="toc-number">4.</span> <span class="toc-text">混合（Mixins）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#嵌套（Nesting）"><span class="toc-number">5.</span> <span class="toc-text">嵌套（Nesting）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Nested-At-Rules-and-Bubbling"><span class="toc-number">5.1.</span> <span class="toc-text">Nested At-Rules and Bubbling</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#运算（Operations）"><span class="toc-number">6.</span> <span class="toc-text">运算（Operations）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#calc-特例"><span class="toc-number">6.1.</span> <span class="toc-text">calc() 特例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Escaping"><span class="toc-number">7.</span> <span class="toc-text">Escaping</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#函数（Functions）"><span class="toc-number">8.</span> <span class="toc-text">函数（Functions）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Namespaces-and-Accessors"><span class="toc-number">9.</span> <span class="toc-text">Namespaces and Accessors</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#作用域（Scope）"><span class="toc-number">10.</span> <span class="toc-text">作用域（Scope）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注释（Comments）"><span class="toc-number">11.</span> <span class="toc-text">注释（Comments）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#导入（Importing）"><span class="toc-number">12.</span> <span class="toc-text">导入（Importing）</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/01/28/less/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/01/28/less/&text=less" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/01/28/less/&title=less" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/01/28/less/&is_video=false&description=less" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=less&body=Check out this article: http://yoursite.com/2018/01/28/less/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/01/28/less/&title=less" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/01/28/less/&title=less" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/01/28/less/&title=less" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/01/28/less/&title=less" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/01/28/less/&name=less&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/01/28/less/&t=less" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

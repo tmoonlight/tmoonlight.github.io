@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Html5终于解决了上传文件的同时显示文件上传进度的老问题。现在大部分的网站用Flash去实现这一功能，还有一些网站继续采用Html with enctype&#x3D;multipart&#x2F;form-data，但是需要修改服务器端可用才能显示给用户文件上传的进度。本质上你需要做的工作是在服务器端接收一个文件时，你发送给它一个字节流，所以你需要知道你已经接收到多少字节并以某种方式传达这些信息给客户端浏览器，在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="html5文件上传">
+<meta property="og:url" content="http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="Html5终于解决了上传文件的同时显示文件上传进度的老问题。现在大部分的网站用Flash去实现这一功能，还有一些网站继续采用Html with enctype&#x3D;multipart&#x2F;form-data，但是需要修改服务器端可用才能显示给用户文件上传的进度。本质上你需要做的工作是在服务器端接收一个文件时，你发送给它一个字节流，所以你需要知道你已经接收到多少字节并以某种方式传达这些信息给客户端浏览器，在">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://static.oschina.net/uploads/img/201406/27110823_2bWn.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/img/201406/27110824_YLVb.png">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="article:published_time" content="2015-06-29T10:14:47.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.944Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://static.oschina.net/uploads/img/201406/27110823_2bWn.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>html5文件上传</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2015/07/08/mvc/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2015/06/27/%E5%85%B3%E4%BA%8E%E2%80%9C%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8E%A8%E2%80%9D%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%8F%8D%E5%90%91Ajax%E7%9A%84%E4%B8%80%E7%82%B9%E7%AC%94%E8%AE%B0-%E8%A7%A3%E6%83%91%E7%9A%84%E8%BF%87%E7%A8%8B%E5%B0%B1%E6%98%AF%E6%88%90%E9%95%BF%E7%9A%84%E8%BF%87%E7%A8%8B-ITeye%E6%8A%80%E6%9C%AF%E7%BD%91%E7%AB%99/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&text=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&is_video=false&description=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=html5文件上传&body=Check out this article: http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&name=html5文件上传&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&t=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#使用Html5-上传文件"><span class="toc-number">1.</span> <span class="toc-text">使用Html5 上传文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Html5-Progress-Event"><span class="toc-number">2.</span> <span class="toc-text">Html5 Progress Event</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Html5-Progress-Event-应该是什么"><span class="toc-number">3.</span> <span class="toc-text">Html5 Progress Event 应该是什么</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Html5-上传-用XMLHttpRequest"><span class="toc-number">4.</span> <span class="toc-text">Html5 上传 用XMLHttpRequest</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#浏览器支持情况"><span class="toc-number">4.1.</span> <span class="toc-text">浏览器支持情况</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#简单的示例"><span class="toc-number">5.</span> <span class="toc-text">简单的示例</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        html5文件上传
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2015-06-29T10:14:47.000Z" itemprop="datePublished">2015-06-29</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>Html5终于解决了上传文件的同时显示文件上传进度的老问题。现在大部分的网站用Flash去实现这一功能，还有一些网站继续采用Html <form>with enctype=multipart/form-data，但是需要修改服务器端可用才能显示给用户文件上传的进度。本质上你需要做的工作是在服务器端接收一个文件时，你发送给它一个字节流，所以你需要知道你已经接收到多少字节并以某种方式传达这些信息给客户端浏览器，在这个过程一直在不断的进行文件的上传。这种方式运行的非常好，不像Flash上传那这样充满了问题(特别是处理大文件上传的时候)，然而这种方法是相当复杂的并且听起来不容易理解，因为你本质上是接管了整个服务器端的处理（获取字节流的时候）同时包括了在服务器端实现multipart/form-data协议，伴随一系列的其他事情。</p>
+<h1 id="使用Html5-上传文件"><a href="#使用Html5-上传文件" class="headerlink" title="使用Html5 上传文件"></a>使用Html5 上传文件</h1><p>XMLHttpRequest 在Html5 规范中已经有全新的变化，规定了<a href="http://www.w3.org/TR/XMLHttpRequest2/" target="_blank" rel="noopener">XMLHttpRequest Level 2</a>规范（目前最新版本）包含下列新的特性：</p>
+<ol>
+<li><p>处理字节流，例如作为上传或者下载的File，Blob，FormData对象</p>
+</li>
+<li><p>上传或者下载中的进度事件</p>
+</li>
+<li><p>跨站点请求</p>
+</li>
+<li><p>允许创建匿名请求</p>
+</li>
+<li><p>可以设置请求超时</p>
+</li>
+</ol>
+<p>在这篇文章中我们将能够更清楚的看到#1和#2两个特性。通常，上传文件用XMLHttpRequest并且提供上传进度信息给最终的用户，需要注意的是这种方式解决了不需要服务器端做任何改变，至少是目前处理multipart/form-data协议。所以服务器端的处理逻辑保留不变，这使得开发者适应这种技术相当容易。</p>
+<p><img src="http://static.oschina.net/uploads/img/201406/27110823_2bWn.png" alt=""> 图1：文件上传画面-准备上传 <img src="http://static.oschina.net/uploads/img/201406/27110824_YLVb.png" alt=""> 图2：显示上传完成画面</p>
+<p>注意：上面的图片中，信息提示区域是提供给用户的：</p>
+<ol>
+<li>当前选中文件的信息</li>
+</ol>
+<p>文件名</p>
+<p>文件大小</p>
+<p>文件类型</p>
+<ol start="2">
+<li><p>上传完成多少的百分比进度条</p>
+</li>
+<li><p>上传速度或者上传带宽</p>
+</li>
+<li><p>距离上传完成大概还有多长时间</p>
+</li>
+<li><p>已上传文件大小</p>
+</li>
+<li><p>服务器端的响应</p>
+</li>
+</ol>
+<p>上面第6项或许看起来不重要，但事实上是相当重要的。因为我们用XMLHttpRequest，上传发生在后台，页面没有发生跳转等任何变化，所以对于你用它处理其他一些事情来说是一个非常好的特性。</p>
+<h1 id="Html5-Progress-Event"><a href="#Html5-Progress-Event" class="headerlink" title="Html5 Progress Event"></a>Html5 Progress Event</h1><p>对于Html5 Progress Events规范，Html5 Progess Events提供了下列与本次讨论相关的信息</p>
+<ol>
+<li><p>total - 总的字节数</p>
+</li>
+<li><p>loaded - 到目前为止上传的字节数</p>
+</li>
+<li><p>lengthComputable - 可计算的已上传字节</p>
+</li>
+</ol>
+<p>请注意到我们需要用两个信息去计算要显示给用户的其他所有信息。要计算出来其他的信息通过上面我们得到信息是相当容易的，但是那需要一些额外的代码并且创建一个定时器。</p>
+<h1 id="Html5-Progress-Event-应该是什么"><a href="#Html5-Progress-Event-应该是什么" class="headerlink" title="Html5 Progress Event 应该是什么"></a>Html5 Progress Event 应该是什么</h1><p>考虑到有一部分人想更好的提供给用户所有的信息，所以Html5 Progress Event应该更好的满足需要，因为它给浏览器供应商提供这些额外信息是相当简单的，所以建议progress event应该修改成如下：</p>
+<ol>
+<li><p>total - 总的字节数</p>
+</li>
+<li><p>loaded - 到目前为止上传的字节数</p>
+</li>
+<li><p>lengthComputable - 可计算的已上传字节</p>
+</li>
+<li><p>transferSpeed long类型</p>
+</li>
+<li><p>timeRemaining JavaScript 日期对象</p>
+</li>
+</ol>
+<h1 id="Html5-上传-用XMLHttpRequest"><a href="#Html5-上传-用XMLHttpRequest" class="headerlink" title="Html5 上传 用XMLHttpRequest"></a>Html5 上传 用XMLHttpRequest</h1><h2 id="浏览器支持情况"><a href="#浏览器支持情况" class="headerlink" title="浏览器支持情况"></a>浏览器支持情况</h2><p>支持这一特性的浏览器最低版本</p>
+<ol>
+<li><p>Firefox 4.0 beta 6</p>
+</li>
+<li><p>Chrome 6</p>
+</li>
+<li><p>Safari 5.02</p>
+</li>
+</ol>
+<p>IE 9 Beta and Opera 10.62 不支持这一特性</p>
+<h1 id="简单的示例"><a href="#简单的示例" class="headerlink" title="简单的示例"></a>简单的示例</h1><p>下面是一个完整的Html页面包含了实现文件上传并带有进度提示的JavaScript代码，只是实现了基本的功能，感兴趣的可以自己做扩展。 需要吧上传接口修改成自己服务的。 </p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Upload Files using XMLHttpRequest - Minimal</title>
+
+<script type="text/javascript">
+
+function fileSelected() {
+
+var file = document.getElementById('fileToUpload').files[0];
+
+if (file) {
+
+var fileSize = 0;
+
+if (file.size > 1024 * 1024)
+
+fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+
+else
+
+fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+
+document.getElementById('fileName').innerHTML = 'Name: ' + file.name;
+
+document.getElementById('fileSize').innerHTML = 'Size: ' + fileSize;
+
+document.getElementById('fileType').innerHTML = 'Type: ' + file.type;
+
+}
+
+}
+
+function uploadFile() {
+
+var fd = new FormData();
+
+fd.append("fileToUpload", document.getElementById('fileToUpload').files[0]);
+
+var xhr = new XMLHttpRequest();
+
+xhr.upload.addEventListener("progress", uploadProgress, false);
+
+xhr.addEventListener("load", uploadComplete, false);
+
+xhr.addEventListener("error", uploadFailed, false);
+
+xhr.addEventListener("abort", uploadCanceled, false);
+
+xhr.open("POST", "upload.do");//修改成自己的接口
+
+xhr.send(fd);
+
+}
+
+function uploadProgress(evt) {
+
+if (evt.lengthComputable) {
+
+var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+
+document.getElementById('progressNumber').innerHTML = percentComplete.toString() + '%';
+
+}
+
+else {
+
+document.getElementById('progressNumber').innerHTML = 'unable to compute';
+
+}
+
+}
+
+function uploadComplete(evt) {
+
+/* 服务器端返回响应时候触发event事件*/
+
+alert(evt.target.responseText);
+
+}
+
+function uploadFailed(evt) {
+
+alert("There was an error attempting to upload the file.");
+
+}
+
+function uploadCanceled(evt) {
+
+alert("The upload has been canceled by the user or the browser dropped the connection.");
+
+}
+
+</script>
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+
+<form id="form1" enctype="multipart/form-data" method="post" action="Upload.aspx">
+
+<div class="row">
+
+<p><label for="fileToUpload">Select a File to Upload</label><br /></p>
+<input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();"/>
+
+</div>
+
+<div id="fileName"></div>
+
+<div id="fileSize"></div>
+
+<div id="fileType"></div>
+
+<div class="row">
+
+<input type="button" onclick="uploadFile()" value="Upload" />
+
+</div>
+
+<div id="progressNumber"></div>
+
+</form>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#使用Html5-上传文件"><span class="toc-number">1.</span> <span class="toc-text">使用Html5 上传文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Html5-Progress-Event"><span class="toc-number">2.</span> <span class="toc-text">Html5 Progress Event</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Html5-Progress-Event-应该是什么"><span class="toc-number">3.</span> <span class="toc-text">Html5 Progress Event 应该是什么</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Html5-上传-用XMLHttpRequest"><span class="toc-number">4.</span> <span class="toc-text">Html5 上传 用XMLHttpRequest</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#浏览器支持情况"><span class="toc-number">4.1.</span> <span class="toc-text">浏览器支持情况</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#简单的示例"><span class="toc-number">5.</span> <span class="toc-text">简单的示例</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&text=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&is_video=false&description=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=html5文件上传&body=Check out this article: http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&name=html5文件上传&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2015/06/29/html5%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&t=html5文件上传" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

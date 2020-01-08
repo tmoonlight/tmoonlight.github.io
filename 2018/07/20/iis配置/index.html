@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="有人问到了类似问题，这里给出一个标准模板，方便以后从0开始配iis大型工作环境时参考&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 　　找到Web站点对应的应用程序池，“应用程序池” → 找到对应的“应用程序池” → 右键“高级设置…” 　　 一、一般优化方案　　1、基本设置 　　[1] 队列长度： 默认值1000，将原来的队列长度改为 6553">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iis配置">
+<meta property="og:url" content="http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="有人问到了类似问题，这里给出一个标准模板，方便以后从0开始配iis大型工作环境时参考&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 　　找到Web站点对应的应用程序池，“应用程序池” → 找到对应的“应用程序池” → 右键“高级设置…” 　　 一、一般优化方案　　1、基本设置 　　[1] 队列长度： 默认值1000，将原来的队列长度改为 6553">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/665662/201610/665662-20161010142245633-1929353268.png">
+<meta property="og:image" content="http://files.jb51.net/file_images/article/201606/IIS75/IIS753.png">
+<meta property="og:image" content="http://files.jb51.net/file_images/article/201606/IIS75/IIS7512.png">
+<meta property="og:image" content="http://files.jb51.net/file_images/article/201606/IIS75/IIS759.png">
+<meta property="og:image" content="http://files.jb51.net/file_images/article/201510/20151017230541.png">
+<meta property="og:image" content="http://files.jb51.net/file_images/article/201606/20160608000103.png">
+<meta property="og:image" content="http://files.jb51.net/file_images/article/201606/20160608000104.png">
+<meta property="og:image" content="http://files.jb51.net/file_images/article/201606/20160608000105.png">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/665662/201610/665662-20161010144453524-461950581.png">
+<meta property="og:image" content="http://files.jb51.net/file_images/article/201606/20160608000107.png">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="article:published_time" content="2018-07-20T07:45:06.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.792Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images2015.cnblogs.com/blog/665662/201610/665662-20161010142245633-1929353268.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>iis配置</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/07/23/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%BA%94%E7%94%A8/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/07/17/%E9%87%91%E8%9D%B6%E7%B3%BB%E7%BB%9F%E6%94%B9%E9%80%A0/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&text=iis配置" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&title=iis配置" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&is_video=false&description=iis配置" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=iis配置&body=Check out this article: http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&title=iis配置" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&title=iis配置" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&title=iis配置" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&title=iis配置" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&name=iis配置&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&t=iis配置" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#有人问到了类似问题，这里给出一个标准模板，方便以后从0开始配iis大型工作环境时参考"><span class="toc-number">1.</span> <span class="toc-text">有人问到了类似问题，这里给出一个标准模板，方便以后从0开始配iis大型工作环境时参考</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、一般优化方案"><span class="toc-number">1.1.</span> <span class="toc-text">一、一般优化方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、支持同时10万个请求"><span class="toc-number">1.2.</span> <span class="toc-text">二、支持同时10万个请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、支持高并发的IIS-Web服务器常用设置"><span class="toc-number">1.3.</span> <span class="toc-text">三、支持高并发的IIS Web服务器常用设置 　　</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        iis配置
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-07-20T07:45:06.000Z" itemprop="datePublished">2018-07-20</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="有人问到了类似问题，这里给出一个标准模板，方便以后从0开始配iis大型工作环境时参考"><a href="#有人问到了类似问题，这里给出一个标准模板，方便以后从0开始配iis大型工作环境时参考" class="headerlink" title="有人问到了类似问题，这里给出一个标准模板，方便以后从0开始配iis大型工作环境时参考"></a>有人问到了类似问题，这里给出一个标准模板，方便以后从0开始配iis大型工作环境时参考</h1><p>=================================================</p>
+<p>　　找到Web站点对应的应用程序池，“应用程序池” → 找到对应的“应用程序池” → 右键“高级设置…”</p>
+<p>　　<img src="https://images2015.cnblogs.com/blog/665662/201610/665662-20161010142245633-1929353268.png" alt=""></p>
+<h2 id="一、一般优化方案"><a href="#一、一般优化方案" class="headerlink" title="一、一般优化方案"></a>一、一般优化方案</h2><p>　　1、基本设置</p>
+<p>　　[1] 队列长度： 默认值1000，将原来的队列长度改为 65535。</p>
+<p>　　[2] 启动32位应用程序：默认值False，改为True， 否则安装一些32的组建或32位的php都会出错。</p>
+<p>　　[3] 托管管道模式：Integrated 或 Classsic。 </p>
+<p>　　<a href="http://files.jb51.net/file_images/article/201606/IIS75/IIS753.png" target="_blank" rel="noopener"><img src="http://files.jb51.net/file_images/article/201606/IIS75/IIS753.png" alt=""></a></p>
+<p>　　2、高级设置</p>
+<p>　　[1] 闲置超时（分钟）：默认20分钟，修改设长。</p>
+<p>　　[2] 快速故障防护 → 已启用 ：默认True，改为False。 </p>
+<p>　　<a href="http://files.jb51.net/file_images/article/201606/IIS75/IIS7512.png" target="_blank" rel="noopener"><img src="http://files.jb51.net/file_images/article/201606/IIS75/IIS7512.png" alt=""></a></p>
+<p>　　3、解决PEP第一次打开PEP速度慢</p>
+<p>　　回收间隔时间</p>
+<p>　　<a href="http://files.jb51.net/file_images/article/201606/IIS75/IIS759.png" target="_blank" rel="noopener"><img src="http://files.jb51.net/file_images/article/201606/IIS75/IIS759.png" alt=""></a></p>
+<p>　　使用windows server 2008 r2解决回收假死的问题</p>
+<p>　　打开应用程序池 -&gt; 高级设置 -&gt;在“禁止重叠回收”里选择“true”，这样就有效避免了应用程序池回收假死问题。</p>
+<p>　　<img src="http://files.jb51.net/file_images/article/201510/20151017230541.png" alt=""></p>
+<h2 id="二、支持同时10万个请求"><a href="#二、支持同时10万个请求" class="headerlink" title="二、支持同时10万个请求"></a>二、支持同时10万个请求</h2><p>　　通过对IIS7的配置进行优化，调整IIS7应用池的队列长度，请求数限制，TCPIP连接数等方面，从而使WEB服务器的性能得以提升，保证WEB访问的访问流畅。</p>
+<p>　　站点碰到如下问题：</p>
+<p>　　Error Summary:</p>
+<p>　　HTTP Error 503.2 - Service Unavailable</p>
+<p>　　The serverRuntime@appConcurrentRequestLimit setting is being exceeded.</p>
+<p>　　Detailed Error Information:</p>
+<p>　　Module IIS Web Core </p>
+<p>　　Notification BeginRequest </p>
+<p>　　Handler StaticFile</p>
+<p>　　Error Code 0x00000000</p>
+<p>　　由于之前使用的是默认配置，服务器最多只能处理5000个同时请求，今天下午由于某种情况造成同时请求超过5000，从而出现了上面的错误。</p>
+<p>　　为了避免这样的错误，我们根据相关文档调整了设置，让服务器从设置上支持10万个并发请求。</p>
+<p>　　具体设置如下：</p>
+<p>　　1. 调整IIS 7应用程序池队列长度</p>
+<p>　　将原来的队列长度由默认值 1000 改为 65535。当然这里的队列长度你可以根据自己的 访问用户<em>1.5 来设置，例如：有2000用户，此处就可以设置为3000(3000=2000用户数</em>1.5）。</p>
+<p>　　2.  调整IIS 7的appConcurrentRequestLimit设置</p>
+<p>　　由原来的默认5000改为100000。</p>
+<p>　　[1] 在cmd中执行：</p>
+<p>　　c:\windows\system32\inetsrv\appcmd.exe set config /section:serverRuntime /appConcurrentRequestLimit:100000</p>
+<p>　　[2] 在%systemroot%\System32\inetsrv\config\applicationHost.config中可以查看到该设置：</p>
+<p>　　<serverRuntime appConcurrentRequestLimit="100000" /></p>
+<p>　　<img src="http://files.jb51.net/file_images/article/201606/20160608000103.png" alt=""></p>
+<p>　　<a href="http://files.jb51.net/file_images/article/201606/20160608000104.png" target="_blank" rel="noopener"><img src="http://files.jb51.net/file_images/article/201606/20160608000104.png" alt=""></a></p>
+<p>　　3. 调整machine.config中的processModel&gt;requestQueueLimit的设置</p>
+<p>　　[1] 单击“开始”，然后单击“运行”，或者 windows + R。</p>
+<p>　　[2] 在“运行”对话框中，键入 notepad %systemroot%[Microsoft.Net](<a href="http://microsoft.net/)\Framework64\v4.0.30319\CONFIG\machine.config，然后单击“确定”。(不同的.NET版本路径不一样，可以选择你自己当前想设置的.NET版本的config)" target="_blank" rel="noopener">http://microsoft.net/)\Framework64\v4.0.30319\CONFIG\machine.config，然后单击“确定”。(不同的.NET版本路径不一样，可以选择你自己当前想设置的.NET版本的config)</a></p>
+<p>　　[3] 找到如下所示的 processModel 元素：<processModel autoConfig="true" /></p>
+<p>　　[4] 将 processModel 元素替换为以下值：<processModel enable="true" requestQueueLimit="15000" /></p>
+<p>　　<img src="http://files.jb51.net/file_images/article/201606/20160608000105.png" alt=""></p>
+<p>　　[5] 保存并关闭 Machine.config 文件。</p>
+<p>　　由原来的默认5000改为100000。</p>
+<configuration>
+
+<p>&lt;system.web&gt;</p>
+<processModel enable="true" requestQueueLimit="100000"/>
+
+<p>　　参考文章：<a href="http://technet.microsoft.com/en-us/library/dd425294(office.13).aspx" target="_blank" rel="noopener">http://technet.microsoft.com/en-us/library/dd425294(office.13).aspx</a></p>
+<p>　　4. 修改注册表，调整IIS 7支持的同时TCPIP连接数</p>
+<p>　　由原来的默认5000改为100000。在cmd中执行：</p>
+<p>　　reg add HKLM\System\CurrentControlSet\Services\HTTP\Parameters /v MaxConnections /t REG_DWORD /d 100000</p>
+<p>　　<img src="https://images2015.cnblogs.com/blog/665662/201610/665662-20161010144453524-461950581.png" alt=""></p>
+<p>　　可在注册表中查看</p>
+<p>　　<a href="http://files.jb51.net/file_images/article/201606/20160608000107.png" target="_blank" rel="noopener"><img src="http://files.jb51.net/file_images/article/201606/20160608000107.png" alt=""></a></p>
+<p>　　5. 运行命令使用设置生效</p>
+<p>　　net stop http  &amp; net start  http &amp; iisreset</p>
+<p>　　完成上述5个设置，就可以支持10万个并发请求，博客园博客服务器已经启用上述设置。</p>
+<p>　　为了方法大家与自己使用，我把上面能用bat操作简单放到一个bat文件里面了。将下面的内容保存为do.bat文件运行就可以了，需要手工的自己操作</p>
+<h2 id="三、支持高并发的IIS-Web服务器常用设置"><a href="#三、支持高并发的IIS-Web服务器常用设置" class="headerlink" title="三、支持高并发的IIS Web服务器常用设置 　　"></a>三、支持高并发的IIS Web服务器常用设置 　　</h2><p>　　适用的IIS版本：IIS 7.0, IIS 7.5, IIS 8.0</p>
+<p>　　适用的Windows Server版本：Windows Server 2008, Windows Server 2008 R2, Windows Server 2012</p>
+<p>　　1、应用程序池（Application Pool）的设置：</p>
+<p>　　[1] General-&gt;Queue Length设置为65535（队列长度所支持的最大值）</p>
+<p>　　[2] Process Model-&gt;Idle Time-out设置为0（不让应用程序池因为没有请求而回收）</p>
+<p>　　[3] Recycling-&gt;Regular Time Interval设置为0（禁用应用程序池定期自动回收）</p>
+<p>　　2、.Net Framework相关设置</p>
+<p>　　[1] 在machine.config中将</p>
+<p>　　&lt; processModel autoConfig=”true” /&gt;</p>
+<p>　　改为</p>
+<p>　　<processModel enable="true" requestQueueLimit="100000"/></p>
+<p>　　（保存后该设置立即生效）</p>
+<p>　　[2] 打开C:\Windows[Microsoft.NET](<a href="http://microsoft.net/)\Framework64\v4.0.30319\Config\Browsers\Default.browser，找到" target="_blank" rel="noopener">http://microsoft.net/)\Framework64\v4.0.30319\Config\Browsers\Default.browser，找到</a><defaultBrowser id="Wml" parentID="Default" >，注释<capabilities>部分，然后在命令行中运行aspnet_regbrowsers -i。以解决text/vnd.wap.wml问题。</p>
+<p>　　设置命令：</p>
+<p>　　c:\windows\system32\inetsrv\appcmd.exe set config /section:serverRuntime /appConcurrentRequestLimit:100000</p>
+<p>　　设置结果：</p>
+<p>　　&lt; serverRuntime appConcurrentRequestLimit=”100000” /&gt;</p>
+<p>　　（保存后该设置立即生效）</p>
+<p>　　4、http.sys的设置</p>
+<p>　　注册表设置命令1（将最大连接数设置为10万）：</p>
+<p>　　reg add HKLM\System\CurrentControlSet\Services\HTTP\Parameters /v MaxConnections /t REG_DWORD /d 100000</p>
+<p>　　注册表设置命令2（解决Bad Request - Request Too Long问题）：</p>
+<p>　　reg add HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\HTTP\Parameters /v MaxFieldLength /t REG_DWORD /d 32768</p>
+<p>　　reg add HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\HTTP\Parameters /v MaxRequestBytes /t REG_DWORD /d 32768</p>
+<p>　　(需要在命令行运行 net stop http  &amp; net start http &amp; iisreset 使设置生效)</p>
+<p>　　5、针对负载均衡场景的设置</p>
+<p>　　在Url Rewrite Module中增加如下的规则：</p>
+<p>　　注意事项：添加该URL重写规则会造成IIS内核模式缓存不工作，详见微软的坑：Url重写竟然会引起IIS内核模式缓存不工作。</p>
+<p>　　6、 设置Cache-Control为public</p>
+<p>　　在web.config中添加如下配置：</p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<configuration>
+
+<p>&lt;system.webServer&gt;</p>
+<staticContent>
+
+<clientCache cacheControlCustom="public" />
+
+</staticContent>
+
+<p>&lt;/system.webServer&gt;</configuration></p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p>　　在machine.config的<processModel>中添加如下设置：</p>
+<p>&lt; processModel enable=”true” maxWorkerThreads=”100” maxIoThreads=”100” minWorkerThreads=”50” minIoThreads=”50”/&gt;</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#有人问到了类似问题，这里给出一个标准模板，方便以后从0开始配iis大型工作环境时参考"><span class="toc-number">1.</span> <span class="toc-text">有人问到了类似问题，这里给出一个标准模板，方便以后从0开始配iis大型工作环境时参考</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、一般优化方案"><span class="toc-number">1.1.</span> <span class="toc-text">一、一般优化方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、支持同时10万个请求"><span class="toc-number">1.2.</span> <span class="toc-text">二、支持同时10万个请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、支持高并发的IIS-Web服务器常用设置"><span class="toc-number">1.3.</span> <span class="toc-text">三、支持高并发的IIS Web服务器常用设置 　　</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&text=iis配置" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&title=iis配置" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&is_video=false&description=iis配置" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=iis配置&body=Check out this article: http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&title=iis配置" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&title=iis配置" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&title=iis配置" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&title=iis配置" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&name=iis配置&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/07/20/iis%E9%85%8D%E7%BD%AE/&t=iis配置" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

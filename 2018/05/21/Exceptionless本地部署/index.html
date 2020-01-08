@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Exceptionless 本地部署免费开源分布式系统日志收集框架 Exceptionless前两天看到了这篇文章，亲身体会了下，确实不错，按照官方的文档试了试本地部署，折腾一番后终于成功，记下心得在此，不敢独享。 本地部署官方wiki  .NET 4.6.1 这个因为我装了VS2015，就没有单独再装了  Java JDK 1.8+ 安装完后还需配置下Java环境，系统变量添加：JAVA_HOM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Exceptionless本地部署">
+<meta property="og:url" content="http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="Exceptionless 本地部署免费开源分布式系统日志收集框架 Exceptionless前两天看到了这篇文章，亲身体会了下，确实不错，按照官方的文档试了试本地部署，折腾一番后终于成功，记下心得在此，不敢独享。 本地部署官方wiki  .NET 4.6.1 这个因为我装了VS2015，就没有单独再装了  Java JDK 1.8+ 安装完后还需配置下Java环境，系统变量添加：JAVA_HOM">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="article:published_time" content="2018-05-21T10:17:30.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.799Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://common.cnblogs.com/images/copycode.gif">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>Exceptionless本地部署</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/05/23/OWIN%E7%9A%84%E8%8B%B1%E6%96%87%E5%85%A8%E7%A7%B0%E6%98%AFOpenWebInterfacefor.NET%E3%80%82/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/04/22/JS%E5%9D%97%E7%BA%A7%E4%BD%9C%E7%94%A8%E5%9F%9F/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&text=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&title=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&is_video=false&description=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Exceptionless本地部署&body=Check out this article: http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&title=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&title=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&title=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&title=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&name=Exceptionless本地部署&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&t=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Exceptionless-本地部署"><span class="toc-number">1.</span> <span class="toc-text">Exceptionless 本地部署</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#免费开源分布式系统日志收集框架-Exceptionless"><span class="toc-number">2.</span> <span class="toc-text">免费开源分布式系统日志收集框架 Exceptionless</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Exceptionless本地部署
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-05-21T10:17:30.000Z" itemprop="datePublished">2018-05-21</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="Exceptionless-本地部署"><a href="#Exceptionless-本地部署" class="headerlink" title="Exceptionless 本地部署"></a><a href="https://www.cnblogs.com/uptothesky/p/5864863.html" target="_blank" rel="noopener">Exceptionless 本地部署</a></h1><h1 id="免费开源分布式系统日志收集框架-Exceptionless"><a href="#免费开源分布式系统日志收集框架-Exceptionless" class="headerlink" title="免费开源分布式系统日志收集框架 Exceptionless"></a><a href="http://www.cnblogs.com/savorboard/p/exceptionless.html" target="_blank" rel="noopener">免费开源分布式系统日志收集框架 Exceptionless</a></h1><p>前两天看到了这篇文章，亲身体会了下，确实不错，按照官方的文档试了试本地部署，折腾一番后终于成功，记下心得在此，不敢独享。</p>
+<p><a href="https://github.com/exceptionless/Exceptionless/wiki/Self-Hosting" target="_blank" rel="noopener">本地部署官方wiki</a></p>
+<ul>
+<li><p><a href="https://msdn.microsoft.com/en-us/library/8z6watww(v=vs.110).aspx" target="_blank" rel="noopener">.NET 4.6.1</a> 这个因为我装了VS2015，就没有单独再装了</p>
+</li>
+<li><p><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">Java JDK 1.8+</a> 安装完后还需配置下Java环境，系统变量添加：JAVA_HOME  对应 C:\Program Files\Java\jdk1.8.0_102 是安装jdk的目录，用户变量Path 中添加 %JAVA_HOME%\bin; 配置完成后打开cmd，运行</p>
+</li>
+</ul>
+<p>java -version 如果报错的话有很多种可能，搜索一下会有解决方案，我的就是在C:\Windows\System32 目录下把java.exe改名成javaa.exe，再次cmd运行就成功了</p>
+<ul>
+<li><p>IIS 8+ 这个感觉不是强制的，我win7的IIS 7.5也是可以的</p>
+</li>
+<li><p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/1.7/setup.html" target="_blank" rel="noopener">ElasticSearch 1.7.5 (</a><a href="https://github.com/exceptionless/Exceptionless/issues/145" target="_blank" rel="noopener">Elasticsearch 2.x is not yet supported</a>) 到连接地址去下载1.7.5版本，人家已经说明2.x的版本不支持，找这个历史版本得翻好几页，大概在第7页左右，直接给个下载连接：<a href="https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.5.zip" target="_blank" rel="noopener">elasticsearch-1.7.5</a> ，下载完后解压</p>
+</li>
+<li><p>下载最新的<a href="https://github.com/exceptionless/Exceptionless/releases" target="_blank" rel="noopener">latest Exceptionless release artifact ZIP</a> ，下载后解压，将目录中的elasticsearch.yml 复制到到elasticsearch的解压目录的bin目录中，执行elasticsearch目录中的elasticsearch.bat，看到最后一行有</p>
+</li>
+</ul>
+<p>started 就说明成功了，打开<a href="http://localhost:9200/" target="_blank" rel="noopener">http://localhost:9200/</a>就能看到相关信息，如果es是部署服务的话复制到config目录中，执行</p>
+<p>service.bat install|remove|start|stop|manager</p>
+<ul>
+<li><p>在IIS中新建一个网站，路径选择Exceptionless解压目录中的wwwroot目录，端口这里可以自定义，比如用8004，应用程序池选4.0集成</p>
+</li>
+<li><p>修改web.config中的ElasticSearchConnectionString为es的站点<a href="http://localhost:9200/" target="_blank" rel="noopener">http://localhost:9200</a>，修改<add key="BaseURL" value="<http://localhost:8004/#>" />，注意后面的”#”</p>
+</li>
+<li><p>修改app.config.*.js中的.constant(‘BASE_URL’, ‘<a href="http://localhost:8004/" target="_blank" rel="noopener">http://localhost:8004</a>‘)</p>
+</li>
+<li><p>打开<a href="http://localhost:8004/" target="_blank" rel="noopener">http://localhost:8004</a> 就能看到登录页面了，然后创建账户–&gt;创建项目，比如创建一个控制台项目，这里就会提示怎么使用Exceptionless</p>
+</li>
+<li><p>ExceptionlessClient.Default.Startup(“oXX5BJqhS30ni045BqthqJtiSnpB0naMactfmYmI”)，这里的oXX5BJqhS30ni045BqthqJtiSnpB0naMactfmYmI就是api-key</p>
+</li>
+<li><p>新建控制台项目，使用 <a href="http://nuget.org/" target="_blank" rel="noopener">NuGet</a>  安装</p>
+</li>
+</ul>
+<p><a href="http://nuget.org/packages/Exceptionless" target="_blank" rel="noopener">Install-Package Exceptionless</a></p>
+<p>在Main中写测试代码：</p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p>//ExceptionlessClient.Default.Startup(“qnN5lVebQ7LA94Erkthtkq5z57xX5Wg7ZzafiMdZ”);</p>
+<p>var client = new ExceptionlessClient(c =&gt; {</p>
+<p>c.ApiKey = “oXX5BJqhS30ni045BqthqJtiSnpB0naMactfmYmI”;</p>
+<p>c.ServerUrl = “<a href="http://localhost:8004/" target="_blank" rel="noopener">http://localhost:8004</a>“;</p>
+<p>});</p>
+<p>try</p>
+<p>{</p>
+<p>throw new Exception(“test exception “+DateTime.Now.ToString(“yyyy-MM-dd HH-mm-ss”));</p>
+<p>}</p>
+<p>catch (Exception ex)</p>
+<p>{</p>
+<p>client.SubmitException(ex);</p>
+<p>//ex.ToExceptionless().Submit();</p>
+<p>Console.WriteLine(“error send”);</p>
+<p>}</p>
+<p>Console.ReadKey();</p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p>这里需要注意注释掉的部分，或者是如下调用：</p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p>using Exceptionless.Configuration;</p>
+<p>[assembly: Exceptionless(“oXX5BJqhS30ni045BqthqJtiSnpB0naMactfmYmI”, ServerUrl = “<a href="http://localhost:8004/" target="_blank" rel="noopener">http://localhost:8004</a>“)]</p>
+<p>namespace ExceptionTest</p>
+<p>{</p>
+<p>class Program</p>
+<p>{</p>
+<p>static void Main(string[] args)</p>
+<p>{</p>
+<p>ExceptionlessClient.Default.Startup(“oXX5BJqhS30ni045BqthqJtiSnpB0naMactfmYmI”);</p>
+<p>//var client = new ExceptionlessClient(c =&gt; {</p>
+<p>// c.ApiKey = “oXX5BJqhS30ni045BqthqJtiSnpB0naMactfmYmI”;</p>
+<p>// c.ServerUrl = “<a href="http://localhost/" target="_blank" rel="noopener">http://localhost</a>:8004”;</p>
+<p>//});</p>
+<p>try</p>
+<p>{</p>
+<p>throw new Exception(“test exception “+DateTime.Now.ToString(“yyyy-MM-dd HH-mm-ss”));</p>
+<p>}</p>
+<p>catch (Exception ex)</p>
+<p>{</p>
+<p>//client.SubmitException(ex); ex.ToExceptionless().Submit();</p>
+<p>Console.WriteLine(“error send”);</p>
+<p>}</p>
+<p>Console.ReadKey();</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p>api-key指定两次，也可以通过。</p>
+<p>使用config配置：</p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<configuration>
+
+<configSections>
+
+<section name="exceptionless" type="Exceptionless.ExceptionlessSection, Exceptionless" />
+
+</configSections>
+
+<exceptionless apiKey="oXX5BJqhS30ni045BqthqJtiSnpB0naMactfmYmI" serverUrl="[http://localhost:8004](http://localhost:8004/)" />
+
+</configuration>
+
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p>using Exceptionless.Configuration;</p>
+<p>//[assembly: Exceptionless(“oXX5BJqhS30ni045BqthqJtiSnpB0naMactfmYmI”, ServerUrl = “<a href="http://localhost/" target="_blank" rel="noopener">http://localhost</a>:8004”)]namespace ExceptionTest</p>
+<p>{</p>
+<p>class Program</p>
+<p>{</p>
+<p>static void Main(string[] args)</p>
+<p>{</p>
+<p>ExceptionlessClient.Default.Startup(“oXX5BJqhS30ni045BqthqJtiSnpB0naMactfmYmI”);</p>
+<p>//var client = new ExceptionlessClient(c =&gt; {</p>
+<p>// c.ApiKey = “oXX5BJqhS30ni045BqthqJtiSnpB0naMactfmYmI”;</p>
+<p>// c.ServerUrl = “<a href="http://localhost/" target="_blank" rel="noopener">http://localhost</a>:8004”;</p>
+<p>//});</p>
+<p>try</p>
+<p>{</p>
+<p>throw new Exception(“test exception “+DateTime.Now.ToString(“yyyy-MM-dd HH-mm-ss”));</p>
+<p>}</p>
+<p>catch (Exception ex)</p>
+<p>{</p>
+<p>//client.SubmitException(ex); ex.ToExceptionless().Submit();</p>
+<p>Console.WriteLine(“error send”);</p>
+<p>}</p>
+<p>Console.ReadKey();</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p>这样就不需要在using那指定了。</p>
+<p>接下来就可以在<a href="http://localhost:8004/#/type/error/dashboard" target="_blank" rel="noopener">http://localhost:8004/#/type/error/dashboard</a>中看到异常信息了。</p>
+<hr>
+<p>踩坑1：无法外网使用，原因 web.config文件和appconfig.js需要修改端口配置（此外js文件还存在缓存问题，每次修改需要更新js文件！）</p>
+<p>踩坑2：无法外网使用，应用程序池调整成4.0，原来是2.0的（坑爹！操作时不要跳跃性太大，不然很容易踩坑）</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Exceptionless-本地部署"><span class="toc-number">1.</span> <span class="toc-text">Exceptionless 本地部署</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#免费开源分布式系统日志收集框架-Exceptionless"><span class="toc-number">2.</span> <span class="toc-text">免费开源分布式系统日志收集框架 Exceptionless</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&text=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&title=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&is_video=false&description=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Exceptionless本地部署&body=Check out this article: http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&title=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&title=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&title=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&title=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&name=Exceptionless本地部署&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/05/21/Exceptionless%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/&t=Exceptionless本地部署" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

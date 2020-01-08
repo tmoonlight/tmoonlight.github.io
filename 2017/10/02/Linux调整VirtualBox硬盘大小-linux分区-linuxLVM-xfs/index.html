@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="VirtualBox虚拟机在使用的过程中，有时会遇到磁盘大小不够用，如果设置了”动态分配存储“，可以通过下面的方法对磁盘的空间进行手动扩展。 1.启动CMD命令行，进入VirtualBox的安装目录。如 cd E:\Program Files[Oracle](http:&#x2F;&#x2F;www.linuxidc.com&#x2F;topicnews.aspx?tid&#x3D;12 “Oracle”)\VirtualBox 2.查">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs">
+<meta property="og:url" content="http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="VirtualBox虚拟机在使用的过程中，有时会遇到磁盘大小不够用，如果设置了”动态分配存储“，可以通过下面的方法对磁盘的空间进行手动扩展。 1.启动CMD命令行，进入VirtualBox的安装目录。如 cd E:\Program Files[Oracle](http:&#x2F;&#x2F;www.linuxidc.com&#x2F;topicnews.aspx?tid&#x3D;12 “Oracle”)\VirtualBox 2.查">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-10-01T18:11:16.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.827Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/10/04/%E4%B8%9A%E5%8A%A1%E7%82%B9%E6%95%B4%E7%90%86/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/09/30/swagger+webapi%E5%8F%91%E5%B8%83%E6%97%B6%E6%80%BB%E6%98%AF%E5%87%BA%E9%94%99/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&text=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&title=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&is_video=false&description=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs&body=Check out this article: http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&title=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&title=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&title=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&title=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&name=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&t=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#fdisk-dev-sda"><span class="toc-number">1.</span> <span class="toc-text">fdisk &#x2F;dev&#x2F;sda</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#vgextend-vg-aimin-dev-sda3"><span class="toc-number">2.</span> <span class="toc-text">vgextend vg_aimin &#x2F;dev&#x2F;sda3</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lvextend-dev-vg-aimin-lv-root-dev-sda3"><span class="toc-number">3.</span> <span class="toc-text">lvextend &#x2F;dev&#x2F;vg_aimin&#x2F;lv_root &#x2F;dev&#x2F;sda3</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-10-01T18:11:16.000Z" itemprop="datePublished">2017-10-02</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>VirtualBox虚拟机在使用的过程中，有时会遇到磁盘大小不够用，如果设置了”动态分配存储“，可以通过下面的方法对磁盘的空间进行手动扩展。</p>
+<p>1.启动CMD命令行，进入VirtualBox的安装目录。如</p>
+<p>cd E:\Program Files[Oracle](<a href="http://www.linuxidc.com/topicnews.aspx?tid=12" target="_blank" rel="noopener">http://www.linuxidc.com/topicnews.aspx?tid=12</a> “Oracle”)\VirtualBox</p>
+<p>2.查看需要修改的虚拟硬盘：</p>
+<p>E:\Program Files\Oracle\VirtualBox&gt;VBoxManage.exe list hdds</p>
+<p>UUID:          e8e2c341-b3b1-49db-ad2d-ab4e6b08bc5a</p>
+<p>Parent UUID:    base</p>
+<p>State:          locked write</p>
+<p>Type:          normal (base)</p>
+<p>Location:      F:\VM[CentOS](<a href="http://www.linuxidc.com/topicnews.aspx?tid=14" target="_blank" rel="noopener">http://www.linuxidc.com/topicnews.aspx?tid=14</a> “CentOS”)-64.vdi</p>
+<p>Storage format: VDI</p>
+<p>Capacity:      8000 MBytes</p>
+<p>UUID:          707d45b6-380d-4e51-96bd-8c9508bfd313</p>
+<p>Parent UUID:    base</p>
+<p>State:          created</p>
+<p>Type:          normal (base)</p>
+<p>Location:      F:\VM\CentOS-64-ext.vdi</p>
+<p>Storage format: VDI</p>
+<p>Capacity:      21273 MBytes</p>
+<p>UUID:          aca81637-fbc0-4826-be66-847ecc96d83b</p>
+<p>Parent UUID:    base</p>
+<p>State:          created</p>
+<p>Type:          normal (base)</p>
+<p>Location:      C:\Users\Edward.Wu\VirtualBox VMs\WinXP\WinXP.vdi</p>
+<p>Storage format: VDI</p>
+<p>Capacity:      10240 MBytes</p>
+<p>-—</p>
+<p>我们看到共有三个虚拟磁盘，我们要修改图中第一个，它的空间大小为8G，UUID：e8e2c341-b3b1-49db-ad2d-ab4e6b08bc5a </p>
+<p>2. 调整磁盘空间为15G：</p>
+<p>E:\Program Files\Oracle\VirtualBox&gt;VBoxManage.exe modifyhd e8e2c341-b3b1-49db-ad2d-ab4e6b08bc5a --resize 150000%…10%…20%…30%…40%…50%…60%…70%…80%…90%…100%</p>
+<p>3.重新查看：</p>
+<p>E:\Program Files\Oracle\VirtualBox&gt;VBoxManage.exe list hdds UUID:          e8e2c341-b3b1-49db-ad2d-ab4e6b08bc5a Parent UUID:    base State:          locked write Type:          normal (base) Location:      F:\VM\CentOS-64.vdi Storage format: VDI Capacity:      15000 MBytes</p>
+<p>UUID:          707d45b6-380d-4e51-96bd-8c9508bfd313 Parent UUID:    base State:          created Type:          normal (base) Location:      F:\VM\CentOS-64-ext.vdi Storage format: VDI Capacity:      21273 MBytes</p>
+<p>UUID:          aca81637-fbc0-4826-be66-847ecc96d83b Parent UUID:    base State:          created Type:          normal (base) Location:      C:\Users\Edward.Wu\VirtualBox VMs\WinXP\WinXP.vdi Storage format: VDI Capacity:      10240 MBytes</p>
+<p>4.查看新的磁盘空间</p>
+<p>重新启动虚拟机，查看磁盘情况。</p>
+<p>[root@aimin ~]# fdisk -l /dev/sda</p>
+<p>Disk /dev/sda: 15.7 GB, 15728640000 bytes 255 heads, 63 sectors/track, 1912 cylinders</p>
+<p>可以看到磁盘空间已经扩展到15G，但这时还不可以使用。</p>
+<p>5.Enable新增加的空间</p>
+<p>使用 fdisk 将虚拟磁盘的空闲空间创建为一个新的分区。注意要使用代表 Linux LVM 的分区号 8e 来作为 ID。</p>
+<h1 id="fdisk-dev-sda"><a href="#fdisk-dev-sda" class="headerlink" title="fdisk /dev/sda"></a>fdisk /dev/sda</h1><p>n {new partition}</p>
+<p>p {primary partition}</p>
+<p>3 {partition number}</p>
+<p>[这时会提示修改大小，选择默认直接回车即可]</p>
+<p>t {change partition id}</p>
+<p>3 {partition number}</p>
+<p>8e {Linux LVM partition}</p>
+<p>w</p>
+<p>-—–</p>
+<p>如果中间有设置大小之类的提示，就直接回车。</p>
+<p>完成后，如果提示：</p>
+<p>WARNING: Re-reading the partition table failed with error 16: 设备或资源忙. The kernel still uses the old table. The new table will be used at the next reboot or after you run partprobe(8) or kpartx(8)</p>
+<p>就重启一下系统。</p>
+<p>6.查看新增加的sda3是否标记为LVM，如果没有需要reboot</p>
+<p>#fdisk -l /dev/sda</p>
+<p>7.调整LVM大小</p>
+<p>先看一下Volume Group名称</p>
+<p>[root@aimin ~]# vgdisplay   -– Volume group —   VG Name              vg_aimin</p>
+<p>….</p>
+<p>vg_aimin是我的VolumeGroup的名称，实际操作时，需要使用实际显示的名称。</p>
+<p>8.把新分配的空间创建一个新的物理卷</p>
+<p>#pvcreate /dev/sda3</p>
+<p>9.然后使用新的物理卷来扩展 LVM 的 VolGroup，</p>
+<h1 id="vgextend-vg-aimin-dev-sda3"><a href="#vgextend-vg-aimin-dev-sda3" class="headerlink" title="vgextend vg_aimin /dev/sda3"></a>vgextend vg_aimin /dev/sda3</h1><p>No physical volume label read from /dev/sda3</p>
+<p>Writing physical volume data to disk “/dev/sda3”</p>
+<p>Physical volume “/dev/sda3” successfully created</p>
+<p>Volume group “vg_aimin” successfully extended</p>
+<p>10.然后扩展 LVM 的逻辑卷 vg_aimin-lv_root，</p>
+<h1 id="lvextend-dev-vg-aimin-lv-root-dev-sda3"><a href="#lvextend-dev-vg-aimin-lv-root-dev-sda3" class="headerlink" title="lvextend /dev/vg_aimin/lv_root /dev/sda3"></a>lvextend /dev/vg_aimin/lv_root /dev/sda3</h1><p>11.调整逻辑卷的大小</p>
+<p>#resize2fs /dev/vg_aimin/lv_root</p>
+<p>到这里就完成了空间的扩展。</p>
+<p>12.查看效果</p>
+<p>[root@aimin ~]# df -h文件系统              容量  已用  可用 已用%% 挂载点/dev/mapper/vg_aimin-lv_root                      12G  5.2G  6.2G  46% /tmpfs                499M  80K  499M  1% /dev/shm/dev/sda1            485M  33M  427M  8% /boot</p>
+<p>成功扩展！！！</p>
+<p>(12步时仍未解决问题)</p>
+<p>因为文件系统是xps的</p>
+<p>[root@localhost ~]# df -h -T</p>
+<p>文件系统                类型      容量  已用  可用 已用% 挂载点</p>
+<p>/dev/mapper/centos-root xfs       9.4G  6.3G  3.2G   67% /</p>
+<p>devtmpfs                devtmpfs  904M     0  904M    0% /dev</p>
+<p>tmpfs                   tmpfs     920M     0  920M    0% /dev/shm</p>
+<p>tmpfs                   tmpfs     920M  8.8M  911M    1% /run</p>
+<p>tmpfs                   tmpfs     920M     0  920M    0% /sys/fs/cgroup</p>
+<p>/dev/sda1               xfs       497M  223M  274M   45% /boot</p>
+<p>tmpfs                   tmpfs     184M   12K  184M    1% /run/user/42</p>
+<p>tmpfs                   tmpfs     184M     0  184M    0% /run/user/0</p>
+<p>使用如下命令解决问题:</p>
+<p>[root@localhost ~]# xfs_growfs /dev/mapper/centos-root</p>
+<p>以上是centos调整分区的方法 debian又是另外的方法</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#fdisk-dev-sda"><span class="toc-number">1.</span> <span class="toc-text">fdisk &#x2F;dev&#x2F;sda</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#vgextend-vg-aimin-dev-sda3"><span class="toc-number">2.</span> <span class="toc-text">vgextend vg_aimin &#x2F;dev&#x2F;sda3</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#lvextend-dev-vg-aimin-lv-root-dev-sda3"><span class="toc-number">3.</span> <span class="toc-text">lvextend &#x2F;dev&#x2F;vg_aimin&#x2F;lv_root &#x2F;dev&#x2F;sda3</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&text=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&title=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&is_video=false&description=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs&body=Check out this article: http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&title=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&title=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&title=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&title=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&name=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2017/10/02/Linux%E8%B0%83%E6%95%B4VirtualBox%E7%A1%AC%E7%9B%98%E5%A4%A7%E5%B0%8F-linux%E5%88%86%E5%8C%BA-linuxLVM-xfs/&t=Linux调整VirtualBox硬盘大小-linux分区-linuxLVM-xfs" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

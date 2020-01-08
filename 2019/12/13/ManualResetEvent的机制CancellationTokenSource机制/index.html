@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="ManualResetEvent的机制很简单，就是利用set和 reset两个方法来手动设置线程的运行和终止， 初始化的构造函数true就是运行 否则就是终止。 reset则终止 set则开始跑 CancellationTokenSource 也是readstream的一种信号量   &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 今天详细说一下ManualResetEvent 它可以通知一个或多个正在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ManualResetEvent的机制CancellationTokenSource机制">
+<meta property="og:url" content="http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="ManualResetEvent的机制很简单，就是利用set和 reset两个方法来手动设置线程的运行和终止， 初始化的构造函数true就是运行 否则就是终止。 reset则终止 set则开始跑 CancellationTokenSource 也是readstream的一种信号量   &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; 今天详细说一下ManualResetEvent 它可以通知一个或多个正在">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images0.cnblogs.com/blog/342595/201308/30131628-83f9c1d15f1c4b3a98f78c8295788139.png">
+<meta property="og:image" content="https://images0.cnblogs.com/blog/342595/201308/30131805-b57b616b79814ae2ac8496feb032d7cc.png">
+<meta property="og:image" content="https://images0.cnblogs.com/blog/342595/201308/30131628-83f9c1d15f1c4b3a98f78c8295788139.png">
+<meta property="og:image" content="https://images0.cnblogs.com/blog/342595/201308/30132424-bb9f452a11d943f2966445ceb88e4b0a.png">
+<meta property="article:published_time" content="2019-12-13T03:19:49.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.700Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images0.cnblogs.com/blog/342595/201308/30131628-83f9c1d15f1c4b3a98f78c8295788139.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>ManualResetEvent的机制CancellationTokenSource机制</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/12/31/%E5%B8%A7%E5%90%8C%E6%AD%A5/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/12/05/%E4%BA%91%E8%8B%8D%E7%A9%B9%E5%B8%B8%E8%A7%84%E6%9C%8D%E5%8A%A1%E7%BB%84%E4%BB%B6%E9%83%A8%E7%BD%B2%EF%BC%9A/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&text=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&title=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&is_video=false&description=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ManualResetEvent的机制CancellationTokenSource机制&body=Check out this article: http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&title=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&title=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&title=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&title=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&name=ManualResetEvent的机制CancellationTokenSource机制&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&t=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        ManualResetEvent的机制CancellationTokenSource机制
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-12-13T03:19:49.000Z" itemprop="datePublished">2019-12-13</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>ManualResetEvent的机制很简单，就是利用set和 reset两个方法来手动设置线程的运行和终止，</p>
+<p>初始化的构造函数true就是运行 否则就是终止。</p>
+<p>reset则终止</p>
+<p>set则开始跑</p>
+<p>CancellationTokenSource 也是readstream的一种信号量  </p>
+<p>====================</p>
+<p>今天详细说一下ManualResetEvent</p>
+<p>它可以通知一个或多个正在等待的线程已发生事件，允许线程通过发信号互相通信，来控制线程是否可心访问资源</p>
+<p>当一个线程开始一个活动（此活动必须完成后，其他线程才能开始）时，它调用 <a href="http://msdn.microsoft.com/zh-cn/library/system.threading.eventwaithandle.reset(v=vs.100).aspx" target="_blank" rel="noopener">Reset</a> 以将 ManualResetEvent 置于非终止状态。此线程可被视为控制 ManualResetEvent。调用 ManualResetEvent 上的<a href="http://msdn.microsoft.com/zh-cn/library/system.threading.waithandle.waitone(v=vs.100).aspx" target="_blank" rel="noopener">WaitOne</a> 的线程将阻止，并等待信号。当控制线程完成活动时，它调用 <a href="http://msdn.microsoft.com/zh-cn/library/system.threading.eventwaithandle.set(v=vs.100).aspx" target="_blank" rel="noopener">Set</a> 以发出等待线程可以继续进行的信号。并释放所有等待线程。</p>
+<p>一旦它被终止，ManualResetEvent 将保持终止状态，直到它被手动重置。即对 WaitOne 的调用将立即返回。</p>
+<p>上面是它的功能描述，你可能会有点晕。我会用代码一点一点解释它，看完我写的这些内容，你自己运行一下代码你就会明白它的功能</p>
+<p>源代码：<a href="http://files.cnblogs.com/li-peng/ManualResetEventDemo.rar" target="_blank" rel="noopener">ManualResetEventDemo.rar</a></p>
+<p>我们从初始化来开始讲</p>
+<p>可以通过将布尔值传递给构造函数来控制 ManualResetEvent 的初始状态，如果初始状态处于终止状态，为 true；否则为 false。</p>
+<p>我用代码 让大家看一下什么是终止状态和非终止状态</p>
+<p>先看一下代码</p>
+<p>class Program</p>
+<p>   {</p>
+<pre><code>static ManualResetEvent _mre = new ManualResetEvent(false);
+
+static void Main(string[] args)
+
+{
+
+    Thread[] _threads = new Thread[3];
+
+    for (int i = 0; i &lt; _threads.Count(); i++)
+
+    {
+
+        _threads[i] = new Thread(ThreadRun);
+
+        _threads[i].Start();
+
+    }
+
+
+
+}
+
+
+
+static void ThreadRun()
+
+{
+
+    int _threadID = 0;
+
+    while (true)
+
+    {
+
+        _mre.WaitOne();
+
+        _threadID = Thread.CurrentThread.ManagedThreadId;
+
+        Console.WriteLine(&quot;current Tread is &quot; \+ _threadID);
+
+        Thread.Sleep(TimeSpan.FromSeconds(2));
+
+
+
+    }
+
+}</code></pre><p>   }  </p>
+<hr>
+<p>当初始化为true时，为终止状态</p>
+<p>static ManualResetEvent _mre = new ManualResetEvent(true);  </p>
+<hr>
+<p>执行结果</p>
+<p> <img src="https://images0.cnblogs.com/blog/342595/201308/30131628-83f9c1d15f1c4b3a98f78c8295788139.png" alt=""></p>
+<p>当初始化为false时，为非终止状态</p>
+<p>static ManualResetEvent _mre = new ManualResetEvent(false);  </p>
+<hr>
+<p>执行结果为</p>
+<p><img src="https://images0.cnblogs.com/blog/342595/201308/30131805-b57b616b79814ae2ac8496feb032d7cc.png" alt=""></p>
+<p>这样我们就能看出来</p>
+<p>终止状态时WaitOne()允许线程访问下边的语句</p>
+<p>非终止状态时WaitOne()阻塞线程，不允许线程访问下边的语句</p>
+<p>我们也可以把WaitOne()放在方法最下边</p>
+<p>static void ThreadRun()</p>
+<pre><code>{
+
+    int _threadID = 0;
+
+    while (true)
+
+    {
+
+
+
+        _threadID = Thread.CurrentThread.ManagedThreadId;
+
+        Console.WriteLine(&quot;current Tread is &quot; \+ _threadID);
+
+        Thread.Sleep(TimeSpan.FromSeconds(2));
+
+        _mre.WaitOne();
+
+    }
+
+}  </code></pre><hr>
+<p>当初始化为true时执行结果和上边的一样会不停的执行</p>
+<p><img src="https://images0.cnblogs.com/blog/342595/201308/30131628-83f9c1d15f1c4b3a98f78c8295788139.png" alt=""></p>
+<p>初始化为false时执行到waitOne()时就阻塞线程不会再往下执行了</p>
+<p><img src="https://images0.cnblogs.com/blog/342595/201308/30132424-bb9f452a11d943f2966445ceb88e4b0a.png" alt=""></p>
+<p>接下来你可能就会想当在非终止状态时怎么让线程继续执行，怎么再让它停下来，这就要用了set()和Reset()方法了</p>
+<p>把非终止状态改为终止状态用Set()方法</p>
+<p>把终止状态改为非终止状态用Reset()方法</p>
+<p>我用用代码来实现它们只要把我们上 边的代码做一下改动</p>
+<p>class Program</p>
+<pre><code>{
+
+    static ManualResetEvent _mre = new ManualResetEvent(false);
+
+    static void Main(string[] args)
+
+    {
+
+        Console.WriteLine(&quot;输入1为Set()   开始运行&quot;);
+
+        Console.WriteLine(&quot;输入2为Reset() 暂停运行&quot;);
+
+        Thread[] _threads = new Thread[3];
+
+        for (int i = 0; i &lt; _threads.Count(); i++)
+
+        {
+
+            _threads[i] = new Thread(ThreadRun);
+
+            _threads[i].Start();
+
+        }
+
+        while (true)
+
+        {
+
+            switch (Console.ReadLine())
+
+            {
+
+                case &quot;1&quot;:
+
+                    _mre.Set();
+
+                    Console.WriteLine(&quot;开始运行&quot;);
+
+                    break;
+
+                case &quot;2&quot;:
+
+                    _mre.Reset();
+
+                    Console.WriteLine(&quot;暂停运行&quot;);
+
+                    break;
+
+                default:
+
+                    break;
+
+            }
+
+        }
+
+
+
+    }
+
+
+
+    static void ThreadRun()
+
+    {
+
+        int _threadID = 0;
+
+        while (true)
+
+        {
+
+
+
+            _threadID = Thread.CurrentThread.ManagedThreadId;
+
+            Console.WriteLine(&quot;current Tread is &quot; \+ _threadID);
+
+            Thread.Sleep(TimeSpan.FromSeconds(2));
+
+            _mre.WaitOne();
+
+        }
+
+    }
+
+}  </code></pre><hr>
+<p>当输入1 时会调用 Set()方法 ManualResetEvent 处于终止状态会WaitOne不会阻塞线程会一直运行下去</p>
+<p>当输入2时会调用 Reser()方法ManualResetEvent处于非终止状态WaitOne会阻塞线程直到再调用 Set()方法</p>
+<p>看一下执行结果吧</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&text=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&title=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&is_video=false&description=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ManualResetEvent的机制CancellationTokenSource机制&body=Check out this article: http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&title=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&title=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&title=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&title=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&name=ManualResetEvent的机制CancellationTokenSource机制&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2019/12/13/ManualResetEvent%E7%9A%84%E6%9C%BA%E5%88%B6CancellationTokenSource%E6%9C%BA%E5%88%B6/&t=ManualResetEvent的机制CancellationTokenSource机制" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

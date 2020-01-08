@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="2017年12月27日 16:17:19 algondon 阅读数：11808很多时候我们需要找到某个文件夹下包含某个字符串的所有文件,比如已知一个变量名，但是不知道定义在哪个文件里，就可以搜一下。 目录下的所有文件中查找字符串 find .| xargs grep -ri “class” 目录下的所有文件中查找字符串,并且只打印出含有该字符串的文件名 find .| xargs grep -ri">
+<meta property="og:type" content="article">
+<meta property="og:title" content="find命令">
+<meta property="og:url" content="http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="2017年12月27日 16:17:19 algondon 阅读数：11808很多时候我们需要找到某个文件夹下包含某个字符串的所有文件,比如已知一个变量名，但是不知道定义在哪个文件里，就可以搜一下。 目录下的所有文件中查找字符串 find .| xargs grep -ri “class” 目录下的所有文件中查找字符串,并且只打印出含有该字符串的文件名 find .| xargs grep -ri">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2014-02-13T16:31:02.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:15.021Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>find命令</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2014/02/21/TCP%E5%8D%8F%E8%AE%AE/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2014/02/03/cookie%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&text=find命令" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&title=find命令" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&is_video=false&description=find命令" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=find命令&body=Check out this article: http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&title=find命令" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&title=find命令" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&title=find命令" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&title=find命令" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&name=find命令&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&t=find命令" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#2017年12月27日-16-17-19-algondon-阅读数：11808"><span class="toc-number">1.</span> <span class="toc-text">2017年12月27日 16:17:19 algondon 阅读数：11808</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#另一种方法："><span class="toc-number">2.</span> <span class="toc-text">另一种方法：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#正则表达式"><span class="toc-number">3.</span> <span class="toc-text">正则表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本元字符集及其含义"><span class="toc-number">3.1.</span> <span class="toc-text">基本元字符集及其含义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#举例说明"><span class="toc-number">3.2.</span> <span class="toc-text">举例说明</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#find介绍"><span class="toc-number">4.</span> <span class="toc-text">find介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#find命令的一般形式"><span class="toc-number">4.1.</span> <span class="toc-text">find命令的一般形式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#options"><span class="toc-number">4.2.</span> <span class="toc-text">options</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#find命令举例"><span class="toc-number">4.3.</span> <span class="toc-text">find命令举例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#grep介绍"><span class="toc-number">5.</span> <span class="toc-text">grep介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#举例说明-1"><span class="toc-number">5.1.</span> <span class="toc-text">举例说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grep命令类名"><span class="toc-number">5.2.</span> <span class="toc-text">grep命令类名</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#awk介绍"><span class="toc-number">6.</span> <span class="toc-text">awk介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#awk命令行方式"><span class="toc-number">6.1.</span> <span class="toc-text">awk命令行方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#举例说明-2"><span class="toc-number">6.2.</span> <span class="toc-text">举例说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#匹配操作符"><span class="toc-number">6.3.</span> <span class="toc-text">匹配操作符</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sed介绍"><span class="toc-number">7.</span> <span class="toc-text">sed介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#调用sed的三种方式"><span class="toc-number">7.1.</span> <span class="toc-text">调用sed的三种方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sed-options"><span class="toc-number">7.2.</span> <span class="toc-text">sed options</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sed在文件中查询文本的方式"><span class="toc-number">7.3.</span> <span class="toc-text">sed在文件中查询文本的方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#读取文本的方式"><span class="toc-number">7.4.</span> <span class="toc-text">读取文本的方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基本sed编辑命令"><span class="toc-number">7.5.</span> <span class="toc-text">基本sed编辑命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#举例说明-3"><span class="toc-number">7.6.</span> <span class="toc-text">举例说明</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#合并与分割"><span class="toc-number">8.</span> <span class="toc-text">合并与分割</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#sot命令"><span class="toc-number">8.1.</span> <span class="toc-text">sot命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#uniq命令"><span class="toc-number">8.2.</span> <span class="toc-text">uniq命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#join-命令"><span class="toc-number">8.3.</span> <span class="toc-text">join 命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#split命令"><span class="toc-number">8.4.</span> <span class="toc-text">split命令</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        find命令
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2014-02-13T16:31:02.000Z" itemprop="datePublished">2014-02-14</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="2017年12月27日-16-17-19-algondon-阅读数：11808"><a href="#2017年12月27日-16-17-19-algondon-阅读数：11808" class="headerlink" title="2017年12月27日 16:17:19 algondon 阅读数：11808"></a>2017年12月27日 16:17:19 <a href="https://me.csdn.net/u010801696" target="_blank" rel="noopener">algondon</a> 阅读数：11808</h1><p>很多时候我们需要找到某个文件夹下包含某个字符串的所有文件,比如已知一个变量名，但是不知道定义在哪个文件里，就可以搜一下。</p>
+<p>目录下的所有文件中查找字符串</p>
+<p>find .| xargs grep -ri “class”</p>
+<p>目录下的所有文件中查找字符串,并且只打印出含有该字符串的文件名</p>
+<p>find .| xargs grep -ri “class” -l</p>
+<h1 id="另一种方法："><a href="#另一种方法：" class="headerlink" title="另一种方法："></a>另一种方法：</h1><p>find ./ -type f -exec file {} ;</p>
+<p>其中：file是命令，可替换成其他的</p>
+<h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><p>正则表达式一般用来描述文本模式的特殊用法，由普通字符（例如字符a-z）以及特殊字符（称为元字符，如/、*、?等）组成。</p>
+<h2 id="基本元字符集及其含义"><a href="#基本元字符集及其含义" class="headerlink" title="基本元字符集及其含义"></a>基本元字符集及其含义</h2><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>| </p>
+<p>^ ：只匹配行首。 如^a 匹配以a开头的行abc,a2e,a12,aaa,……</p>
+<p>$ ：只匹配行尾。 如^a 匹配以a结尾的行bca,12a,aaa,…….</p>
+<ul>
+<li>：匹配0个或多个此单字符。 如(a)* 匹配 空，a,aa,aaa,….</li>
+</ul>
+<p>[] ：只匹配[]内字符。可以是一个单字符，也可以是字符序列，用”,”将里面要匹配的不同字符串分开。也可以使用-来表示[]内字符序列的范围，如[1-5]表示[12345]</p>
+<p>\ ：只用来屏蔽一个元字符的特殊含义。 如\*,&#39;,&quot;,|,\+,^,\. 等</p>
+<p>. ：（点）只匹配任意单字符。</p>
+<p>pattern\{n\}：只用来匹配前面pattern出现的次数.n为次数。如a\{2\}匹配aa.</p>
+<p>pattern\{n,\}：含义同上，但次数最少为n.如a\{2,\}匹配aa,aaa,aaaa,…..</p>
+<p>pattern\{n,m\}：含义同上，但次数在n和m之间。如a\{2,4\}匹配aa,aaa,aaaa三个  </p>
+<p>—|—  </p>
+<h2 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h2><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>| </p>
+<p>^$ ：匹配空行</p>
+<p>^.$ ：匹配包含一个字符的行</p>
+<p>\<em>\.pas ：匹配以</em>.pas结尾的所有字符或文件</p>
+<p>[0123456789]或[0-9] ：假定要匹配任意一个数字</p>
+<p>[a-z] ：任意小写字母</p>
+<p>[A-Za-z] ：任意大小写字母</p>
+<p>[S,s] ：匹配大小写S</p>
+<p>[0-9]\{3\}\.[0-9]\{3\}\.[0-9]\{3\}\.[0-9]\{3\} ：匹配IP地址 [0-9]\{3\}三个0-9组成的字符串；\. ：匹配点（注意这里点是特殊的字符，所以要用”&quot;来屏蔽其含义）  </p>
+<p>—|—  </p>
+<h1 id="find介绍"><a href="#find介绍" class="headerlink" title="find介绍"></a>find介绍</h1><p>查找具有某些特征文件的命令，可遍历当前目录甚至于整个文件系统来查看某些文件或目录，其遍历大的文件系统时一般放在后台执行。</p>
+<h2 id="find命令的一般形式"><a href="#find命令的一般形式" class="headerlink" title="find命令的一般形式"></a>find命令的一般形式</h2><p>find pathname -options [-print -exec -ok]</p>
+<p>-pathname :find命令所查找的目录路径。如用”.”来表示当前的目录，用/来表示系统根目录</p>
+<p>-print :find命令将匹配的文件输出到标准输出</p>
+<p>-exec: find命令对匹配的文件执行该参数所给出的shell命令，相应的命令形式为</p>
+<p>‘command’{} ; (注意{}和\之间的空格)</p>
+<p>-ok 和 -exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</p>
+<h2 id="options"><a href="#options" class="headerlink" title="options"></a>options</h2><p>-name ：按照文件名查找文件</p>
+<p>-perm ：按照文件权限来查找文件</p>
+<p>-user ：按照文件属主来查找文件</p>
+<p>-group ：按照文件所属的组来查找文件</p>
+<p>-mtime -n +n 按照文件的更改时间来查找文件，-n表示文件更改时间距现在n天以内，+n表示文件更改时间距现在n天以前。find命令还有-atime 和-ctime选项，但它们都和-mtime选项相似。</p>
+<p>-size n[c]查找文件长度为n块的文件，带有c时表示文件长度以字节计。</p>
+<p>-nogroup 查找无有效所属组的文件，即该文件所属的组在/etc/groups中不存在</p>
+<p>-newer file1 !file2查找更改时间比文件file1新但比文件file2旧的文件</p>
+<p>-depth 先查找指定目录有无匹配文件，若无则再在子目录中查找</p>
+<p>-type 查找某一类型的文件，如</p>
+<p>b :块设备文件</p>
+<p>d：目录</p>
+<p>e：字符设备文件</p>
+<p>p；管道文件</p>
+<p>l：符号链接文件</p>
+<p>f：普通文件</p>
+<h2 id="find命令举例"><a href="#find命令举例" class="headerlink" title="find命令举例"></a>find命令举例</h2><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>| </p>
+<p>find -name “*.txt” -print 查找txt结尾的文件并输出到屏幕上</p>
+<p>find /cmd “.sh” -print 查找/cmd目录下所有sh文件，并输出</p>
+<p>find . -perm 755 -print 查找当前目录下权限为755的文件，并输出</p>
+<p>find <code>pwd</code> -user root -print 查找当前目录下属主为root的文件，并输出</p>
+<p>find ./ -group sunwill -print 查找当前目录下所属主是sunwill的文件</p>
+<p>find /var -mtime -5 -print 查找/var目录下更改时间为5天内的所有文件</p>
+<p>find /var -mtime +5 -print 查找/var目录下更改时间为5天以前的所有文件</p>
+<p>find /var -newer “myfile1” ! -newer “myfile2” -print 查找/var目录下比myfile1新，但是比myfile2旧的所有文件。</p>
+<p>find /var -type d -print 查找/var目录下所有目录</p>
+<p>find /var -type l -print 查找/var目录下所有的符号链接文件。</p>
+<p>find . -size +1000000c -print 查找当前目录下大于1000000字节的文件</p>
+<p>find / -name “con.file” -depth -print 查找根目录下有无”con.file”,若无则在其子目录中查找</p>
+<p>find . -type f -exec ls -l {} ; 查找当前目录下是否有普通文件，若有则执行ls -l  </p>
+<p>—|—  </p>
+<p>（4）xargs命令</p>
+<p>在 使用find命令的-exec选项处理匹配到的文件时，find命令将所有匹配到的文件一起传递给exec。不幸的是，有些系统对能够传递给exec的命 令长度有限制，这样find命令运行几分钟之后就算出现溢出错误。错误信息通常是“参数列太长”或“参数列溢出”。这就是xargs的用处所在，特别是与 find命令一起使用,exec会发起多个进程，而xargs会多个，只有一个</p>
+<p>find ./ -perm -7 -print | xargs chmod o-w 查找权限为7的文件并传递给chmod处理</p>
+<h1 id="grep介绍"><a href="#grep介绍" class="headerlink" title="grep介绍"></a>grep介绍</h1><p>grep 的一般格式为 grep [options] 基本正则表达式 [文件]</p>
+<p>字符串参数最好采用是双引号括，一是以防被误解为shell命令，二是可以用来查找多个单词组成的字符串</p>
+<p>-c：只输出匹配行的记数</p>
+<p>-i：不区分大小写（只适用于单个字符）</p>
+<p>-h：查询多个文件时不显示文件名</p>
+<p>-H：只显示文件名</p>
+<p>-l：查询多文件时只输出包含匹配字符的文件名</p>
+<p>-n：只显示匹配行及其行号</p>
+<p>-s：不显示不存在或无匹配文本的错误信息。</p>
+<p>-v：显示不包含匹配文本的所有行。</p>
+<h2 id="举例说明-1"><a href="#举例说明-1" class="headerlink" title="举例说明"></a>举例说明</h2><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>| </p>
+<p>grep ^[^210] myfile 匹配myfile中以非2、1、0开头的行</p>
+<p>grep “[5-8][6-9][0-3]” myfile 匹配myfile中第一位为5|6|7|8，第二位6|7|8|9，第三位为0|1|2|3的三个字符的行</p>
+<p>grep “4\{2,4\}” myfile 匹配myfile中含有44,444或4444的行</p>
+<p>grep “?“ myfile匹配myfile中含有任意字符的行  </p>
+<p>—|—  </p>
+<h2 id="grep命令类名"><a href="#grep命令类名" class="headerlink" title="grep命令类名"></a>grep命令类名</h2><p>[[:upper:]] 表示[A-Z]</p>
+<p>[[:alnum:]] 表示[0-9a-zA-Z]</p>
+<p>[[:lower:]] 表示[a-z]</p>
+<p>[[:space:]] 表示空格或者tab键</p>
+<p>[[:digit:]] 表示[0-9]</p>
+<p>[[:alpha:]] 表示[a-zA-Z]</p>
+<p>如：grep “5[[:digit:]][[:digit:]]” myfile 匹配myfile中含有5开头接下去两位都是数字的行。</p>
+<h1 id="awk介绍"><a href="#awk介绍" class="headerlink" title="awk介绍"></a>awk介绍</h1><p>可以从文件或字符串中基于指定规则浏览和抽取信息，是一种自解释的变成语言。</p>
+<h2 id="awk命令行方式"><a href="#awk命令行方式" class="headerlink" title="awk命令行方式"></a>awk命令行方式</h2><p>awk [-F filed-spearator] ‘command’ input-files</p>
+<p>awk脚本：所有awk命令插入一个文件，并使awk程序可执行，然后用awk命令解释器作为脚本的首行，以便通过键入脚本名称来调用它。awk脚本是由各种操作和模式组成。</p>
+<p>模式部分决定动作语句何时触发及触发事件。（BEGIN,END）</p>
+<p>动作对数据进行处理，放在{}内指明（print）</p>
+<p>分隔符、域和记录:awk执行时，其浏览域标记为$1,$2,…$n.这种方法成为域标识。$0为所有域。</p>
+<h2 id="举例说明-2"><a href="#举例说明-2" class="headerlink" title="举例说明"></a>举例说明</h2><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>| </p>
+<p>awk ‘{print $0}’ test.txt |tee test.out 输出test.txt中所有行$0表示所有域</p>
+<p>awk -F : ‘{print $1} test.txt |tee test.out’ 同上。。只是分隔符为”:”</p>
+<p>awk ‘BEGIN {print “IPDate\n”}{print $1 “\t” $4} END{print “end-of-report”}’ test.txt  </p>
+<p>—|—  </p>
+<p>开始时打印“IPDate”结束时打印“end-of-report”中间打印主体信息，比如总共匹配三条信息，则输出如下：</p>
+<p>IPDate</p>
+<p>1 first</p>
+<p>2 second</p>
+<p>3 third</p>
+<p>end-of-report</p>
+<h2 id="匹配操作符"><a href="#匹配操作符" class="headerlink" title="匹配操作符"></a>匹配操作符</h2><p>~ 匹配,!~ 不匹配</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>| </p>
+<p>cat test.txt |awk ‘$0~/210.34.0.13/‘ 匹配test.txt中为210.34.0.13的行</p>
+<p>awk ‘$0!~/210.34.0.13’ test.txt 匹配test.txt中不是210.34.0.13的行</p>
+<p>awk ‘{if($1==”210.34.0.13”) print $0}’ test.txt 匹配 test.txt中第一个域为210.34.0.13的行。  </p>
+<p>—|—  </p>
+<h1 id="sed介绍"><a href="#sed介绍" class="headerlink" title="sed介绍"></a>sed介绍</h1><p>sed不与初始化文件打交道，它操作的只是一个拷贝，然后所有的改动如果没有重定向到一个文件，将输出到屏幕。</p>
+<p>sed是一种很重要的文本过滤工具，使用一行命令或者使用管道与grep与awk相结合。是一种非交互性文本流编辑。</p>
+<h2 id="调用sed的三种方式"><a href="#调用sed的三种方式" class="headerlink" title="调用sed的三种方式"></a>调用sed的三种方式</h2><p>使用sed命令行格式为：sed [options] sed命令 输入文件</p>
+<p>使用sed脚本文件格式为：sed[options] -f sed脚本文件 输入文件</p>
+<p>sed脚本文件[options] 输入文件</p>
+<p>–不管是使用shell命令行方式或脚本文件方式，如果没有指定输入文件，sed从标准输入中接受输入，一般是键盘或重定向结果。</p>
+<h2 id="sed-options"><a href="#sed-options" class="headerlink" title="sed options"></a>sed options</h2><p>-n：不打印</p>
+<p>-c：下一命令是编辑命令</p>
+<p>-f：如果正在调用sed脚本文件</p>
+<h2 id="sed在文件中查询文本的方式"><a href="#sed在文件中查询文本的方式" class="headerlink" title="sed在文件中查询文本的方式"></a>sed在文件中查询文本的方式</h2><p>–使用行号，可以是一个简单的数字，或是一个行号的范围</p>
+<p>–使用正则表达式</p>
+<h2 id="读取文本的方式"><a href="#读取文本的方式" class="headerlink" title="读取文本的方式"></a>读取文本的方式</h2><p>x x为一行号</p>
+<p>x,y 表示行号范围从x到y</p>
+<p>/pattern/ 查询包含模式的行</p>
+<p>/pattern/pattern/ 查询包含两个模式的行</p>
+<p>pattern/,x 在给定的行号上查询包含模式的行</p>
+<p>x,/pattern/ 通过行号和模式查询匹配行</p>
+<p>x,y! 查询不包含指定行号x和y的行</p>
+<h2 id="基本sed编辑命令"><a href="#基本sed编辑命令" class="headerlink" title="基本sed编辑命令"></a>基本sed编辑命令</h2><p>p 打印匹配行</p>
+<p>d 删除匹配行</p>
+<p>= 显示文件行号</p>
+<p>a\ 在定位行号后附加新文本信息</p>
+<p>i\ 在定位行号后插入新文本信息</p>
+<p>c\ 用新文本替换定位文本</p>
+<p>s 使用替换模式替换相应模式</p>
+<p>r 从另一个文件中读文件</p>
+<p>w 写文本到一个文件</p>
+<p>q 第一个模式匹配完成后推出或立即退出</p>
+<p>l 显示与八禁止ASCII代码等价的控制字符</p>
+<p>{} 在定位行执行的命令组</p>
+<p>n 从另一个文件中读文本下一行，并附加在下一行</p>
+<p>g 将模式2粘贴到/pattern n/</p>
+<p>y 传送字符</p>
+<h2 id="举例说明-3"><a href="#举例说明-3" class="headerlink" title="举例说明"></a>举例说明</h2><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>| </p>
+<p>sed -n ‘2p’ test.txt 打印第二行的信息(注意：-n是不打印不匹配的信息，若没加-n，则打印文件的所有信息而不是匹配信息)</p>
+<p>sed -n ‘1,4p’ test.txt 打印第一行到第四行的信息</p>
+<p>sed -n ‘/los/p’ test.txt模式匹配los，并打印出来</p>
+<p>sed -n ‘2,/los/p’ test.txt 从第二行开始。。知道匹配第一个los</p>
+<p>sed -n ‘/^$/p’ test.txt 匹配空行</p>
+<p>sed -n -e ‘/^$/p’ -e ‘/^$/=’ test.txt 打印空行及行号</p>
+<p>sed -n ‘/good/a\morning’ test.txt 在匹配到的good后面附加morning</p>
+<p>sed -n ‘/good/i\morning’ test.txt 在匹配到的good前面插入morning</p>
+<p>sed -n ‘/good/c\morning’ test.txt 将匹配到的good替换成morning</p>
+<p>sed ‘1,2d’ test.txt 删除第1和2行</p>
+<p>sed ‘s/good/good morning/g’ test.txt 匹配good并替换成goodmorning</p>
+<p>send ‘s/good/&amp; hello /p’ test.txt 匹配到good就在其后面加上hello</p>
+<p>send ‘s/good/ hello &amp;/p’ test.txt 匹配到good就在其前面加上hello  </p>
+<p>—|—  </p>
+<h1 id="合并与分割"><a href="#合并与分割" class="headerlink" title="合并与分割"></a>合并与分割</h1><p>sort,uniq,join,cut,paste,split</p>
+<h2 id="sot命令"><a href="#sot命令" class="headerlink" title="sot命令"></a>sot命令</h2><p>sort [options] files 许多不同的域按不同的列顺序排序</p>
+<p>-c 测试文件是否已经排序</p>
+<p>-m 合并两个排序文件</p>
+<p>-u 删除所有同样行</p>
+<p>-o 存储sort结果的输出文件名</p>
+<p>-t 域分隔符，用非空格或tab开始排序</p>
+<p>+n ：n 为列号，使用此列号开始排序</p>
+<p>-n 指定排序是域上的数字分类项</p>
+<p>-r 比较求逆</p>
+<p>sort -c test.txt 测试文件是否分类过</p>
+<p>sort -u test.txt 排序并合并一样的行</p>
+<p>sort -r test.txt 以相反的顺序排列</p>
+<p>sort -t “/“ +2 test.txt 以”/“分隔，第二个域开始分类</p>
+<h2 id="uniq命令"><a href="#uniq命令" class="headerlink" title="uniq命令"></a>uniq命令</h2><p>uniq [options ] files 从一个文本文件中去除或禁止重复行</p>
+<p>-u 只显示不重复行</p>
+<p>-d 只显示有重复数据行，每种重复行只显示其中一行</p>
+<p>-c 打印每一重复行出现次数</p>
+<p>-f ：n为数字，前n个域被忽略</p>
+<p>uniq -f 2 test.txt 忽略前2个域</p>
+<h2 id="join-命令"><a href="#join-命令" class="headerlink" title="join 命令"></a>join 命令</h2><p>join [options] file1 file2 用来将来自两个分类文本文件的行连在一起</p>
+<p>-an，n为一数字，用于连接时从文件n中显示不匹配行</p>
+<p>-onm ，连接域，n为文件号，m为域号</p>
+<p>-jnm，n为文件号，m为域号，使用其他域作连接域</p>
+<p>-t ，域分隔符。用来设置非空格或tab键的域分隔符。</p>
+<h2 id="split命令"><a href="#split命令" class="headerlink" title="split命令"></a>split命令</h2><p>split -output_file_size intput_filename output_filename</p>
+<p>用来将大文件分割成小文件。</p>
+<p>-b n，每个分割文件的大小n</p>
+<p>-C n，每个分割文件一行最多n字节</p>
+<p>-l n，每个分割文件的行数</p>
+<p>-n，同-l n</p>
+<p>split -10 test.txt 将test.txt分割成10行的小文件</p>
+<p>##　cut 命令</p>
+<p>1</p>
+<p>2</p>
+<p>| </p>
+<p>cut -c n1-n2 filename 显示每行从开头算起 n1 到 n2 的文字。</p>
+<p>cut -c 3-5 test.txt 显示test.txt中每行从第3到第5个字符  </p>
+<p>—|—  </p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#2017年12月27日-16-17-19-algondon-阅读数：11808"><span class="toc-number">1.</span> <span class="toc-text">2017年12月27日 16:17:19 algondon 阅读数：11808</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#另一种方法："><span class="toc-number">2.</span> <span class="toc-text">另一种方法：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#正则表达式"><span class="toc-number">3.</span> <span class="toc-text">正则表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本元字符集及其含义"><span class="toc-number">3.1.</span> <span class="toc-text">基本元字符集及其含义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#举例说明"><span class="toc-number">3.2.</span> <span class="toc-text">举例说明</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#find介绍"><span class="toc-number">4.</span> <span class="toc-text">find介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#find命令的一般形式"><span class="toc-number">4.1.</span> <span class="toc-text">find命令的一般形式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#options"><span class="toc-number">4.2.</span> <span class="toc-text">options</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#find命令举例"><span class="toc-number">4.3.</span> <span class="toc-text">find命令举例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#grep介绍"><span class="toc-number">5.</span> <span class="toc-text">grep介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#举例说明-1"><span class="toc-number">5.1.</span> <span class="toc-text">举例说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grep命令类名"><span class="toc-number">5.2.</span> <span class="toc-text">grep命令类名</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#awk介绍"><span class="toc-number">6.</span> <span class="toc-text">awk介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#awk命令行方式"><span class="toc-number">6.1.</span> <span class="toc-text">awk命令行方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#举例说明-2"><span class="toc-number">6.2.</span> <span class="toc-text">举例说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#匹配操作符"><span class="toc-number">6.3.</span> <span class="toc-text">匹配操作符</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#sed介绍"><span class="toc-number">7.</span> <span class="toc-text">sed介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#调用sed的三种方式"><span class="toc-number">7.1.</span> <span class="toc-text">调用sed的三种方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sed-options"><span class="toc-number">7.2.</span> <span class="toc-text">sed options</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sed在文件中查询文本的方式"><span class="toc-number">7.3.</span> <span class="toc-text">sed在文件中查询文本的方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#读取文本的方式"><span class="toc-number">7.4.</span> <span class="toc-text">读取文本的方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基本sed编辑命令"><span class="toc-number">7.5.</span> <span class="toc-text">基本sed编辑命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#举例说明-3"><span class="toc-number">7.6.</span> <span class="toc-text">举例说明</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#合并与分割"><span class="toc-number">8.</span> <span class="toc-text">合并与分割</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#sot命令"><span class="toc-number">8.1.</span> <span class="toc-text">sot命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#uniq命令"><span class="toc-number">8.2.</span> <span class="toc-text">uniq命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#join-命令"><span class="toc-number">8.3.</span> <span class="toc-text">join 命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#split命令"><span class="toc-number">8.4.</span> <span class="toc-text">split命令</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&text=find命令" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&title=find命令" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&is_video=false&description=find命令" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=find命令&body=Check out this article: http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&title=find命令" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&title=find命令" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&title=find命令" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&title=find命令" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&name=find命令&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2014/02/14/find%E5%91%BD%E4%BB%A4/&t=find命令" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

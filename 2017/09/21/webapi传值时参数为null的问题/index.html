@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="{   “State”: 12,   “StampOrderItem”: [   ],   “StampOrder”: { &quot;Guid_ID&quot;: &quot;string&quot;,&#x2F;&#x2F;这个值不认 因为是GUID属性  &quot;ID&quot;: 0,  &quot;Code&quot;: &quot;string&quot;,  &quot;OrderType&amp;quot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webapi传值时参数为null的问题">
+<meta property="og:url" content="http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="{   “State”: 12,   “StampOrderItem”: [   ],   “StampOrder”: { &quot;Guid_ID&quot;: &quot;string&quot;,&#x2F;&#x2F;这个值不认 因为是GUID属性  &quot;ID&quot;: 0,  &quot;Code&quot;: &quot;string&quot;,  &quot;OrderType&amp;quot">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-09-21T02:43:25.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.828Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>webapi传值时参数为null的问题</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/09/26/%E8%8B%8D%E7%A9%B9BOS%E8%B8%A9%E5%9D%91/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/08/30/swagger%E5%88%B6%E4%BD%9C%E6%8F%90%E4%BA%A4%E6%96%87%E4%BB%B6%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&text=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&title=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&is_video=false&description=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=webapi传值时参数为null的问题&body=Check out this article: http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&title=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&title=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&title=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&title=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&name=webapi传值时参数为null的问题&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&t=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        webapi传值时参数为null的问题
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-09-21T02:43:25.000Z" itemprop="datePublished">2017-09-21</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>{</p>
+<p>  “State”: 12,</p>
+<p>  “StampOrderItem”: [</p>
+<p>  ],</p>
+<p>  “StampOrder”: {</p>
+<pre><code>&quot;Guid_ID&quot;: &quot;string&quot;,//这个值不认 因为是GUID属性
+
+&quot;ID&quot;: 0,
+
+&quot;Code&quot;: &quot;string&quot;,
+
+&quot;OrderType&quot;: &quot;string&quot;,
+
+&quot;StampUnit&quot;: &quot;string&quot;,
+
+&quot;cCusCode&quot;: &quot;string&quot;,
+
+&quot;cLinkCode&quot;: &quot;string&quot;,
+
+&quot;dDate&quot;: &quot;2018-01-27T10:43:06.211Z&quot;,
+
+&quot;dPreDeliDate&quot;: &quot;2018-01-27T10:43:06.211Z&quot;,
+
+&quot;iTotalCost&quot;: 0,
+
+&quot;IsInvoice&quot;: true,
+
+&quot;InvoiceID&quot;: 0,
+
+&quot;Status&quot;: &quot;string&quot;,
+
+&quot;PrintCode&quot;: &quot;string&quot;,
+
+&quot;IsDeli&quot;: true,
+
+&quot;DeliDept&quot;: &quot;string&quot;,
+
+&quot;LicenseNo&quot;: &quot;string&quot;,
+
+&quot;DeliAddress&quot;: &quot;string&quot;,
+
+&quot;SourceCode&quot;: &quot;string&quot;,
+
+&quot;iPrintCount&quot;: 0,
+
+&quot;Remark&quot;: &quot;string&quot;,
+
+&quot;CreatedBy&quot;: &quot;string&quot;,
+
+&quot;cDepCode&quot;: &quot;string&quot;,
+
+&quot;cTeamCode&quot;: &quot;string&quot;,
+
+&quot;CreateDate&quot;: &quot;2018-01-27T10:43:06.211Z&quot;,
+
+&quot;ModifiedBy&quot;: &quot;string&quot;,
+
+&quot;ModifyDate&quot;: &quot;2018-01-27T10:43:06.211Z&quot;,
+
+&quot;isElectronic&quot;: true,
+
+&quot;VerificationCode&quot;: &quot;string&quot;,
+
+&quot;CertificateCode&quot;: &quot;string&quot;,
+
+&quot;ErrorReason&quot;: &quot;string&quot;,
+
+&quot;ChargeAmount&quot;: 0,
+
+&quot;LastAccessTime&quot;: &quot;string&quot;,
+
+&quot;ZDWHZ&quot;: &quot;string&quot;,
+
+&quot;PaidCost&quot;: 0,
+
+&quot;cPsn_Name&quot;: &quot;string&quot;,
+
+&quot;cDepName&quot;: &quot;string&quot;,
+
+&quot;DigitalNum&quot;: &quot;string&quot;,
+
+&quot;cCusName&quot;: &quot;string&quot;,
+
+&quot;cContactName&quot;: &quot;string&quot;,
+
+&quot;LinkTel&quot;: &quot;string&quot;,
+
+&quot;cTeamName&quot;: &quot;string&quot;,
+
+&quot;pzcodeText&quot;: &quot;string&quot;,
+
+&quot;CurPayCostText&quot;: &quot;string&quot;</code></pre><p>  },</p>
+<p>  “Person”: {</p>
+<pre><code>&quot;cPsn_Num&quot;: &quot;string&quot;,
+
+&quot;cPsn_Name&quot;: &quot;string&quot;,
+
+&quot;cPsn_NameEN&quot;: &quot;string&quot;,
+
+&quot;cDept_num&quot;: &quot;string&quot;,
+
+&quot;cDepName&quot;: &quot;string&quot;,
+
+&quot;rSex&quot;: &quot;string&quot;,
+
+&quot;dBirthDate&quot;: &quot;string&quot;,
+
+&quot;vCardNo&quot;: &quot;string&quot;,
+
+&quot;cDutyclass&quot;: &quot;string&quot;,
+
+&quot;cTeamName&quot;: &quot;string&quot;,
+
+&quot;cTeamAbbName&quot;: &quot;string&quot;,
+
+&quot;bSaleTeam&quot;: true,
+
+&quot;cUrgentCode&quot;: &quot;string&quot;,
+
+&quot;cUrgentName&quot;: &quot;string&quot;,
+
+&quot;dLastDate&quot;: &quot;string&quot;,
+
+&quot;cPsnMobilePhone&quot;: &quot;string&quot;,
+
+&quot;cPsnOPhone&quot;: &quot;string&quot;,
+
+&quot;cPsnInPhone&quot;: &quot;string&quot;,
+
+&quot;cPsnEmail&quot;: &quot;string&quot;,
+
+&quot;cFax&quot;: &quot;string&quot;,
+
+&quot;rEmployState&quot;: &quot;string&quot;,
+
+&quot;cpersonbarcode&quot;: &quot;string&quot;,
+
+&quot;cPsnQQCode&quot;: &quot;string&quot;,
+
+&quot;cPsnPostAddr&quot;: &quot;string&quot;,
+
+&quot;cDepPostCode&quot;: &quot;string&quot;,
+
+&quot;bTakeTM&quot;: true,
+
+&quot;bPsnPerson&quot;: true,
+
+&quot;bpsnshop&quot;: true,
+
+&quot;CurState&quot;: 0</code></pre><p>  }</p>
+<p>}</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&text=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&title=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&is_video=false&description=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=webapi传值时参数为null的问题&body=Check out this article: http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&title=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&title=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&title=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&title=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&name=webapi传值时参数为null的问题&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2017/09/21/webapi%E4%BC%A0%E5%80%BC%E6%97%B6%E5%8F%82%E6%95%B0%E4%B8%BAnull%E7%9A%84%E9%97%AE%E9%A2%98/&t=webapi传值时参数为null的问题" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

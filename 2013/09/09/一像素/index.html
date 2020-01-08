@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="一像素 博客园 首页 新随笔 联系 订阅 管理 随笔-31  文章-9  评论-303  十大经典排序算法（动图演示）0、算法概述0.1 算法分类十种常见排序算法可以分为两大类：  非线性时间比较类排序：通过比较来决定元素间的相对次序，由于其时间复杂度不能突破O(nlogn)，因此称为非线性时间比较类排序。 线性时间非比较类排序：不通过比较来决定元素间的相对次序，它可以突破基于比较排序的时间下界">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一像素">
+<meta property="og:url" content="http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="一像素 博客园 首页 新随笔 联系 订阅 管理 随笔-31  文章-9  评论-303  十大经典排序算法（动图演示）0、算法概述0.1 算法分类十种常见排序算法可以分为两大类：  非线性时间比较类排序：通过比较来决定元素间的相对次序，由于其时间复杂度不能突破O(nlogn)，因此称为非线性时间比较类排序。 线性时间非比较类排序：不通过比较来决定元素间的相对次序，它可以突破基于比较排序的时间下界">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/849589/201804/849589-20180402132530342-980121409.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/849589/201804/849589-20180402133438219-1946132192.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015223238449-2146169197.gif">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015224719590-1433219824.gif">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015225645277-1151100000.gif">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/849589/201803/849589-20180331170017421-364506073.gif">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015230557043-37375010.gif">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015230936371-1413523412.gif">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015231308699-356134237.gif">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015231740840-6968181.gif">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015232107090-1920702011.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015232453668-1397662527.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/icon_weibo_24.png">
+<meta property="og:image" content="https://common.cnblogs.com/images/wechat.png">
+<meta property="og:image" content="https://pic.cnblogs.com/face/849589/20151205235751.png">
+<meta property="article:published_time" content="2013-09-08T16:46:10.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:15.037Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images2018.cnblogs.com/blog/849589/201804/849589-20180402132530342-980121409.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>一像素</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2013/09/05/%E6%9E%B6%E6%9E%84%E5%BF%83%E5%BE%97/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&text=一像素" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&title=一像素" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&is_video=false&description=一像素" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=一像素&body=Check out this article: http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&title=一像素" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&title=一像素" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&title=一像素" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&title=一像素" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&name=一像素&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&t=一像素" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#十大经典排序算法（动图演示）"><span class="toc-number">1.</span> <span class="toc-text">十大经典排序算法（动图演示）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0、算法概述"><span class="toc-number">1.0.1.</span> <span class="toc-text">0、算法概述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">1.0.1.1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0-1-算法分类"><span class="toc-number">1.0.1.2.</span> <span class="toc-text">0.1 算法分类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0-2-算法复杂度"><span class="toc-number">1.0.1.3.</span> <span class="toc-text">0.2 算法复杂度</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、冒泡排序（Bubble-Sort）"><span class="toc-number">1.0.2.</span> <span class="toc-text">1、冒泡排序（Bubble Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-算法描述"><span class="toc-number">1.0.2.1.</span> <span class="toc-text">1.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-代码实现"><span class="toc-number">1.0.2.2.</span> <span class="toc-text">1.3 代码实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、选择排序（Selection-Sort）"><span class="toc-number">1.0.3.</span> <span class="toc-text">2、选择排序（Selection Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-算法描述"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">2.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-动图演示"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">2.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-代码实现"><span class="toc-number">1.0.3.3.</span> <span class="toc-text">2.3 代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-算法分析"><span class="toc-number">1.0.3.4.</span> <span class="toc-text">2.4 算法分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、插入排序（Insertion-Sort）"><span class="toc-number">1.0.4.</span> <span class="toc-text">3、插入排序（Insertion Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-算法描述"><span class="toc-number">1.0.4.1.</span> <span class="toc-text">3.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-动图演示"><span class="toc-number">1.0.4.2.</span> <span class="toc-text">3.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-代码实现"><span class="toc-number">1.0.4.3.</span> <span class="toc-text">3.2 代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-算法分析"><span class="toc-number">1.0.4.4.</span> <span class="toc-text">3.4 算法分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、希尔排序（Shell-Sort）"><span class="toc-number">1.0.5.</span> <span class="toc-text">4、希尔排序（Shell Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-算法描述"><span class="toc-number">1.0.5.1.</span> <span class="toc-text">4.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-动图演示"><span class="toc-number">1.0.5.2.</span> <span class="toc-text">4.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-代码实现"><span class="toc-number">1.0.5.3.</span> <span class="toc-text">4.3 代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-算法分析"><span class="toc-number">1.0.5.4.</span> <span class="toc-text">4.4 算法分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、归并排序（Merge-Sort）"><span class="toc-number">1.0.6.</span> <span class="toc-text">5、归并排序（Merge Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-算法描述"><span class="toc-number">1.0.6.1.</span> <span class="toc-text">5.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-动图演示"><span class="toc-number">1.0.6.2.</span> <span class="toc-text">5.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-代码实现"><span class="toc-number">1.0.6.3.</span> <span class="toc-text">5.3 代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-4-算法分析"><span class="toc-number">1.0.6.4.</span> <span class="toc-text">5.4 算法分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、快速排序（Quick-Sort）"><span class="toc-number">1.0.7.</span> <span class="toc-text">6、快速排序（Quick Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-算法描述"><span class="toc-number">1.0.7.1.</span> <span class="toc-text">6.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-动图演示"><span class="toc-number">1.0.7.2.</span> <span class="toc-text">6.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-代码实现"><span class="toc-number">1.0.7.3.</span> <span class="toc-text">6.3 代码实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7、堆排序（Heap-Sort）"><span class="toc-number">1.0.8.</span> <span class="toc-text">7、堆排序（Heap Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-算法描述"><span class="toc-number">1.0.8.1.</span> <span class="toc-text">7.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-2-动图演示"><span class="toc-number">1.0.8.2.</span> <span class="toc-text">7.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-3-代码实现"><span class="toc-number">1.0.8.3.</span> <span class="toc-text">7.3 代码实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8、计数排序（Counting-Sort）"><span class="toc-number">1.0.9.</span> <span class="toc-text">8、计数排序（Counting Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#8-1-算法描述"><span class="toc-number">1.0.9.1.</span> <span class="toc-text">8.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-2-动图演示"><span class="toc-number">1.0.9.2.</span> <span class="toc-text">8.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-3-代码实现"><span class="toc-number">1.0.9.3.</span> <span class="toc-text">8.3 代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-4-算法分析"><span class="toc-number">1.0.9.4.</span> <span class="toc-text">8.4 算法分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9、桶排序（Bucket-Sort）"><span class="toc-number">1.0.10.</span> <span class="toc-text">9、桶排序（Bucket Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#9-1-算法描述"><span class="toc-number">1.0.10.1.</span> <span class="toc-text">9.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-2-图片演示"><span class="toc-number">1.0.10.2.</span> <span class="toc-text">9.2 图片演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-3-代码实现"><span class="toc-number">1.0.10.3.</span> <span class="toc-text">9.3 代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-4-算法分析"><span class="toc-number">1.0.10.4.</span> <span class="toc-text">9.4 算法分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10、基数排序（Radix-Sort）"><span class="toc-number">1.0.11.</span> <span class="toc-text">10、基数排序（Radix Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#10-1-算法描述"><span class="toc-number">1.0.11.1.</span> <span class="toc-text">10.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-2-动图演示"><span class="toc-number">1.0.11.2.</span> <span class="toc-text">10.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-3-代码实现"><span class="toc-number">1.0.11.3.</span> <span class="toc-text">10.3 代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-4-算法分析"><span class="toc-number">1.0.11.4.</span> <span class="toc-text">10.4 算法分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#公告"><span class="toc-number">1.0.12.</span> <span class="toc-text">公告</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最新随笔"><span class="toc-number">1.0.13.</span> <span class="toc-text">最新随笔</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#随笔分类-44"><span class="toc-number">1.0.14.</span> <span class="toc-text">随笔分类(44)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文章分类-7"><span class="toc-number">1.0.15.</span> <span class="toc-text">文章分类(7)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文章档案-9"><span class="toc-number">1.0.16.</span> <span class="toc-text">文章档案(9)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#微博"><span class="toc-number">1.0.17.</span> <span class="toc-text">微博</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#积分与排名"><span class="toc-number">1.0.18.</span> <span class="toc-text">积分与排名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最新评论"><span class="toc-number">1.0.19.</span> <span class="toc-text">最新评论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#阅读排行榜"><span class="toc-number">1.0.20.</span> <span class="toc-text">阅读排行榜</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#评论排行榜"><span class="toc-number">1.0.21.</span> <span class="toc-text">评论排行榜</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐排行榜"><span class="toc-number">1.0.22.</span> <span class="toc-text">推荐排行榜</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        一像素
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2013-09-08T16:46:10.000Z" itemprop="datePublished">2013-09-09</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p><a href="https://github.com/git-onepixel" target="_blank" rel="noopener"></a></p>
+<p><a href="http://www.cnblogs.com/onepixel/" target="_blank" rel="noopener">一像素</a></p>
+<p><a href="http://www.cnblogs.com/" target="_blank" rel="noopener">博客园</a></p>
+<p><a href="http://www.cnblogs.com/onepixel/" target="_blank" rel="noopener">首页</a></p>
+<p><a href="https://i.cnblogs.com/EditPosts.aspx?opt=1" target="_blank" rel="noopener">新随笔</a></p>
+<p><a href="https://msg.cnblogs.com/send/%E4%B8%80%E5%83%8F%E7%B4%A0" target="_blank" rel="noopener">联系</a></p>
+<p><a href="http://www.cnblogs.com/onepixel/rss" target="_blank" rel="noopener">订阅</a></p>
+<p><a href="https://i.cnblogs.com/" target="_blank" rel="noopener">管理</a></p>
+<p>随笔-31  文章-9  评论-303 </p>
+<h1 id="十大经典排序算法（动图演示）"><a href="#十大经典排序算法（动图演示）" class="headerlink" title="十大经典排序算法（动图演示）"></a><a href="https://www.cnblogs.com/onepixel/p/7674659.html" target="_blank" rel="noopener">十大经典排序算法（动图演示）</a></h1><h3 id="0、算法概述"><a href="#0、算法概述" class="headerlink" title="0、算法概述"></a>0、算法概述</h3><h4 id=""><a href="#" class="headerlink" title=""></a></h4><h4 id="0-1-算法分类"><a href="#0-1-算法分类" class="headerlink" title="0.1 算法分类"></a>0.1 算法分类</h4><p>十种常见排序算法可以分为两大类：</p>
+<blockquote>
+<p>非线性时间比较类排序：通过比较来决定元素间的相对次序，由于其时间复杂度不能突破O(nlogn)，因此称为非线性时间比较类排序。</p>
+<p>线性时间非比较类排序：不通过比较来决定元素间的相对次序，它可以突破基于比较排序的时间下界，以线性时间运行，因此称为线性时间非比较类排序。 </p>
+</blockquote>
+<p><img src="https://images2018.cnblogs.com/blog/849589/201804/849589-20180402132530342-980121409.png" alt=""></p>
+<h4 id="0-2-算法复杂度"><a href="#0-2-算法复杂度" class="headerlink" title="0.2 算法复杂度"></a>0.2 算法复杂度</h4><p><img src="https://images2018.cnblogs.com/blog/849589/201804/849589-20180402133438219-1946132192.png" alt=""></p>
+<p>0.3 相关概念</p>
+<blockquote>
+<p>稳定：如果a原本在b前面，而a=b，排序之后a仍然在b的前面。</p>
+<p>不稳定：如果a原本在b的前面，而a=b，排序之后 a 可能会出现在 b 的后面。</p>
+<p>时间复杂度：对排序数据的总的操作次数。反映当n变化时，操作次数呈现什么规律。</p>
+<p>空间复杂度：是指算法在计算机内执行时所需存储空间的度量，它也是数据规模n的函数。 </p>
+</blockquote>
+<h3 id="1、冒泡排序（Bubble-Sort）"><a href="#1、冒泡排序（Bubble-Sort）" class="headerlink" title="1、冒泡排序（Bubble Sort）"></a>1、冒泡排序（Bubble Sort）</h3><p>冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。 </p>
+<h4 id="1-1-算法描述"><a href="#1-1-算法描述" class="headerlink" title="1.1 算法描述"></a>1.1 算法描述</h4><p>比较相邻的元素。如果第一个比第二个大，就交换它们两个；</p>
+<p>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对，这样在最后的元素应该会是最大的数；</p>
+<p>针对所有的元素重复以上的步骤，除了最后一个；</p>
+<p>重复步骤1~3，直到排序完成。</p>
+<p>1.2 动图演示</p>
+<p><img src="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015223238449-2146169197.gif" alt=""></p>
+<h4 id="1-3-代码实现"><a href="#1-3-代码实现" class="headerlink" title="1.3 代码实现"></a>1.3 代码实现</h4><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>| </p>
+<p>function bubbleSort(arr) {</p>
+<pre><code>var len = arr.length;
+
+for (var i = 0; i &lt; len - 1; i++) {
+
+    for (var j = 0; j &lt; len - 1 - i; j++) {
+
+        if (arr[j] &gt; arr[j+1]) {       // 相邻元素两两对比
+
+            var temp = arr[j+1];       // 元素交换
+
+            arr[j+1] = arr[j];
+
+            arr[j] = temp;
+
+        }
+
+    }
+
+}
+
+return arr;</code></pre><p>}  </p>
+<p>—|—  </p>
+<h3 id="2、选择排序（Selection-Sort）"><a href="#2、选择排序（Selection-Sort）" class="headerlink" title="2、选择排序（Selection Sort）"></a>2、选择排序（Selection Sort）</h3><p>选择排序(Selection-sort)是一种简单直观的排序算法。它的工作原理：首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。 </p>
+<h4 id="2-1-算法描述"><a href="#2-1-算法描述" class="headerlink" title="2.1 算法描述"></a>2.1 算法描述</h4><p>n个记录的直接选择排序可经过n-1趟直接选择排序得到有序结果。具体算法描述如下：</p>
+<p>初始状态：无序区为R[1..n]，有序区为空；</p>
+<p>第i趟排序(i=1,2,3…n-1)开始时，当前有序区和无序区分别为R[1..i-1]和R(i..n）。该趟排序从当前无序区中-选出关键字最小的记录 R[k]，将它与无序区的第1个记录R交换，使R[1..i]和R[i+1..n)分别变为记录个数增加1个的新有序区和记录个数减少1个的新无序区；</p>
+<p>n-1趟结束，数组有序化了。</p>
+<h4 id="2-2-动图演示"><a href="#2-2-动图演示" class="headerlink" title="2.2 动图演示"></a>2.2 动图演示</h4><p><img src="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015224719590-1433219824.gif" alt="">　　</p>
+<h4 id="2-3-代码实现"><a href="#2-3-代码实现" class="headerlink" title="2.3 代码实现"></a>2.3 代码实现</h4><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>16</p>
+<p>| </p>
+<p>function selectionSort(arr) {</p>
+<pre><code>var len = arr.length;
+
+var minIndex, temp;
+
+for (var i = 0; i &lt; len - 1; i++) {
+
+    minIndex = i;
+
+    for (var j = i + 1; j &lt; len; j++) {
+
+        if (arr[j] &lt; arr[minIndex]) {    // 寻找最小的数
+
+            minIndex = j;                // 将最小数的索引保存
+
+        }
+
+    }
+
+    temp = arr[i];
+
+    arr[i] = arr[minIndex];
+
+    arr[minIndex] = temp;
+
+}
+
+return arr;</code></pre><p>}   </p>
+<p>—|—  </p>
+<h4 id="2-4-算法分析"><a href="#2-4-算法分析" class="headerlink" title="2.4 算法分析"></a>2.4 算法分析</h4><p>表现最稳定的排序算法之一，因为无论什么数据进去都是O(n2)的时间复杂度，所以用到它的时候，数据规模越小越好。唯一的好处可能就是不占用额外的内存空间了吧。理论上讲，选择排序可能也是平时排序一般人想到的最多的排序方法了吧。</p>
+<h3 id="3、插入排序（Insertion-Sort）"><a href="#3、插入排序（Insertion-Sort）" class="headerlink" title="3、插入排序（Insertion Sort）"></a>3、插入排序（Insertion Sort）</h3><p>插入排序（Insertion-Sort）的算法描述是一种简单直观的排序算法。它的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。</p>
+<h4 id="3-1-算法描述"><a href="#3-1-算法描述" class="headerlink" title="3.1 算法描述"></a>3.1 算法描述</h4><p>一般来说，插入排序都采用in-place在数组上实现。具体算法描述如下：</p>
+<p>从第一个元素开始，该元素可以认为已经被排序；</p>
+<p>取出下一个元素，在已经排序的元素序列中从后向前扫描；</p>
+<p>如果该元素（已排序）大于新元素，将该元素移到下一位置；</p>
+<p>重复步骤3，直到找到已排序的元素小于或者等于新元素的位置；</p>
+<p>将新元素插入到该位置后；</p>
+<p>重复步骤2~5。</p>
+<h4 id="3-2-动图演示"><a href="#3-2-动图演示" class="headerlink" title="3.2 动图演示"></a>3.2 动图演示</h4><p><img src="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015225645277-1151100000.gif" alt=""></p>
+<h4 id="3-2-代码实现"><a href="#3-2-代码实现" class="headerlink" title="3.2 代码实现"></a>3.2 代码实现</h4><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>| </p>
+<p>function insertionSort(arr) {</p>
+<pre><code>var len = arr.length;
+
+var preIndex, current;
+
+for (var i = 1; i &lt; len; i++) {
+
+    preIndex = i - 1;
+
+    current = arr[i];
+
+    while (preIndex &gt;= 0 &amp;&amp; arr[preIndex] &gt; current) {
+
+        arr[preIndex + 1] = arr[preIndex];
+
+        preIndex--;
+
+    }
+
+    arr[preIndex + 1] = current;
+
+}
+
+return arr;</code></pre><p>}  </p>
+<p>—|—  </p>
+<h4 id="3-4-算法分析"><a href="#3-4-算法分析" class="headerlink" title="3.4 算法分析"></a>3.4 算法分析</h4><p>插入排序在实现上，通常采用in-place排序（即只需用到O(1)的额外空间的排序），因而在从后向前扫描过程中，需要反复把已排序元素逐步向后挪位，为最新元素提供插入空间。</p>
+<h3 id="4、希尔排序（Shell-Sort）"><a href="#4、希尔排序（Shell-Sort）" class="headerlink" title="4、希尔排序（Shell Sort）"></a>4、希尔排序（Shell Sort）</h3><p>1959年Shell发明，第一个突破O(n2)的排序算法，是简单插入排序的改进版。它与插入排序的不同之处在于，它会优先比较距离较远的元素。希尔排序又叫缩小增量排序。</p>
+<h4 id="4-1-算法描述"><a href="#4-1-算法描述" class="headerlink" title="4.1 算法描述"></a>4.1 算法描述</h4><p>先将整个待排序的记录序列分割成为若干子序列分别进行直接插入排序，具体算法描述：</p>
+<p>选择一个增量序列t1，t2，…，tk，其中ti&gt;tj，tk=1；</p>
+<p>按增量序列个数k，对序列进行k 趟排序；</p>
+<p>每趟排序，根据对应的增量ti，将待排序列分割成若干长度为m 的子序列，分别对各子表进行直接插入排序。仅增量因子为1 时，整个序列作为一个表来处理，表长度即为整个序列的长度。</p>
+<h4 id="4-2-动图演示"><a href="#4-2-动图演示" class="headerlink" title="4.2 动图演示"></a>4.2 动图演示</h4><p><img src="https://images2018.cnblogs.com/blog/849589/201803/849589-20180331170017421-364506073.gif" alt=""></p>
+<h4 id="4-3-代码实现"><a href="#4-3-代码实现" class="headerlink" title="4.3 代码实现"></a>4.3 代码实现</h4><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>16</p>
+<p>17</p>
+<p>18</p>
+<p>| </p>
+<p>function shellSort(arr) {</p>
+<pre><code>var len = arr.length,
+
+    temp,
+
+    gap = 1;
+
+while (gap &lt; len / 3) {         // 动态定义间隔序列
+
+    gap = gap * 3 + 1;
+
+}
+
+for (gap; gap &gt; 0; gap = Math.floor(gap / 3)) {
+
+    for (var i = gap; i &lt; len; i++) {
+
+        temp = arr[i];
+
+        for (var j = i-gap; j &gt; 0 &amp;&amp; arr[j]&gt; temp; j-=gap) {
+
+            arr[j + gap] = arr[j];
+
+        }
+
+        arr[j + gap] = temp;
+
+    }
+
+}
+
+return arr;</code></pre><p>}  </p>
+<p>—|—  </p>
+<h4 id="4-4-算法分析"><a href="#4-4-算法分析" class="headerlink" title="4.4 算法分析"></a>4.4 算法分析</h4><p>希尔排序的核心在于间隔序列的设定。既可以提前设定好间隔序列，也可以动态的定义间隔序列。动态定义间隔序列的算法是《算法（第4版）》的合著者Robert Sedgewick提出的。　</p>
+<h3 id="5、归并排序（Merge-Sort）"><a href="#5、归并排序（Merge-Sort）" class="headerlink" title="5、归并排序（Merge Sort）"></a>5、归并排序（Merge Sort）</h3><p>归并排序是建立在归并操作上的一种有效的排序算法。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。将已有序的子序列合并，得到完全有序的序列；即先使每个子序列有序，再使子序列段间有序。若将两个有序表合并成一个有序表，称为2-路归并。 </p>
+<h4 id="5-1-算法描述"><a href="#5-1-算法描述" class="headerlink" title="5.1 算法描述"></a>5.1 算法描述</h4><p>把长度为n的输入序列分成两个长度为n/2的子序列；</p>
+<p>对这两个子序列分别采用归并排序；</p>
+<p>将两个排序好的子序列合并成一个最终的排序序列。</p>
+<h4 id="5-2-动图演示"><a href="#5-2-动图演示" class="headerlink" title="5.2 动图演示"></a>5.2 动图演示</h4><p><img src="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015230557043-37375010.gif" alt=""></p>
+<h4 id="5-3-代码实现"><a href="#5-3-代码实现" class="headerlink" title="5.3 代码实现"></a>5.3 代码实现</h4><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>16</p>
+<p>17</p>
+<p>18</p>
+<p>19</p>
+<p>20</p>
+<p>21</p>
+<p>22</p>
+<p>23</p>
+<p>24</p>
+<p>25</p>
+<p>26</p>
+<p>27</p>
+<p>28</p>
+<p>29</p>
+<p>30</p>
+<p>| </p>
+<p>function mergeSort(arr) { // 采用自上而下的递归方法</p>
+<pre><code>var len = arr.length;
+
+if (len &lt; 2) {
+
+    return arr;
+
+}
+
+var middle = Math.floor(len / 2),
+
+    left = arr.slice(0, middle),
+
+    right = arr.slice(middle);
+
+return merge(mergeSort(left), mergeSort(right));</code></pre><p>}</p>
+<p>function merge(left, right) {</p>
+<pre><code>var result = [];
+
+
+
+while (left.length&gt;0 &amp;&amp; right.length&gt;0) {
+
+    if (left[0] &lt;= right[0]) {
+
+        result.push(left.shift());
+
+    }else {
+
+        result.push(right.shift());
+
+    }
+
+}
+
+
+
+while (left.length)
+
+    result.push(left.shift());
+
+
+
+while (right.length)
+
+    result.push(right.shift());
+
+
+
+return result;</code></pre><p>}  </p>
+<p>—|—  </p>
+<h4 id="5-4-算法分析"><a href="#5-4-算法分析" class="headerlink" title="5.4 算法分析"></a>5.4 算法分析</h4><p>归并排序是一种稳定的排序方法。和选择排序一样，归并排序的性能不受输入数据的影响，但表现比选择排序好的多，因为始终都是O(nlogn）的时间复杂度。代价是需要额外的内存空间。</p>
+<h3 id="6、快速排序（Quick-Sort）"><a href="#6、快速排序（Quick-Sort）" class="headerlink" title="6、快速排序（Quick Sort）"></a>6、快速排序（Quick Sort）</h3><p>快速排序的基本思想：通过一趟排序将待排记录分隔成独立的两部分，其中一部分记录的关键字均比另一部分的关键字小，则可分别对这两部分记录继续进行排序，以达到整个序列有序。</p>
+<h4 id="6-1-算法描述"><a href="#6-1-算法描述" class="headerlink" title="6.1 算法描述"></a>6.1 算法描述</h4><p>快速排序使用分治法来把一个串（list）分为两个子串（sub-lists）。具体算法描述如下：</p>
+<p>从数列中挑出一个元素，称为 “基准”（pivot）；</p>
+<p>重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；</p>
+<p>递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。</p>
+<h4 id="6-2-动图演示"><a href="#6-2-动图演示" class="headerlink" title="6.2 动图演示"></a>6.2 动图演示</h4><p><img src="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015230936371-1413523412.gif" alt=""></p>
+<h4 id="6-3-代码实现"><a href="#6-3-代码实现" class="headerlink" title="6.3 代码实现"></a>6.3 代码实现</h4><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>16</p>
+<p>17</p>
+<p>18</p>
+<p>19</p>
+<p>20</p>
+<p>21</p>
+<p>22</p>
+<p>23</p>
+<p>24</p>
+<p>25</p>
+<p>26</p>
+<p>27</p>
+<p>28</p>
+<p>29</p>
+<p>30</p>
+<p>31</p>
+<p>32</p>
+<p>| </p>
+<p>function quickSort(arr, left, right) {</p>
+<pre><code>var len = arr.length,
+
+    partitionIndex,
+
+    left =typeof left !=&apos;number&apos; ? 0 : left,
+
+    right =typeof right !=&apos;number&apos; ? len - 1 : right;
+
+
+
+if (left &lt; right) {
+
+    partitionIndex = partition(arr, left, right);
+
+    quickSort(arr, left, partitionIndex-1);
+
+    quickSort(arr, partitionIndex+1, right);
+
+}
+
+return arr;</code></pre><p>}</p>
+<p>function partition(arr, left ,right) {    // 分区操作</p>
+<pre><code>var pivot = left,                     // 设定基准值（pivot）
+
+    index = pivot + 1;
+
+for (var i = index; i &lt;= right; i++) {
+
+    if (arr[i] &lt; arr[pivot]) {
+
+        swap(arr, i, index);
+
+        index++;
+
+    }       
+
+}
+
+swap(arr, pivot, index - 1);
+
+return index-1;</code></pre><p>}</p>
+<p>function swap(arr, i, j) {</p>
+<pre><code>var temp = arr[i];
+
+arr[i] = arr[j];
+
+arr[j] = temp;</code></pre><p>}  </p>
+<p>—|—  </p>
+<h3 id="7、堆排序（Heap-Sort）"><a href="#7、堆排序（Heap-Sort）" class="headerlink" title="7、堆排序（Heap Sort）"></a>7、堆排序（Heap Sort）</h3><p>堆排序（Heapsort）是指利用堆这种数据结构所设计的一种排序算法。堆积是一个近似完全二叉树的结构，并同时满足堆积的性质：即子结点的键值或索引总是小于（或者大于）它的父节点。</p>
+<h4 id="7-1-算法描述"><a href="#7-1-算法描述" class="headerlink" title="7.1 算法描述"></a>7.1 算法描述</h4><p>将初始待排序关键字序列(R1,R2….Rn)构建成大顶堆，此堆为初始的无序区；</p>
+<p>将堆顶元素R[1]与最后一个元素R[n]交换，此时得到新的无序区(R1,R2,……Rn-1)和新的有序区(Rn),且满足R[1,2…n-1]&lt;=R[n]；</p>
+<p>由于交换后新的堆顶R[1]可能违反堆的性质，因此需要对当前无序区(R1,R2,……Rn-1)调整为新堆，然后再次将R[1]与无序区最后一个元素交换，得到新的无序区(R1,R2….Rn-2)和新的有序区(Rn-1,Rn)。不断重复此过程直到有序区的元素个数为n-1，则整个排序过程完成。</p>
+<h4 id="7-2-动图演示"><a href="#7-2-动图演示" class="headerlink" title="7.2 动图演示"></a>7.2 动图演示</h4><p><img src="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015231308699-356134237.gif" alt=""></p>
+<h4 id="7-3-代码实现"><a href="#7-3-代码实现" class="headerlink" title="7.3 代码实现"></a>7.3 代码实现</h4><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>16</p>
+<p>17</p>
+<p>18</p>
+<p>19</p>
+<p>20</p>
+<p>21</p>
+<p>22</p>
+<p>23</p>
+<p>24</p>
+<p>25</p>
+<p>26</p>
+<p>27</p>
+<p>28</p>
+<p>29</p>
+<p>30</p>
+<p>31</p>
+<p>32</p>
+<p>33</p>
+<p>34</p>
+<p>35</p>
+<p>36</p>
+<p>37</p>
+<p>38</p>
+<p>39</p>
+<p>40</p>
+<p>41</p>
+<p>42</p>
+<p>43</p>
+<p>44</p>
+<p>| </p>
+<p>var len;   // 因为声明的多个函数都需要数据长度，所以把len设置成为全局变量</p>
+<p>function buildMaxHeap(arr) {  // 建立大顶堆</p>
+<pre><code>len = arr.length;
+
+for (var i = Math.floor(len/2); i &gt;= 0; i--) {
+
+    heapify(arr, i);
+
+}</code></pre><p>}</p>
+<p>function heapify(arr, i) {    // 堆调整</p>
+<pre><code>var left = 2 * i + 1,
+
+    right = 2 * i + 2,
+
+    largest = i;
+
+
+
+if (left &lt; len &amp;&amp; arr[left] &gt; arr[largest]) {
+
+    largest = left;
+
+}
+
+
+
+if (right &lt; len &amp;&amp; arr[right] &gt; arr[largest]) {
+
+    largest = right;
+
+}
+
+
+
+if (largest != i) {
+
+    swap(arr, i, largest);
+
+    heapify(arr, largest);
+
+}</code></pre><p>}</p>
+<p>function swap(arr, i, j) {</p>
+<pre><code>var temp = arr[i];
+
+arr[i] = arr[j];
+
+arr[j] = temp;</code></pre><p>}</p>
+<p>function heapSort(arr) {</p>
+<pre><code>buildMaxHeap(arr);
+
+
+
+for (var i = arr.length - 1; i &gt; 0; i--) {
+
+    swap(arr, 0, i);
+
+    len--;
+
+    heapify(arr, 0);
+
+}
+
+return arr;</code></pre><p>}  </p>
+<p>—|—  </p>
+<h3 id="8、计数排序（Counting-Sort）"><a href="#8、计数排序（Counting-Sort）" class="headerlink" title="8、计数排序（Counting Sort）"></a>8、计数排序（Counting Sort）</h3><p>计数排序不是基于比较的排序算法，其核心在于将输入的数据值转化为键存储在额外开辟的数组空间中。 作为一种线性时间复杂度的排序，计数排序要求输入的数据必须是有确定范围的整数。</p>
+<h4 id="8-1-算法描述"><a href="#8-1-算法描述" class="headerlink" title="8.1 算法描述"></a>8.1 算法描述</h4><p>找出待排序的数组中最大和最小的元素；</p>
+<p>统计数组中每个值为i的元素出现的次数，存入数组C的第i项；</p>
+<p>对所有的计数累加（从C中的第一个元素开始，每一项和前一项相加）；</p>
+<p>反向填充目标数组：将每个元素i放在新数组的第C(i)项，每放一个元素就将C(i)减去1。</p>
+<h4 id="8-2-动图演示"><a href="#8-2-动图演示" class="headerlink" title="8.2 动图演示"></a>8.2 动图演示</h4><p><img src="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015231740840-6968181.gif" alt=""></p>
+<h4 id="8-3-代码实现"><a href="#8-3-代码实现" class="headerlink" title="8.3 代码实现"></a>8.3 代码实现</h4><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>16</p>
+<p>17</p>
+<p>18</p>
+<p>19</p>
+<p>20</p>
+<p>21</p>
+<p>22</p>
+<p>| </p>
+<p>function countingSort(arr, maxValue) {</p>
+<pre><code>var bucket =new Array(maxValue + 1),
+
+    sortedIndex = 0;
+
+    arrLen = arr.length,
+
+    bucketLen = maxValue + 1;
+
+
+
+for (var i = 0; i &lt; arrLen; i++) {
+
+    if (!bucket[arr[i]]) {
+
+        bucket[arr[i]] = 0;
+
+    }
+
+    bucket[arr[i]]++;
+
+}
+
+
+
+for (var j = 0; j &lt; bucketLen; j++) {
+
+    while(bucket[j] &gt; 0) {
+
+        arr[sortedIndex++] = j;
+
+        bucket[j]--;
+
+    }
+
+}
+
+
+
+return arr;</code></pre><p>}  </p>
+<p>—|—  </p>
+<h4 id="8-4-算法分析"><a href="#8-4-算法分析" class="headerlink" title="8.4 算法分析"></a>8.4 算法分析</h4><p>计数排序是一个稳定的排序算法。当输入的元素是 n 个 0到 k 之间的整数时，时间复杂度是O(n+k)，空间复杂度也是O(n+k)，其排序速度快于任何比较排序算法。当k不是很大并且序列比较集中时，计数排序是一个很有效的排序算法。</p>
+<h3 id="9、桶排序（Bucket-Sort）"><a href="#9、桶排序（Bucket-Sort）" class="headerlink" title="9、桶排序（Bucket Sort）"></a>9、桶排序（Bucket Sort）</h3><p>桶排序是计数排序的升级版。它利用了函数的映射关系，高效与否的关键就在于这个映射函数的确定。桶排序 (Bucket sort)的工作的原理：假设输入数据服从均匀分布，将数据分到有限数量的桶里，每个桶再分别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排）。</p>
+<h4 id="9-1-算法描述"><a href="#9-1-算法描述" class="headerlink" title="9.1 算法描述"></a>9.1 算法描述</h4><p>设置一个定量的数组当作空桶；</p>
+<p>遍历输入数据，并且把数据一个一个放到对应的桶里去；</p>
+<p>对每个不是空的桶进行排序；</p>
+<p>从不是空的桶里把排好序的数据拼接起来。 </p>
+<h4 id="9-2-图片演示"><a href="#9-2-图片演示" class="headerlink" title="9.2 图片演示"></a>9.2 图片演示</h4><p><img src="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015232107090-1920702011.png" alt=""></p>
+<h4 id="9-3-代码实现"><a href="#9-3-代码实现" class="headerlink" title="9.3 代码实现"></a>9.3 代码实现</h4><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>16</p>
+<p>17</p>
+<p>18</p>
+<p>19</p>
+<p>20</p>
+<p>21</p>
+<p>22</p>
+<p>23</p>
+<p>24</p>
+<p>25</p>
+<p>26</p>
+<p>27</p>
+<p>28</p>
+<p>29</p>
+<p>30</p>
+<p>31</p>
+<p>32</p>
+<p>33</p>
+<p>34</p>
+<p>35</p>
+<p>36</p>
+<p>37</p>
+<p>38</p>
+<p>39</p>
+<p>40</p>
+<p>| </p>
+<p>function bucketSort(arr, bucketSize) {</p>
+<pre><code>if (arr.length === 0) {
+
+  return arr;
+
+}
+
+
+
+var i;
+
+var minValue = arr[0];
+
+var maxValue = arr[0];
+
+for (i = 1; i &lt; arr.length; i++) {
+
+  if (arr[i] &lt; minValue) {
+
+      minValue = arr[i];               // 输入数据的最小值
+
+  }else if (arr[i] &gt; maxValue) {
+
+      maxValue = arr[i];               // 输入数据的最大值
+
+  }
+
+}
+
+
+
+// 桶的初始化
+
+var DEFAULT_BUCKET_SIZE = 5;           // 设置桶的默认数量为5
+
+bucketSize = bucketSize || DEFAULT_BUCKET_SIZE;
+
+var bucketCount = Math.floor((maxValue - minValue) / bucketSize) + 1;  
+
+var buckets =new Array(bucketCount);
+
+for (i = 0; i &lt; buckets.length; i++) {
+
+    buckets[i] = [];
+
+}
+
+
+
+// 利用映射函数将数据分配到各个桶中
+
+for (i = 0; i &lt; arr.length; i++) {
+
+    buckets[Math.floor((arr[i] - minValue) / bucketSize)].push(arr[i]);
+
+}
+
+
+
+arr.length = 0;
+
+for (i = 0; i &lt; buckets.length; i++) {
+
+    insertionSort(buckets[i]);                     // 对每个桶进行排序，这里使用了插入排序
+
+    for (var j = 0; j &lt; buckets[i].length; j++) {
+
+        arr.push(buckets[i][j]);                     
+
+    }
+
+}
+
+
+
+return arr;</code></pre><p>}  </p>
+<p>—|—  </p>
+<h4 id="9-4-算法分析"><a href="#9-4-算法分析" class="headerlink" title="9.4 算法分析"></a>9.4 算法分析</h4><p>桶排序最好情况下使用线性时间O(n)，桶排序的时间复杂度，取决与对各个桶之间数据进行排序的时间复杂度，因为其它部分的时间复杂度都为O(n)。很显然，桶划分的越小，各个桶之间的数据越少，排序所用的时间也会越少。但相应的空间消耗就会增大。 </p>
+<h3 id="10、基数排序（Radix-Sort）"><a href="#10、基数排序（Radix-Sort）" class="headerlink" title="10、基数排序（Radix Sort）"></a>10、基数排序（Radix Sort）</h3><p>基数排序是按照低位先排序，然后收集；再按照高位排序，然后再收集；依次类推，直到最高位。有时候有些属性是有优先级顺序的，先按低优先级排序，再按高优先级排序。最后的次序就是高优先级高的在前，高优先级相同的低优先级高的在前。</p>
+<h4 id="10-1-算法描述"><a href="#10-1-算法描述" class="headerlink" title="10.1 算法描述"></a>10.1 算法描述</h4><p>取得数组中的最大数，并取得位数；</p>
+<p>arr为原始数组，从最低位开始取每个位组成radix数组；</p>
+<p>对radix进行计数排序（利用计数排序适用于小范围数的特点）；</p>
+<h4 id="10-2-动图演示"><a href="#10-2-动图演示" class="headerlink" title="10.2 动图演示"></a>10.2 动图演示</h4><p><img src="https://images2017.cnblogs.com/blog/849589/201710/849589-20171015232453668-1397662527.gif" alt=""> </p>
+<h4 id="10-3-代码实现"><a href="#10-3-代码实现" class="headerlink" title="10.3 代码实现"></a>10.3 代码实现</h4><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>16</p>
+<p>17</p>
+<p>18</p>
+<p>19</p>
+<p>20</p>
+<p>21</p>
+<p>22</p>
+<p>23</p>
+<p>24</p>
+<p>25</p>
+<p>| </p>
+<p>// LSD Radix Sort</p>
+<p>var counter = [];</p>
+<p>function radixSort(arr, maxDigit) {</p>
+<pre><code>var mod = 10;
+
+var dev = 1;
+
+for (var i = 0; i &lt; maxDigit; i++, dev *= 10, mod *= 10) {
+
+    for(var j = 0; j &lt; arr.length; j++) {
+
+        var bucket = parseInt((arr[j] % mod) / dev);
+
+        if(counter[bucket]==null) {
+
+            counter[bucket] = [];
+
+        }
+
+        counter[bucket].push(arr[j]);
+
+    }
+
+    var pos = 0;
+
+    for(var j = 0; j &lt; counter.length; j++) {
+
+        var value =null;
+
+        if(counter[j]!=null) {
+
+            while ((value = counter[j].shift()) !=null) {
+
+                  arr[pos++] = value;
+
+            }
+
+      }
+
+    }
+
+}
+
+return arr;</code></pre><p>}  </p>
+<p>—|—  </p>
+<h4 id="10-4-算法分析"><a href="#10-4-算法分析" class="headerlink" title="10.4 算法分析"></a>10.4 算法分析</h4><p>基数排序基于分别排序，分别收集，所以是稳定的。但基数排序的性能比桶排序要略差，每一次关键字的桶分配都需要O(n)的时间复杂度，而且分配之后得到新的关键字序列又需要O(n)的时间复杂度。假如待排数据可以分为d个关键字，则基数排序的时间复杂度将是O(d*2n) ，当然d要远远小于n，因此基本上还是线性级别的。</p>
+<p>基数排序的空间复杂度为O(n+k)，其中k为桶的数量。一般来说n&gt;&gt;k，因此额外空间需要大概n个左右。</p>
+<p>　　</p>
+<p>分类: <a href="http://www.cnblogs.com/onepixel/category/1193519.html" target="_blank" rel="noopener">算法</a></p>
+<p>好文要顶 关注我 收藏该文 <img src="https://common.cnblogs.com/images/icon_weibo_24.png" alt=""> <img src="https://common.cnblogs.com/images/wechat.png" alt=""></p>
+<p><a href="http://home.cnblogs.com/u/onepixel/" target="_blank" rel="noopener"><img src="https://pic.cnblogs.com/face/849589/20151205235751.png" alt=""></a></p>
+<p><a href="http://home.cnblogs.com/u/onepixel/" target="_blank" rel="noopener">一像素</a></p>
+<p><a href="http://home.cnblogs.com/u/onepixel/followees" target="_blank" rel="noopener">关注 - 28</a></p>
+<p><a href="http://home.cnblogs.com/u/onepixel/followers" target="_blank" rel="noopener">粉丝 - 580</a></p>
+<p>+加关注</p>
+<p>24</p>
+<p>0</p>
+<p><a href="http://www.cnblogs.com/onepixel/p/7468343.html" target="_blank" rel="noopener">«</a><a href="http://www.cnblogs.com/onepixel/p/7468343.html" target="_blank" rel="noopener"> </a>上一篇：<a href="http://www.cnblogs.com/onepixel/p/7468343.html" target="_blank" rel="noopener" title="发布于2017-09-02 23:12">小端字节序与大端字节序</a></p>
+<p><a href="http://www.cnblogs.com/onepixel/p/8724526.html" target="_blank" rel="noopener">»</a><a href="http://www.cnblogs.com/onepixel/p/8724526.html" target="_blank" rel="noopener"> </a>下一篇：<a href="http://www.cnblogs.com/onepixel/p/8724526.html" target="_blank" rel="noopener" title="发布于2018-04-05 22:12">简单介绍 CPU 的工作原理</a></p>
+<p>posted @ 2017-10-15 23:43 <a href="http://www.cnblogs.com/onepixel/" target="_blank" rel="noopener">一像素</a> 阅读(77960) 评论(15) <a href="https://i.cnblogs.com/EditPosts.aspx?postid=7674659" target="_blank" rel="noopener">编辑</a> <a href="https://www.cnblogs.com/onepixel/articles/7674659.html#" target="_blank" rel="noopener">收藏</a></p>
+<p>评论列表</p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#3922815" target="_blank" rel="noopener">#1楼</a> 2018-03-14 16:50 <a href="http://www.cnblogs.com/xuyiqing/" target="_blank" rel="noopener">一清</a> <a href="http://msg.cnblogs.com/send/%E4%B8%80%E6%B8%85" target="_blank" rel="noopener" title="发送站内短消息"> </a></p>
+<p>总体做的很不错，希尔排序的代码为什么运行后不是需要的结果？</p>
+<p>支持(0)反对(0)</p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#3928050" target="_blank" rel="noopener">#2楼</a> 2018-03-20 10:52 <a href="http://www.cnblogs.com/cloundSunshine/" target="_blank" rel="noopener">_hungryBoy</a> <a href="http://msg.cnblogs.com/send/_hungryBoy" target="_blank" rel="noopener" title="发送站内短消息"> </a></p>
+<p>请问博主的动画效果是怎么做的？</p>
+<p>支持(1)反对(0)</p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#3936397" target="_blank" rel="noopener">#3楼</a> 2018-03-29 09:16 <a href="http://www.cnblogs.com/zitayang/" target="_blank" rel="noopener">筱筱汀</a> <a href="http://msg.cnblogs.com/send/%E7%AD%B1%E7%AD%B1%E6%B1%80" target="_blank" rel="noopener" title="发送站内短消息"> </a></p>
+<p>动图显示得好清晰！感谢博主！</p>
+<p>支持(1)反对(0)</p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#3937930" target="_blank" rel="noopener">#4楼</a> 2018-03-30 15:42 <a href="http://www.cnblogs.com/AlvinZH/" target="_blank" rel="noopener">AlvinZH</a> <a href="http://msg.cnblogs.com/send/AlvinZH" target="_blank" rel="noopener" title="发送站内短消息"> </a></p>
+<p>希尔排序的平均时间复杂度少了一个平方吧，代码也写错了，代码可以这样写：</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>| </p>
+<p>void shellSort(vector<int> &amp;nums) {</p>
+<pre><code>int n = nums.size();
+
+int gap, i, j;
+
+
+
+for(gap = n/2; gap &gt; 0; gap /= 2) {
+
+    //插入排序简洁写法
+
+    for(i = gap; i &lt; n; i++) {
+
+        int num = nums[i];
+
+        for(j = i-gap; j&gt;=0 &amp;&amp; nums[j]&gt;num; j-=gap)
+
+            nums[j+gap] = nums[j];
+
+        nums[j+gap] = num;
+
+    }
+
+}</code></pre><p>}  </p>
+<p>—|—  </p>
+<p>支持(4)反对(2)</p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#3943863" target="_blank" rel="noopener">#5楼</a> 2018-04-07 08:33 <a href="http://home.cnblogs.com/u/876891/" target="_blank" rel="noopener">fanjiyue</a> <a href="http://msg.cnblogs.com/send/fanjiyue" target="_blank" rel="noopener" title="发送站内短消息"> </a></p>
+<p>感谢博主（为了这四个字我登陆了半天）</p>
+<p>支持(0)反对(0)</p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#3944473" target="_blank" rel="noopener">#6楼</a>[楼主] 2018-04-07 22:48 <a href="http://www.cnblogs.com/onepixel/" target="_blank" rel="noopener">一像素</a> <a href="http://msg.cnblogs.com/send/%E4%B8%80%E5%83%8F%E7%B4%A0" target="_blank" rel="noopener" title="发送站内短消息"> </a></p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#3943863" target="_blank" rel="noopener" title="查看所回复的评论">@</a> fanjiyue</p>
+<p>谢谢！</p>
+<p>支持(0)反对(0)</p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#3953963" target="_blank" rel="noopener">#7楼</a> 2018-04-17 17:23 <a href="http://www.cnblogs.com/ArsenalfanInECNU/" target="_blank" rel="noopener">青山牧云人</a> <a href="http://msg.cnblogs.com/send/%E9%9D%92%E5%B1%B1%E7%89%A7%E4%BA%91%E4%BA%BA" target="_blank" rel="noopener" title="发送站内短消息"> </a></p>
+<p>冒泡排序的实现有点问题，按照目前的代码只能是O(n*n)的时间复杂度。</p>
+<p>应该设置一个标志位检测是否发生数据交换，如果没有发生数据交换，直接完成排序，这样才有可能达到O(n)的时间复杂度。</p>
+<p>支持(0)反对(0)</p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#3954636" target="_blank" rel="noopener">#8楼</a> 2018-04-18 13:52 <a href="http://www.cnblogs.com/OranBlog/" target="_blank" rel="noopener">Oran</a> <a href="http://msg.cnblogs.com/send/Oran" target="_blank" rel="noopener" title="发送站内短消息"> </a></p>
+<p>希尔排序的实现也有问题， 4 3 6 5 这样的序列的排序结果这个算法的结果是 4 3 5 6</p>
+<p>支持(0)反对(0)</p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#3962414" target="_blank" rel="noopener">#9楼</a> 2018-04-27 13:41 <a href="http://home.cnblogs.com/u/1374275/" target="_blank" rel="noopener">danboard</a> <a href="http://msg.cnblogs.com/send/danboard" target="_blank" rel="noopener" title="发送站内短消息"> </a></p>
+<p>请问博主可以转载吗？</p>
+<p>支持(0)反对(0)</p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#3967812" target="_blank" rel="noopener">#10楼</a> 2018-05-05 11:50 <a href="http://home.cnblogs.com/u/1285468/" target="_blank" rel="noopener">LZA</a> <a href="http://msg.cnblogs.com/send/LZA" target="_blank" rel="noopener" title="发送站内短消息"> </a></p>
+<p>特地注册滚来感谢博主!</p>
+<p>支持(0)反对(0)</p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#3979785" target="_blank" rel="noopener">#11楼</a> 2018-05-22 17:18 <a href="http://www.cnblogs.com/joy-1120/" target="_blank" rel="noopener">三十五画生</a> <a href="http://msg.cnblogs.com/send/%E4%B8%89%E5%8D%81%E4%BA%94%E7%94%BB%E7%94%9F" target="_blank" rel="noopener" title="发送站内短消息"> </a></p>
+<p>感谢博主</p>
+<p>支持(0)反对(0)</p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#3982685" target="_blank" rel="noopener">#12楼</a> 2018-05-26 13:17 <a href="http://www.cnblogs.com/playburst/" target="_blank" rel="noopener">throuthstrom</a> <a href="http://msg.cnblogs.com/send/throuthstrom" target="_blank" rel="noopener" title="发送站内短消息"> </a></p>
+<p>这也太厉害了吧</p>
+<p>支持(0)反对(0)</p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#4008671" target="_blank" rel="noopener">#13楼</a> 2018-06-29 13:57 <a href="http://www.cnblogs.com/merryyou/" target="_blank" rel="noopener">longfeiz</a> <a href="http://msg.cnblogs.com/send/longfeiz" target="_blank" rel="noopener" title="发送站内短消息"> </a></p>
+<p>习惯性mark</p>
+<p>支持(0)反对(0)</p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#4015637" target="_blank" rel="noopener">#14楼</a> 2018-07-08 21:41 <a href="http://home.cnblogs.com/u/1423684/" target="_blank" rel="noopener">坏坏62</a> <a href="http://msg.cnblogs.com/send/%E5%9D%8F%E5%9D%8F62" target="_blank" rel="noopener" title="发送站内短消息"> </a></p>
+<p>这篇博文我要好好的学习，对排序算法一直都没有系统的学习 就知道个大概， 代码也是写不出来。感谢博主</p>
+<p>支持(0)反对(0)</p>
+<p><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#4017809" target="_blank" rel="noopener">#15楼</a> 2018-07-11 10:59 <a href="http://home.cnblogs.com/u/1436876/" target="_blank" rel="noopener">Lin_G_Q</a> <a href="http://msg.cnblogs.com/send/Lin_G_Q" target="_blank" rel="noopener" title="发送站内短消息"> </a></p>
+<p>谢谢博主大佬</p>
+<p>支持(0)反对(0)</p>
+<p>刷新评论<a href="https://www.cnblogs.com/onepixel/articles/7674659.html#" target="_blank" rel="noopener">刷新页面</a><a href="https://www.cnblogs.com/onepixel/articles/7674659.html#top" target="_blank" rel="noopener">返回顶部</a></p>
+<p>注册用户登录后才能发表评论，请 登录 或 注册，<a href="http://www.cnblogs.com/" target="_blank" rel="noopener">访问</a>网站首页。</p>
+<p>最新IT新闻:</p>
+<p>· <a href="https://news.cnblogs.com/n/601660/" target="_blank" rel="noopener">华大癌变</a></p>
+<p>· <a href="https://news.cnblogs.com/n/601659/" target="_blank" rel="noopener">华为秘密战略“达芬奇计划”曝光，特朗普慌不慌？</a></p>
+<p>· <a href="https://news.cnblogs.com/n/601643/" target="_blank" rel="noopener">《我不是药神》票房破20亿大关 捐款金额达800万元</a></p>
+<p>· <a href="https://news.cnblogs.com/n/601656/" target="_blank" rel="noopener">Facebook：剑桥分析未获取印尼100万用户个人数据</a></p>
+<p>· <a href="https://news.cnblogs.com/n/601655/" target="_blank" rel="noopener">南华早报：滴滴放缓融资计划 目标2019年下半年上市</a></p>
+<p>» <a href="http://news.cnblogs.com/" target="_blank" rel="noopener" title="IT新闻">更多新闻…</a></p>
+<p>最新知识库文章:</p>
+<p>· <a href="http://kb.cnblogs.com/page/598963/" target="_blank" rel="noopener">危害程序员职业生涯的三大观念</a></p>
+<p>· <a href="http://kb.cnblogs.com/page/601061/" target="_blank" rel="noopener">断点单步跟踪是一种低效的调试方法</a></p>
+<p>· <a href="http://kb.cnblogs.com/page/600804/" target="_blank" rel="noopener">测试 | 让每一粒尘埃有的放矢</a></p>
+<p>· <a href="http://kb.cnblogs.com/page/599854/" target="_blank" rel="noopener">从Excel到微服务</a></p>
+<p>· <a href="http://kb.cnblogs.com/page/522513/" target="_blank" rel="noopener">如何提升你的能力？给年轻程序员的几条建议</a></p>
+<p>» <a href="http://kb.cnblogs.com/" target="_blank" rel="noopener">更多知识库文章…</a></p>
+<h3 id="公告"><a href="#公告" class="headerlink" title="公告"></a>公告</h3><p>您是第</p>
+<p>| </p>
+<p>| </p>
+<p>位访客  </p>
+<p>—|—|—  </p>
+<p>微博：<a href="https://weibo.com/u/2714741303" target="_blank" rel="noopener" title="博客园 | 一像素官方微博">一像素</a><a href="https://weibo.com/u/2714741303" target="_blank" rel="noopener" title="博客园 | 一像素官方微博">more</a></p>
+<p>昵称：<a href="https://home.cnblogs.com/u/onepixel/" target="_blank" rel="noopener">一像素</a></p>
+<p>园龄：<a href="https://home.cnblogs.com/u/onepixel/" target="_blank" rel="noopener" title="入园时间：2015-12-02">2年7个月</a></p>
+<p>粉丝：<a href="https://home.cnblogs.com/u/onepixel/followers/" target="_blank" rel="noopener">580</a></p>
+<p>关注：<a href="https://home.cnblogs.com/u/onepixel/followees/" target="_blank" rel="noopener">28</a></p>
+<p>+加关注</p>
+<h3 id="最新随笔"><a href="#最新随笔" class="headerlink" title="最新随笔"></a>最新随笔</h3><p><a href="http://www.cnblogs.com/onepixel/p/9272546.html" target="_blank" rel="noopener">1. Linux 开启和关闭 Ping 操作</a></p>
+<p><a href="http://www.cnblogs.com/onepixel/p/9154884.html" target="_blank" rel="noopener">2. CentOS 查看和修改 Mysql 字符集</a></p>
+<p><a href="http://www.cnblogs.com/onepixel/p/8832776.html" target="_blank" rel="noopener">3. JavaScript 内存泄露问题</a></p>
+<p><a href="http://www.cnblogs.com/onepixel/p/8724526.html" target="_blank" rel="noopener">4. 简单介绍 CPU 的工作原理</a></p>
+<p><a href="http://www.cnblogs.com/onepixel/articles/7717789.html" target="_blank" rel="noopener">5. 正则表达式零宽断言详解</a></p>
+<p><a href="http://www.cnblogs.com/onepixel/p/7674659.html" target="_blank" rel="noopener">6. 十大经典排序算法（动图演示）</a></p>
+<p><a href="http://www.cnblogs.com/onepixel/articles/7605465.html" target="_blank" rel="noopener">7. 详解 setTimeout、setImmediate、process.nextTick 的区别</a></p>
+<p><a href="http://www.cnblogs.com/onepixel/articles/7596023.html" target="_blank" rel="noopener">8. Ajax、Comet 与 Websocket</a></p>
+<p><a href="http://www.cnblogs.com/onepixel/articles/7568856.html" target="_blank" rel="noopener">9. iframe跨域POST提交</a></p>
+<p><a href="http://www.cnblogs.com/onepixel/articles/7568001.html" target="_blank" rel="noopener">10. 详解 CORS 跨域资源共享</a></p>
+<h3 id="随笔分类-44"><a href="#随笔分类-44" class="headerlink" title="随笔分类(44)"></a>随笔分类(44)</h3><p><a href="https://www.cnblogs.com/onepixel/category/765754.html" target="_blank" rel="noopener">CSS3(3)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/category/1035472.html" target="_blank" rel="noopener">ES6(2)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/category/792275.html" target="_blank" rel="noopener">HTML5(4)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/category/792316.html" target="_blank" rel="noopener">jQuery(1)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/category/763999.html" target="_blank" rel="noopener">JS(23)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/category/765775.html" target="_blank" rel="noopener">Node(3)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/category/767134.html" target="_blank" rel="noopener">React(1)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/category/1065677.html" target="_blank" rel="noopener">V8(1)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/category/905569.html" target="_blank" rel="noopener">Vue(1)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/category/1193099.html" target="_blank" rel="noopener">计算机原理(2)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/category/1193519.html" target="_blank" rel="noopener">算法(1)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/category/1023906.html" target="_blank" rel="noopener">网络通信(2)</a></p>
+<h3 id="文章分类-7"><a href="#文章分类-7" class="headerlink" title="文章分类(7)"></a>文章分类(7)</h3><p><a href="https://www.cnblogs.com/onepixel/category/1088440.html" target="_blank" rel="noopener">Node(1)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/category/1064679.html" target="_blank" rel="noopener">计算机原理(1)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/category/1084011.html" target="_blank" rel="noopener">跨域请求(4)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/category/1096942.html" target="_blank" rel="noopener">算法</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/category/1087099.html" target="_blank" rel="noopener">网络通信(1)</a></p>
+<h3 id="文章档案-9"><a href="#文章档案-9" class="headerlink" title="文章档案(9)"></a>文章档案(9)</h3><p><a href="https://www.cnblogs.com/onepixel/archives/2018/04.html" target="_blank" rel="noopener">2018年4月 (1)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/archives/2017/10.html" target="_blank" rel="noopener">2017年10月 (1)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/archives/2017/09.html" target="_blank" rel="noopener">2017年9月 (6)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/archives/2017/08.html" target="_blank" rel="noopener">2017年8月 (1)</a></p>
+<h3 id="微博"><a href="#微博" class="headerlink" title="微博"></a>微博</h3><h3 id="积分与排名"><a href="#积分与排名" class="headerlink" title="积分与排名"></a>积分与排名</h3><p>积分 - 77076</p>
+<p>排名 - 4919</p>
+<h3 id="最新评论"><a href="#最新评论" class="headerlink" title="最新评论"></a>最新评论</h3><p><a href="http://www.cnblogs.com/onepixel/p/7674659.html#4017809" target="_blank" rel="noopener">1. Re:十大经典排序算法（动图演示）</a></p>
+<p>谢谢博主大佬</p>
+<p>--Lin_G_Q</p>
+<p><a href="http://www.cnblogs.com/onepixel/p/7674659.html#4015637" target="_blank" rel="noopener">2. Re:十大经典排序算法（动图演示）</a></p>
+<p>这篇博文我要好好的学习，对排序算法一直都没有系统的学习 就知道个大概， 代码也是写不出来。感谢博主</p>
+<p>--坏坏62</p>
+<p><a href="http://www.cnblogs.com/onepixel/p/5062456.html#4014048" target="_blank" rel="noopener">3. Re:让你分分钟理解 JavaScript 闭包</a></p>
+<p>js不是标记计数回收吗??</p>
+<p>--you1you</p>
+<p><a href="http://www.cnblogs.com/onepixel/p/7674659.html#4008671" target="_blank" rel="noopener">4. Re:十大经典排序算法（动图演示）</a></p>
+<p>习惯性mark</p>
+<p>--longfeiz</p>
+<p><a href="http://www.cnblogs.com/onepixel/p/7021506.html#4004753" target="_blank" rel="noopener">5. Re:Web前端知识体系精简</a></p>
+<p>666,帮新手少走了太多弯路，一直觉得前端不比任何后端语言简单</p>
+<p>--jiefangqudetian</p>
+<h3 id="阅读排行榜"><a href="#阅读排行榜" class="headerlink" title="阅读排行榜"></a>阅读排行榜</h3><p><a href="https://www.cnblogs.com/onepixel/p/7674659.html" target="_blank" rel="noopener">1. 十大经典排序算法（动图演示）(77954)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/6034307.html" target="_blank" rel="noopener">2. Vue.js 和 MVVM 小细节(30868)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5327594.html" target="_blank" rel="noopener">3. 使用 Node.js 搭建 Web 服务器(28715)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5062456.html" target="_blank" rel="noopener">4. 让你分分钟理解 JavaScript 闭包(24556)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5126046.html" target="_blank" rel="noopener">5. 判断JS数据类型的四种方法(20558)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5218904.html" target="_blank" rel="noopener">6. 正则表达式基础知识(18651)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5024903.html" target="_blank" rel="noopener">7. 认识原型对象和原型链(18227)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5043523.html" target="_blank" rel="noopener">8. 深入理解 new 操作符(16988)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5300445.html" target="_blank" rel="noopener">9. H5单页面手势滑屏切换原理(16119)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7021506.html" target="_blank" rel="noopener">10. Web前端知识体系精简(14391)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7092302.html" target="_blank" rel="noopener">11. 深入浅出 TCP/IP 协议栈(12682)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5281796.html" target="_blank" rel="noopener">12. JavaScript中的 NaN 与 isNaN(11782)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5248200.html" target="_blank" rel="noopener">13. React 基础入门(11228)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5090799.html" target="_blank" rel="noopener">14. 探索JS引擎工作原理(7444)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5156442.html" target="_blank" rel="noopener">15. 快速构建H5单页面切换应用(5748)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7143769.html" target="_blank" rel="noopener">16. Node.js 事件循环机制(5185)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5036369.html" target="_blank" rel="noopener">17. 函数作用域和作用域链(4988)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5143863.html" target="_blank" rel="noopener">18. 深入理解 call，apply 和 bind(4147)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5140944.html" target="_blank" rel="noopener">19. 细说 JavaScript 七种数据类型(3653)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5097584.html" target="_blank" rel="noopener">20. 浅析 jQuery 内部架构设计(3564)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5123115.html" target="_blank" rel="noopener">21. 数组常用操作方法总结(2832)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7337248.html" target="_blank" rel="noopener">22. 对 Undefined 与 Null 的一些理解(1208)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7078617.html" target="_blank" rel="noopener">23. requestAnimationFrame 知多少？(1167)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/8724526.html" target="_blank" rel="noopener">24. 简单介绍 CPU 的工作原理(1061)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5141566.html" target="_blank" rel="noopener">25. JavaScript 中的四舍五入(859)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7422820.html" target="_blank" rel="noopener">26. V8引擎的垃圾回收策略(750)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/8832776.html" target="_blank" rel="noopener">27. JavaScript 内存泄露问题(277)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7468343.html" target="_blank" rel="noopener">28. 小端字节序与大端字节序(200)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7159529.html" target="_blank" rel="noopener">29. TTL 和 DNS TTL 的区别(98)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/9154884.html" target="_blank" rel="noopener">30. CentOS 查看和修改 Mysql 字符集(35)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/9272546.html" target="_blank" rel="noopener">31. Linux 开启和关闭 Ping 操作(21)</a></p>
+<h3 id="评论排行榜"><a href="#评论排行榜" class="headerlink" title="评论排行榜"></a>评论排行榜</h3><p><a href="https://www.cnblogs.com/onepixel/p/5062456.html" target="_blank" rel="noopener">1. 让你分分钟理解 JavaScript 闭包(80)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/6034307.html" target="_blank" rel="noopener">2. Vue.js 和 MVVM 小细节(41)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7021506.html" target="_blank" rel="noopener">3. Web前端知识体系精简(18)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5043523.html" target="_blank" rel="noopener">4. 深入理解 new 操作符(17)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7143769.html" target="_blank" rel="noopener">5. Node.js 事件循环机制(15)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7674659.html" target="_blank" rel="noopener">6. 十大经典排序算法（动图演示）(15)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5327594.html" target="_blank" rel="noopener">7. 使用 Node.js 搭建 Web 服务器(14)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5300445.html" target="_blank" rel="noopener">8. H5单页面手势滑屏切换原理(14)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5024903.html" target="_blank" rel="noopener">9. 认识原型对象和原型链(13)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5090799.html" target="_blank" rel="noopener">10. 探索JS引擎工作原理(12)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5036369.html" target="_blank" rel="noopener">11. 函数作用域和作用域链(11)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5143863.html" target="_blank" rel="noopener">12. 深入理解 call，apply 和 bind(8)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7092302.html" target="_blank" rel="noopener">13. 深入浅出 TCP/IP 协议栈(7)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5097584.html" target="_blank" rel="noopener">14. 浅析 jQuery 内部架构设计(7)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5248200.html" target="_blank" rel="noopener">15. React 基础入门(7)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7337248.html" target="_blank" rel="noopener">16. 对 Undefined 与 Null 的一些理解(6)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5156442.html" target="_blank" rel="noopener">17. 快速构建H5单页面切换应用(5)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5123115.html" target="_blank" rel="noopener">18. 数组常用操作方法总结(4)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7422820.html" target="_blank" rel="noopener">19. V8引擎的垃圾回收策略(2)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5218904.html" target="_blank" rel="noopener">20. 正则表达式基础知识(2)</a></p>
+<h3 id="推荐排行榜"><a href="#推荐排行榜" class="headerlink" title="推荐排行榜"></a>推荐排行榜</h3><p><a href="https://www.cnblogs.com/onepixel/p/5062456.html" target="_blank" rel="noopener">1. 让你分分钟理解 JavaScript 闭包(185)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7021506.html" target="_blank" rel="noopener">2. Web前端知识体系精简(70)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/6034307.html" target="_blank" rel="noopener">3. Vue.js 和 MVVM 小细节(50)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7674659.html" target="_blank" rel="noopener">4. 十大经典排序算法（动图演示）(24)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7092302.html" target="_blank" rel="noopener">5. 深入浅出 TCP/IP 协议栈(23)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5090799.html" target="_blank" rel="noopener">6. 探索JS引擎工作原理(16)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5143863.html" target="_blank" rel="noopener">7. 深入理解 call，apply 和 bind(15)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5024903.html" target="_blank" rel="noopener">8. 认识原型对象和原型链(15)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5218904.html" target="_blank" rel="noopener">9. 正则表达式基础知识(13)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5300445.html" target="_blank" rel="noopener">10. H5单页面手势滑屏切换原理(11)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5036369.html" target="_blank" rel="noopener">11. 函数作用域和作用域链(11)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5043523.html" target="_blank" rel="noopener">12. 深入理解 new 操作符(10)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5248200.html" target="_blank" rel="noopener">13. React 基础入门(10)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7143769.html" target="_blank" rel="noopener">14. Node.js 事件循环机制(9)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5281796.html" target="_blank" rel="noopener">15. JavaScript中的 NaN 与 isNaN(7)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7078617.html" target="_blank" rel="noopener">16. requestAnimationFrame 知多少？(6)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5126046.html" target="_blank" rel="noopener">17. 判断JS数据类型的四种方法(6)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5123115.html" target="_blank" rel="noopener">18. 数组常用操作方法总结(5)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5327594.html" target="_blank" rel="noopener">19. 使用 Node.js 搭建 Web 服务器(5)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5140944.html" target="_blank" rel="noopener">20. 细说 JavaScript 七种数据类型(5)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5156442.html" target="_blank" rel="noopener">21. 快速构建H5单页面切换应用(4)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5097584.html" target="_blank" rel="noopener">22. 浅析 jQuery 内部架构设计(3)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/5141566.html" target="_blank" rel="noopener">23. JavaScript 中的四舍五入(1)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/8724526.html" target="_blank" rel="noopener">24. 简单介绍 CPU 的工作原理(1)</a></p>
+<p><a href="https://www.cnblogs.com/onepixel/p/7422820.html" target="_blank" rel="noopener">25. V8引擎的垃圾回收策略(1)</a></p>
+<p>Copyright ©2018 一像素</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#十大经典排序算法（动图演示）"><span class="toc-number">1.</span> <span class="toc-text">十大经典排序算法（动图演示）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0、算法概述"><span class="toc-number">1.0.1.</span> <span class="toc-text">0、算法概述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#null"><span class="toc-number">1.0.1.1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0-1-算法分类"><span class="toc-number">1.0.1.2.</span> <span class="toc-text">0.1 算法分类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0-2-算法复杂度"><span class="toc-number">1.0.1.3.</span> <span class="toc-text">0.2 算法复杂度</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、冒泡排序（Bubble-Sort）"><span class="toc-number">1.0.2.</span> <span class="toc-text">1、冒泡排序（Bubble Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-算法描述"><span class="toc-number">1.0.2.1.</span> <span class="toc-text">1.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-代码实现"><span class="toc-number">1.0.2.2.</span> <span class="toc-text">1.3 代码实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、选择排序（Selection-Sort）"><span class="toc-number">1.0.3.</span> <span class="toc-text">2、选择排序（Selection Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-算法描述"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">2.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-动图演示"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">2.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-代码实现"><span class="toc-number">1.0.3.3.</span> <span class="toc-text">2.3 代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-算法分析"><span class="toc-number">1.0.3.4.</span> <span class="toc-text">2.4 算法分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、插入排序（Insertion-Sort）"><span class="toc-number">1.0.4.</span> <span class="toc-text">3、插入排序（Insertion Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-算法描述"><span class="toc-number">1.0.4.1.</span> <span class="toc-text">3.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-动图演示"><span class="toc-number">1.0.4.2.</span> <span class="toc-text">3.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-代码实现"><span class="toc-number">1.0.4.3.</span> <span class="toc-text">3.2 代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-算法分析"><span class="toc-number">1.0.4.4.</span> <span class="toc-text">3.4 算法分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、希尔排序（Shell-Sort）"><span class="toc-number">1.0.5.</span> <span class="toc-text">4、希尔排序（Shell Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-算法描述"><span class="toc-number">1.0.5.1.</span> <span class="toc-text">4.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-动图演示"><span class="toc-number">1.0.5.2.</span> <span class="toc-text">4.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-代码实现"><span class="toc-number">1.0.5.3.</span> <span class="toc-text">4.3 代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-算法分析"><span class="toc-number">1.0.5.4.</span> <span class="toc-text">4.4 算法分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、归并排序（Merge-Sort）"><span class="toc-number">1.0.6.</span> <span class="toc-text">5、归并排序（Merge Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-算法描述"><span class="toc-number">1.0.6.1.</span> <span class="toc-text">5.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-动图演示"><span class="toc-number">1.0.6.2.</span> <span class="toc-text">5.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-代码实现"><span class="toc-number">1.0.6.3.</span> <span class="toc-text">5.3 代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-4-算法分析"><span class="toc-number">1.0.6.4.</span> <span class="toc-text">5.4 算法分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、快速排序（Quick-Sort）"><span class="toc-number">1.0.7.</span> <span class="toc-text">6、快速排序（Quick Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-算法描述"><span class="toc-number">1.0.7.1.</span> <span class="toc-text">6.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-动图演示"><span class="toc-number">1.0.7.2.</span> <span class="toc-text">6.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-代码实现"><span class="toc-number">1.0.7.3.</span> <span class="toc-text">6.3 代码实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7、堆排序（Heap-Sort）"><span class="toc-number">1.0.8.</span> <span class="toc-text">7、堆排序（Heap Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-算法描述"><span class="toc-number">1.0.8.1.</span> <span class="toc-text">7.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-2-动图演示"><span class="toc-number">1.0.8.2.</span> <span class="toc-text">7.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-3-代码实现"><span class="toc-number">1.0.8.3.</span> <span class="toc-text">7.3 代码实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8、计数排序（Counting-Sort）"><span class="toc-number">1.0.9.</span> <span class="toc-text">8、计数排序（Counting Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#8-1-算法描述"><span class="toc-number">1.0.9.1.</span> <span class="toc-text">8.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-2-动图演示"><span class="toc-number">1.0.9.2.</span> <span class="toc-text">8.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-3-代码实现"><span class="toc-number">1.0.9.3.</span> <span class="toc-text">8.3 代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-4-算法分析"><span class="toc-number">1.0.9.4.</span> <span class="toc-text">8.4 算法分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9、桶排序（Bucket-Sort）"><span class="toc-number">1.0.10.</span> <span class="toc-text">9、桶排序（Bucket Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#9-1-算法描述"><span class="toc-number">1.0.10.1.</span> <span class="toc-text">9.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-2-图片演示"><span class="toc-number">1.0.10.2.</span> <span class="toc-text">9.2 图片演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-3-代码实现"><span class="toc-number">1.0.10.3.</span> <span class="toc-text">9.3 代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-4-算法分析"><span class="toc-number">1.0.10.4.</span> <span class="toc-text">9.4 算法分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10、基数排序（Radix-Sort）"><span class="toc-number">1.0.11.</span> <span class="toc-text">10、基数排序（Radix Sort）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#10-1-算法描述"><span class="toc-number">1.0.11.1.</span> <span class="toc-text">10.1 算法描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-2-动图演示"><span class="toc-number">1.0.11.2.</span> <span class="toc-text">10.2 动图演示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-3-代码实现"><span class="toc-number">1.0.11.3.</span> <span class="toc-text">10.3 代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-4-算法分析"><span class="toc-number">1.0.11.4.</span> <span class="toc-text">10.4 算法分析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#公告"><span class="toc-number">1.0.12.</span> <span class="toc-text">公告</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最新随笔"><span class="toc-number">1.0.13.</span> <span class="toc-text">最新随笔</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#随笔分类-44"><span class="toc-number">1.0.14.</span> <span class="toc-text">随笔分类(44)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文章分类-7"><span class="toc-number">1.0.15.</span> <span class="toc-text">文章分类(7)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文章档案-9"><span class="toc-number">1.0.16.</span> <span class="toc-text">文章档案(9)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#微博"><span class="toc-number">1.0.17.</span> <span class="toc-text">微博</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#积分与排名"><span class="toc-number">1.0.18.</span> <span class="toc-text">积分与排名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最新评论"><span class="toc-number">1.0.19.</span> <span class="toc-text">最新评论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#阅读排行榜"><span class="toc-number">1.0.20.</span> <span class="toc-text">阅读排行榜</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#评论排行榜"><span class="toc-number">1.0.21.</span> <span class="toc-text">评论排行榜</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐排行榜"><span class="toc-number">1.0.22.</span> <span class="toc-text">推荐排行榜</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&text=一像素" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&title=一像素" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&is_video=false&description=一像素" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=一像素&body=Check out this article: http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&title=一像素" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&title=一像素" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&title=一像素" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&title=一像素" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&name=一像素&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/&t=一像素" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

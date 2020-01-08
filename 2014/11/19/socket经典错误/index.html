@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="1、经典错误之 无法访问已释放的对象。 对象名:“System.Net.Sockets.Socket” （1）、问题现场  （2）、问题叙述  程序中的某个地方调用到了socket.close后，这个socket还被调用，就出爆出上面错误！  （3）、解决方案  使用下面一句：  if (stsend !&#x3D; null &amp;&amp; stsend.Connected) stsend !&#x3D; n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="socket经典错误">
+<meta property="og:url" content="http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="1、经典错误之 无法访问已释放的对象。 对象名:“System.Net.Sockets.Socket” （1）、问题现场  （2）、问题叙述  程序中的某个地方调用到了socket.close后，这个socket还被调用，就出爆出上面错误！  （3）、解决方案  使用下面一句：  if (stsend !&#x3D; null &amp;&amp; stsend.Connected) stsend !&#x3D; n">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2014-11-19T09:03:04.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.989Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>socket经典错误</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2014/11/24/%E5%85%B3%E4%BA%8E2D/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2014/11/08/NGUI/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&text=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&title=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&is_video=false&description=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=socket经典错误&body=Check out this article: http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&title=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&title=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&title=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&title=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&name=socket经典错误&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&t=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        socket经典错误
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2014-11-19T09:03:04.000Z" itemprop="datePublished">2014-11-19</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p><strong>1、经典错误之 无法访问已释放的对象。 对象名:“<a href="http://system.net.sockets.socket/" target="_blank" rel="noopener">System.Net.Sockets.Socket</a>”</strong></p>
+<p>（1）、问题现场</p>
+<p><a href="http://blog.chinaunix.net/attachment/201208/22/25498312_1345603427G5dY.png" target="_blank" rel="noopener"></a></p>
+<p>（2）、问题叙述</p>
+<blockquote>
+<p>程序中的某个地方调用到了socket.close后，这个socket还被调用，就出爆出上面错误！</p>
+</blockquote>
+<p>（3）、解决方案</p>
+<blockquote>
+<p>使用下面一句： </p>
+<p>if (stsend != null &amp;&amp; stsend.Connected)</p>
+<p>stsend != null ：这一句在socket.close之后，会无效的，因为关闭socket连接时已经将其所有连接的资源都释放了；故要与Connected全用；</p>
+<p>stsend.Connected：获取一个值，该值指示 Socket上次操作是Send还是Receive形式连接到远程主机，如果都不是，那就是断开了。</p>
+</blockquote>
+<p>扩展说明：</p>
+<blockquote>
+<p>所有非托管资源程序员必须能控制资源释放，诸如数据库连接，SOCKET连接等在使用后都应当显示关闭，如果是长连接，在程序退出时应当确保所有占用的连接都被关闭。</p>
+</blockquote>
+<p>2、经典错误之 “远程主机强迫关闭了一个现有的连接。”</p>
+<p>（1）问题现场</p>
+<p><a href="http://blog.chinaunix.net/attachment/201208/22/25498312_13456034423886.png" target="_blank" rel="noopener"></a></p>
+<p>（2）、问题叙述</p>
+<blockquote>
+<p>   如下图，对于网络的经典问题，由于是server和client中的任意一方主动断开连接，导致弹出 “远程主机强迫关闭了一个现在连接”的异常。这种情况，会导致程序提示异常，无法继续往下执行。</p>
+</blockquote>
+<p>（3）、解决方案</p>
+<blockquote>
+<p>可以通过异常处理的方式，通过异常来提示网络不正常，从而跳出该程序分支,不至于因为异常问题程序瘫痪!</p>
+<p>如下图，一Catch到这类<a href="http://system.net.sockets.socketexception/" target="_blank" rel="noopener">System.Net.Sockets.SocketException</a>异常（当然这里把它设为Exceptioin异常，抓取的范围更广），那么就用MessageBox给用户一个提示，然后从该分支退出就行了。</p>
+</blockquote>
+<p><a href="http://blog.chinaunix.net/attachment/201208/22/25498312_13456034565aBg.png" target="_blank" rel="noopener"></a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&text=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&title=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&is_video=false&description=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=socket经典错误&body=Check out this article: http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&title=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&title=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&title=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&title=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&name=socket经典错误&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2014/11/19/socket%E7%BB%8F%E5%85%B8%E9%94%99%E8%AF%AF/&t=socket经典错误" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

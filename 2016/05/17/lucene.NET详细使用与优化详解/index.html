@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="lucene.NET详细使用与优化详解1 lucene简介1.1 什么是lucenepowered by 25175.netLucene是一个全文搜索框架，而不是应用产品。因此它并不像www.baidu.com 或者google Desktop那么拿来就能用，它只是提供了一种工具让你能实现这些产品。   1.2 lucene能做什么要回答这个问题，先要了解lucene的本质。实际上lucene的功">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lucene.NET详细使用与优化详解">
+<meta property="og:url" content="http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="lucene.NET详细使用与优化详解1 lucene简介1.1 什么是lucenepowered by 25175.netLucene是一个全文搜索框架，而不是应用产品。因此它并不像www.baidu.com 或者google Desktop那么拿来就能用，它只是提供了一种工具让你能实现这些产品。   1.2 lucene能做什么要回答这个问题，先要了解lucene的本质。实际上lucene的功">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-05-17T09:43:40.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.898Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>lucene.NET详细使用与优化详解</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2016/05/25/ORA-12154%EF%BC%9ATNS%EF%BC%9A%E6%97%A0%E6%B3%95%E8%A7%A3%E6%9E%90%E6%8C%87%E5%AE%9A%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%A0%87%E8%AF%86%E7%AC%A6/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2016/05/09/CSC%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9C%B0%E5%9D%80/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&text=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&title=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&is_video=false&description=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=lucene.NET详细使用与优化详解&body=Check out this article: http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&title=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&title=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&title=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&title=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&name=lucene.NET详细使用与优化详解&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&t=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#lucene-NET详细使用与优化详解"><span class="toc-number">1.</span> <span class="toc-text">lucene.NET详细使用与优化详解</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        lucene.NET详细使用与优化详解
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-05-17T09:43:40.000Z" itemprop="datePublished">2016-05-17</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="lucene-NET详细使用与优化详解"><a href="#lucene-NET详细使用与优化详解" class="headerlink" title="lucene.NET详细使用与优化详解"></a><a href="http://www.cnblogs.com/qq4004229/archive/2010/05/21/1741025.html" target="_blank" rel="noopener">lucene.NET详细使用与优化详解</a></h1><p>1 lucene简介<br>1.1 什么是lucenepowered by 25175.<a href="http://www.25175.net/" target="_blank" rel="noopener" title="25175.net网站">net</a><br>Lucene是一个全文搜索框架，而不是应用产品。因此它并不像<a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a> 或者google Desktop那么拿来就能用，它只是提供了一种工具让你能实现这些产品。  </p>
+<p>1.2 lucene能做什么<br>要回答这个问题，先要了解lucene的本质。实际上lucene的功能很单一，说到底，就是你给它若干个字符串，然后它为你提供一个全文搜索服务，告诉你你要搜索的关键词出现在哪里。知道了这个本质，你就可以发挥想象做任何符合这个条件的事情了。你可以把站内新闻都索引了，做个资料库；你可以把一个数据库表的若干个字段索引起来，那就不用再担心因为“%like%”而锁表了；你也可以写个自己的搜索引擎……  </p>
+<p>1.3 你该不该选择lucene<br>下面给出一些测试数据，如果你觉得可以接受，那么可以选择。<br>测试一：250万记录，300M左右文本，生成索引380M左右，800线程下平均处理时间300ms。<br>测试二：37000记录，索引数据库中的两个varchar字段，索引文件2.6M，800线程下平均处理时间1.5ms。  </p>
+<p>2 lucene的工作方式<br>lucene提供的服务实际包含两部分：一入一出。所谓入是写入，即将你提供的源（本质是字符串）写入索引或者将其从索引中删除；所谓出是读出，即向用户提供全文搜索服务，让用户可以通过关键词定位源。  </p>
+<p>2.1写入流程<br>源字符串首先经过analyzer处理，包括：分词，分成一个个单词；去除stopword（可选）。<br>将源中需要的信息加入document．各个Field中，并把需要索引的Field索引起来，把需要存储的Field存储起来。<br>将索引写入存储器，存储器可以是内存或磁盘。  </p>
+<p>2.2读出流程<br>用户提供搜索关键词，经过analyzer处理。<br>对处理后的关键词搜索索引找出对应的document．<br>用户根据需要从找到的document．提取需要的Field。  </p>
+<p>3 一些需要知道的概念<br>lucene用到一些概念，了解它们的含义，有利于下面的讲解。  </p>
+<p>3.1 analyzer<br>Analyzer是分析器，它的作用是把一个字符串按某种规则划分成一个个词语，并去除其中的无效词语，这里说的无效词语是指英文中的 “of”、 “the”，中文中的“的”、“地”等词语，这些词语在文章中大量出现，但是本身不包含什么关键信息，去掉有利于缩小索引文件、提高效率、提高命中率。<br>分词的规则千变万化，但目的只有一个：按语义划分。这点在英文中比较容易实现，因为英文本身就是以单词为单位的，已经用空格分开；而中文则必须以某种方法将连成一片的句子划分成一个个词语。具体划分方法下面再详细介绍，这里只需了解分析器的概念即可。  </p>
+<p>3.2 document．br /&gt; 用户提供的源是一条条记录，它们可以是文本文件、字符串或者数据库表的一条记录等等。一条记录经过索引之后，就是以一个document．形式存储在索引文件中的。用户进行搜索，也是以document．表的形式返回。  </p>
+<p>3.3 field<br>一个document．以包含多个信息域，例如一篇文章可以包含“标题”、“正文”、“最后修改时间”等信息域，这些信息域就是通过Field在document．存储的。<br>Field有两个属性可选：存储和索引。通过存储属性你可以控制是否对这个Field进行存储；通过索引属性你可以控制是否对该Field进行索引。这看起来似乎有些废话，事实上对这两个属性的正确组合很重要，下面举例说明：<br>还是以刚才的文章为例子，我们需要对标题和正文进行全文搜索，所以我们要把索引属性设置为真，同时我们希望能直接从搜索结果中提取文章标题，所以我们把标题域的存储属性设置为真，但是由于正文域太大了，我们为了缩小索引文件大小，将正文域的存储属性设置为假，当需要时再直接读取文件；我们只是希望能从搜索解果中提取最后修改时间，不需要对它进行搜索，所以我们把最后修改时间域的存储属性设置为真，索引属性设置为假。上面的三个域涵盖了两个属性的三种组合，还有一种全为假的没有用到，事实上Field不允许你那么设置，因为既不存储又不索引的域是没有意义的。  </p>
+<p>3.4 term<br>term是搜索的最小单位，它表示文档的一个词语，term由两部分组成：它表示的词语和这个词语所出现的field。  </p>
+<p>3.5 tocken<br>tocken是term的一次出现，它包含trem文本和相应的起止偏移，以及一个类型字符串。一句话中可以出现多次相同的词语，它们都用同一个term表示，但是用不同的tocken，每个tocken标记该词语出现的地方。  </p>
+<p>3.6 segment<br>添加索引时并不是每个document．马上添加到同一个索引文件，它们首先被写入到不同的小文件，然后再合并成一个大索引文件，这里每个小文件都是一个segment。  </p>
+<p>4 lucene的结构<br>lucene包括core和sandbox两部分，其中core是lucene稳定的核心部分，sandbox包含了一些附加功能，例如highlighter、各种分析器。<br>Lucene core有七个包：analysis，document．index，queryParser，search，store，util。<br>4.1 analysis<br>Analysis包含一些内建的分析器，例如按空白字符分词的WhitespaceAnalyzer，添加了stopwrod过滤的StopAnalyzer，最常用的StandardAnalyzer。<br>4.2 document．br /&gt; document．含文档的数据结构，例如document．定义了存储文档的数据结构，Field类定义了document．一个域。<br>4.3 index<br>Index包含了索引的读写类，例如对索引文件的segment进行写、合并、优化的IndexWriter类和对索引进行读取和删除操作的 IndexReader类，这里要注意的是不要被IndexReader这个名字误导，以为它是索引文件的读取类，实际上删除索引也是由它完成， IndexWriter只关心如何将索引写入一个个segment，并将它们合并优化；IndexReader则关注索引文件中各个文档的组织形式。<br>4.4 queryParser<br>QueryParser包含了解析查询语句的类，lucene的查询语句和sql语句有点类似，有各种保留字，按照一定的语法可以组成各种查询。 Lucene有很多种Query类，它们都继承自Query，执行各种特殊的查询，QueryParser的作用就是解析查询语句，按顺序调用各种 Query类查找出结果。<br>4.5 search<br>Search包含了从索引中搜索结果的各种类，例如刚才说的各种Query类，包括TermQuery、BooleanQuery等就在这个包里。<br>4.6 store<br>Store包含了索引的存储类，例如Directory定义了索引文件的存储结构，FSDirectory为存储在文件中的索引，RAMDirectory为存储在内存中的索引，MmapDirectory为使用内存映射的索引。<br>4.7 util<br>Util包含一些公共工具类，例如时间和字符串之间的转换工具。<br>5 如何建索引<br>5.1 最简单的能完成索引的代码片断  </p>
+<p>IndexWriter writer = new IndexWriter(“/data/index/”, new StandardAnalyzer(), true);<br>document．doc = new document．);<br>doc.add(new Field(“title”, “lucene introduction”, Field.Store.YES, Field.Index.TOKENIZED));<br>doc.add(new Field(“content”, “lucene works well”, Field.Store.YES, Field.Index.TOKENIZED));<br>writer.adddocument．doc);<br>writer.optimize();<br>writer.close();  </p>
+<p>下面我们分析一下这段代码。<br>首先我们创建了一个writer，并指定存放索引的目录为“/data/index”，使用的分析器为StandardAnalyzer，第三个参数说明如果已经有索引文件在索引目录下，我们将覆盖它们。<br>然后我们新建一个document．<br>我们向document．加一个field，名字是“title”，内容是“lucene introduction”，对它进行存储并索引。<br>再添加一个名字是“content”的field，内容是“lucene works well”，也是存储并索引。<br>然后我们将这个文档添加到索引中，如果有多个文档，可以重复上面的操作，创建document．添加。<br>添加完所有document．我们对索引进行优化，优化主要是将多个segment合并到一个，有利于提高索引速度。<br>随后将writer关闭，这点很重要。  </p>
+<p>对，创建索引就这么简单！<br>当然你可能修改上面的代码获得更具个性化的服务。  </p>
+<p>5.2 将索引直接写在内存<br>你需要首先创建一个RAMDirectory，并将其传给writer，代码如下：  </p>
+<p>Directory dir = new RAMDirectory();<br>IndexWriter writer = new IndexWriter(dir, new StandardAnalyzer(), true);<br>document．doc = new document．);<br>doc.add(new Field(“title”, “lucene introduction”, Field.Store.YES, Field.Index.TOKENIZED));<br>doc.add(new Field(“content”, “lucene works well”, Field.Store.YES, Field.Index.TOKENIZED));<br>writer.adddocument．doc);<br>writer.optimize();<br>writer.close();  </p>
+<p>5.3 索引文本文件<br>如果你想把纯文本文件索引起来，而不想自己将它们读入字符串创建field，你可以用下面的代码创建field：  </p>
+<p>Field field = new Field(“content”, new FileReader(file));  </p>
+<p>这里的file就是该文本文件。该构造函数实际上是读去文件内容，并对其进行索引，但不存储。  </p>
+<p>6 如何维护索引<br>索引的维护操作都是由IndexReader类提供。  </p>
+<p>6.1 如何删除索引<br>lucene提供了两种从索引中删除document．方法，一种是  </p>
+<p>void deletedocument．int docNum)  </p>
+<p>这种方法是根据document．索引中的编号来删除，每个document．进索引后都会有个唯一编号，所以根据编号删除是一种精确删除，但是这个编号是索引的内部结构，一般我们不会知道某个文件的编号到底是几，所以用处不大。另一种是  </p>
+<p>void deletedocument．(Term term)  </p>
+<p>这种方法实际上是首先根据参数term执行一个搜索操作，然后把搜索到的结果批量删除了。我们可以通过这个方法提供一个严格的查询条件，达到删除指定document．目的。<br>下面给出一个例子：  </p>
+<p>Directory dir = FSDirectory.getDirectory(PATH, false);<br>IndexReader reader = IndexReader.open(dir);<br>Term term = new Term(field, key);<br>reader.deletedocument．(term);<br>reader.close();  </p>
+<p>6.2 如何更新索引<br>lucene并没有提供专门的索引更新方法，我们需要先将相应的document．除，然后再将新的document．入索引。例如：  </p>
+<p>Directory dir = FSDirectory.getDirectory(PATH, false);<br>IndexReader reader = IndexReader.open(dir);<br>Term term = new Term(“title”, “lucene introduction”);<br>reader.deletedocument．(term);<br>reader.close();  </p>
+<p>IndexWriter writer = new IndexWriter(dir, new StandardAnalyzer(), true);<br>document．doc = new document．);<br>doc.add(new Field(“title”, “lucene introduction”, Field.Store.YES, Field.Index.TOKENIZED));<br>doc.add(new Field(“content”, “lucene is funny”, Field.Store.YES, Field.Index.TOKENIZED));<br>writer.adddocument．doc);<br>writer.optimize();<br>writer.close();<br>7 如何搜索<br>lucene的搜索相当强大，它提供了很多辅助查询类，每个类都继承自Query类，各自完成一种特殊的查询，你可以像搭积木一样将它们任意组合使用，完成一些复杂操作；另外lucene还提供了Sort类对结果进行排序，提供了Filter类对查询条件进行限制。你或许会不自觉地拿它跟SQL语句进行比较：“lucene能执行and、or、order by、where、like ‘%xx%’操作吗？”回答是：“当然没问题！”  </p>
+<p>7.1 各种各样的Query<br>下面我们看看lucene到底允许我们进行哪些查询操作：  </p>
+<p>7.1.1 TermQuery<br>首先介绍最基本的查询，如果你想执行一个这样的查询：“在content域中包含‘lucene’的document．rdquo;，那么你可以用TermQuery：  </p>
+<p>Term t = new Term(“content”, “ lucene”;<br>Query query = new TermQuery(t);  </p>
+<p>7.1.2 BooleanQuery<br>如果你想这么查询：“在content域中包含java或perl的document．rdquo;，那么你可以建立两个TermQuery并把它们用BooleanQuery连接起来：  </p>
+<p>TermQuery termQuery1 = new TermQuery(new Term(“content”, “java”);<br>TermQuery termQuery 2 = new TermQuery(new Term(“content”, “perl”);<br>BooleanQuery booleanQuery = new BooleanQuery();<br>booleanQuery.add(termQuery 1, BooleanClause.Occur.SHOULD);<br>booleanQuery.add(termQuery 2, BooleanClause.Occur.SHOULD);  </p>
+<p>7.1.3 WildcardQuery<br>如果你想对某单词进行通配符查询，你可以用WildcardQuery，通配符包括’?’匹配一个任意字符和’<em>’匹配零个或多个任意字符，例如你搜索’use</em>’，你可能找到’useful’或者’useless’：  </p>
+<p>Query query = new WildcardQuery(new Term(“content”, “use*”);  </p>
+<p>7.1.4 PhraseQuery<br>你可能对中日关系比较感兴趣，想查找‘中’和‘日’挨得比较近（5个字的距离内）的文章，超过这个距离的不予考虑，你可以：  </p>
+<p>PhraseQuery query = new PhraseQuery();<br>query.setSlop(5);<br>query.add(new Term(“content “, “中”));<br>query.add(new Term(“content”, “日”));  </p>
+<p>那么它可能搜到“中日合作……”、“中方和日方……”，但是搜不到“中国某高层领导说日本欠扁”。  </p>
+<p>7.1.5 PrefixQuery<br>如果你想搜以‘中’开头的词语，你可以用PrefixQuery：  </p>
+<p>PrefixQuery query = new PrefixQuery(new Term(“content “, “中”);  </p>
+<p>7.1.6 FuzzyQuery<br>FuzzyQuery用来搜索相似的term，使用Levenshtein算法。假设你想搜索跟‘wuzza’相似的词语，你可以：  </p>
+<p>Query query = new FuzzyQuery(new Term(“content”, “wuzza”);  </p>
+<p>你可能得到‘fuzzy’和‘wuzzy’。  </p>
+<p>7.1.7 RangeQuery<br>另一个常用的Query是RangeQuery，你也许想搜索时间域从20060101到20060130之间的document．你可以用RangeQuery：  </p>
+<p>RangeQuery query = new RangeQuery(new Term(“time”, “20060101”), new Term(“time”, “20060130”), true);  </p>
+<p>最后的true表示用闭合区间。  </p>
+<p>7.2 QueryParser<br>看了这么多Query，你可能会问：“不会让我自己组合各种Query吧，太麻烦了！”当然不会，lucene提供了一种类似于SQL语句的查询语句，我们姑且叫它lucene语句，通过它，你可以把各种查询一句话搞定，lucene会自动把它们查分成小块交给相应Query执行。下面我们对应每种 Query演示一下：<br>TermQuery可以用“field:key”方式，例如“content:lucene”。<br>BooleanQuery中‘与’用‘+’，‘或’用‘ ’，例如“content:java contenterl”。<br>WildcardQuery仍然用‘?’和‘<em>’，例如“content:use</em>”。<br>PhraseQuery用‘<del>’，例如“content:”中日”</del>5”。<br>PrefixQuery用‘<em>’，例如“中</em>”。<br>FuzzyQuery用‘~’，例如“content: wuzza ~”。<br>RangeQuery用‘[]’或‘{}’，前者表示闭区间，后者表示开区间，例如“time:[20060101 TO 20060130]”，注意TO区分大小写。<br>你可以任意组合query string，完成复杂操作，例如“标题或正文包括lucene，并且时间在20060101到20060130之间的文章” 可以表示为：“+ (title:lucene content:lucene) +time:[20060101 TO 20060130]”。代码如下：  </p>
+<p>Directory dir = FSDirectory.getDirectory(PATH, false);<br>IndexSearcher is = new IndexSearcher(dir);<br>QueryParser parser = new QueryParser(“content”, new StandardAnalyzer());<br>Query query = parser.parse(“+(title:lucene content:lucene) +time:[20060101 TO 20060130]”;<br>Hits hits = is.search(query);<br>for (int i = 0; i &lt; hits.length(); i++)<br>{<br>document．doc = hits.doc(i);<br>System.out.println(doc.get(“title”);<br>}<br>is.close();  </p>
+<p>首先我们创建一个在指定文件目录上的IndexSearcher。<br>然后创建一个使用StandardAnalyzer作为分析器的QueryParser，它默认搜索的域是content。<br>接着我们用QueryParser来parse查询字串，生成一个Query。<br>然后利用这个Query去查找结果，结果以Hits的形式返回。<br>这个Hits对象包含一个列表，我们挨个把它的内容显示出来。  </p>
+<p>7.3 Filter<br>filter的作用就是限制只查询索引的某个子集，它的作用有点像SQL语句里的 where，但又有区别，它不是正规查询的一部分，只是对数据源进行预处理，然后交给查询语句。注意它执行的是预处理，而不是对查询结果进行过滤，所以使用filter的代价是很大的，它可能会使一次查询耗时提高一百倍。<br>最常用的filter是RangeFilter和QueryFilter。RangeFilter是设定只搜索指定范围内的索引；QueryFilter是在上次查询的结果中搜索。<br>Filter的使用非常简单，你只需创建一个filter实例，然后把它传给searcher。</p>
+<p>-——长沙程序员技术交流QQ群:428755207——-</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#lucene-NET详细使用与优化详解"><span class="toc-number">1.</span> <span class="toc-text">lucene.NET详细使用与优化详解</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&text=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&title=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&is_video=false&description=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=lucene.NET详细使用与优化详解&body=Check out this article: http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&title=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&title=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&title=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&title=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&name=lucene.NET详细使用与优化详解&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2016/05/17/lucene.NET%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96%E8%AF%A6%E8%A7%A3/&t=lucene.NET详细使用与优化详解" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="摘要：&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&amp;nbsp;第一天&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&amp;nbsp;&amp;nbsp;1.Spring框架作用和优点&amp;nbsp;&amp;nbsp;Spring提供了一个整合应用平台。&amp;nbsp;&amp;nbsp;该框架具有IOC和AOP机制的实现,&amp;nbsp;&amp;nbsp;基于这些特性开发系统,&amp;nbsp;&amp;nbsp;可以提高系统结构的灵活性,&amp;nbsp;&amp;nbsp;降低组">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring五天">
+<meta property="og:url" content="http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="摘要：&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&amp;nbsp;第一天&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&amp;nbsp;&amp;nbsp;1.Spring框架作用和优点&amp;nbsp;&amp;nbsp;Spring提供了一个整合应用平台。&amp;nbsp;&amp;nbsp;该框架具有IOC和AOP机制的实现,&amp;nbsp;&amp;nbsp;基于这些特性开发系统,&amp;nbsp;&amp;nbsp;可以提高系统结构的灵活性,&amp;nbsp;&amp;nbsp;降低组">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-04-28T02:22:29.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.731Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>spring五天</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/05/05/java%E7%9A%84lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/04/22/java%E5%A4%A7%E7%BA%B2/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&text=spring五天" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&title=spring五天" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&is_video=false&description=spring五天" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=spring五天&body=Check out this article: http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&title=spring五天" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&title=spring五天" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&title=spring五天" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&title=spring五天" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&name=spring五天&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&t=spring五天" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        spring五天
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-04-28T02:22:29.000Z" itemprop="datePublished">2019-04-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>摘要：======================&nbsp;第一天================&nbsp;&nbsp;1.Spring框架作用和优点&nbsp;&nbsp;Spring提供了一个整合应用平台。&nbsp;&nbsp;该框架具有IOC和AOP机制的实现,&nbsp;&nbsp;基于这些特性开发系统,&nbsp;&nbsp;可以提高系统结构的灵活性,&nbsp;&nbsp;降低组件之间的耦合度。&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在整合应用</p>
+<p>======================</p>
+<p> 第一天</p>
+<p>================</p>
+<p>  1.Spring框架作用和优点</p>
+<p>   Spring提供了一个整合应用平台。</p>
+<p>   该框架具有IOC和AOP机制的实现,</p>
+<p>   基于这些特性开发系统,</p>
+<p>   可以提高系统结构的灵活性,</p>
+<p>   降低组件之间的耦合度。</p>
+<pre><code>在整合应用,
+
+我们会将应用程序的Action,DAO,Service组件交给Spring框架负责管理,
+
+使用Spring框架的IOC和AOP机制以低耦合方式建立关联。</code></pre><p> *2.Spring框架容器</p>
+<pre><code>Spring框架提供了一个容器,主要在该容器中管理应用程序的各个组件,建立组件关联</code></pre><p>   1)容器特性,如何实例化</p>
+<pre><code>Spring容器首先具有工厂特性,除此之外还具备了IOC和AOP机制的实现。</code></pre><p>   BeanFactory&lt;-继承-ApplicationContext</p>
+<p>   两个实现类:</p>
+<p>   ClassPathApplicationContext</p>
+<p>   FileSystemApplicationContext</p>
+<p>   2)容器如何对Bean组件管理</p>
+<pre><code>当将一个Bean组件交给Spring容器后,Spring容器可以负责创建、销毁该对象。
+
+
+
+
+*a.Bean对象创建模式
+
+
+
+
+ Spring容器支持singleton和prototype两种模式创建对象。
+
+ 默认为singleton,如果想改变可以使用scope属性定义。
+
+ (如果在Web整合应用,还支持request,session等值)
+
+
+
+
+b.Bean对象的创建时机
+
+
+
+
+singleton 模式对象在容器实例化时创建,
+
+通过lazy=true属性可以将创建推迟到getBean方法。
+
+prototype 模式对象在getBean方法时创建</code></pre><p>   c.Bean对象初始化设置</p>
+<p>   通过init-method属性可以指定一个方法当做初始化方法,</p>
+<p>   在对象创建后自动执行。</p>
+<p>   通过destroy-method属性可以指定一个销毁方法,</p>
+<p>   在对象被垃圾回收前自动执行。</p>
+<p>   (仅对singleton对象有效)</p>
+<p> *3.Spring框架的IOC机制</p>
+<p>   1)IOC概念</p>
+<pre><code>Inverse of Controller 被称为反向控制、控制反转。
+
+更确切的讲应该是控制的转移。</code></pre><p>   意思是当两个组件之间具有使用关系时,</p>
+<p>   原有将对象创建和关系指定逻辑交给了使用一方负责。</p>
+<p>   最终导致了两个组件耦合度过高,</p>
+<p>   为维护和组件替换带来的不便。</p>
+<p>   采用了IOC机制后,</p>
+<p>   会将对象创建和关系指定这些逻辑交给第三方框架或容器负责,</p>
+<p>   将这些控制逻辑转移给了第三方负责,</p>
+<p>   这样发生变更后,只需要修改第三方配置就可以了。</p>
+<p>   2)DI概念(Dependency Injection)</p>
+<pre><code>DI被称为依赖注入。Spring框架中IOC机制是通过DI技术实现的。
+
+DI注入技术有以下几种实现:</code></pre><p>   *a.setter方式注入(推荐)</p>
+<pre><code>依靠setter方法接收注入的对象实例
+
+\--添加setter方法
+
+\--采用&lt;property&gt;描述</code></pre><p>   b.constructor方式注入</p>
+<pre><code>依靠构造方法接收注入的对象实例
+
+\--添加带参数构造方法
+
+\--采用&lt;constructor-arg&gt;描述</code></pre><p> 4.DI注入的使用</p>
+<p>   可以通过注入技术注入各种不同类型的数据</p>
+<p>   1)注入一个Bean对象</p>
+<pre><code>采用ref=&quot;Bean的ID名称&quot;
+
+&lt;property name=&quot;costDao&quot;
+
+  ref=&quot;hibernateCostDao&quot;&gt;
+
+&lt;/property&gt;</code></pre><p>   2)注入一个基本类型数据</p>
+<pre><code>采用value=&quot;值&quot;
+
+&lt;property name=&quot;password&quot;
+
+    value=&quot;123456&quot;&gt;
+
+&lt;/property&gt;</code></pre><p>   3)注入集合类型数据</p>
+<pre><code>List,Set,Map,Properties</code></pre><p>======================</p>
+<p> 第二天</p>
+<p>================</p>
+<p> 1.Spring框架的AOP机制</p>
+<p>   1)什么是AOP和优点</p>
+<p>   Apsect Oriented Programming面向方面编程。</p>
+<p> 面向方面编程是以OOP面向对象编程为基础。</p>
+<p> AOP关注的是共通处理问题,可以将共通处理封装成一个组件(方面组件),</p>
+<p> 然后采用AOP机制可以以低耦合方式作用到指定的目标组件上。</p>
+<p>   2)AOP使用步骤</p>
+<pre><code>a.引入Spring的IOC和AOP开发包
+
+b.添加Spring容器配置文件
+
+c.将共通处理封装成一个独立Bean组件
+
+d.采用AOP配置将Bean组件作用到其它目标组件及其方法上</code></pre><p>   3)AOP相关概念</p>
+<pre><code>*a.方面(Aspect)
+
+ 方面指的封装共通处理的组件。可以灵活的切入到目标对象及方法上。
+
+*b.切入点(Pointcut)
+
+ 切入点用于指定目标对象及方法,利用特定表式指定目标对象及方法
+
+c.连接点(JoinPoint)
+
+连接点指的是方面和某一个目标方法的关联点。切入点是连接点的集合
+
+*d.通知(Advice)
+
+ 通知用于指定方面功能在目标对象方法上执行的时机。
+
+ 例如方法前、方法后、异常发生后等。
+
+e.目标组件(Target)
+
+ 使用方面功能的Bean组件,或者切入点指定的Bean组件
+
+f.动态代理(AutoProxy)
+
+动态代理机制是AOP机制的实现原理.
+
+Spring框架在使用AOP配置后,返回的Bean对象,
+
+是采用动态代理机制生成的一个新类型。
+
+该类型的方法负责去执行方面组件和目标组件的处理。</code></pre><p> Spring框架采用了两种方式生成动态代理类。</p>
+<p>  --采用CGLIB工具生成(目标对象没有接口)</p>
+<p>  public class 代理类 extends 原目标组件{</p>
+<pre><code>// 重写原目标组件的方法</code></pre><p>  }</p>
+<p>  --采用JDK Proxy API生成(目标对象有接口)</p>
+<p>  public class 代理类 implements 原目标组件接口{</p>
+<pre><code>// 重写原目标组件的方法</code></pre><p> }</p>
+<p>  *4)切入点表达式</p>
+<pre><code>利用表达式指定目标组件及方法。</code></pre><p>  *a.方法限定表达式</p>
+<p>   execution(修饰符? </p>
+<pre><code>返回类型 方法名(参数列表) throws异常?)</code></pre><p> 示例1:匹配容器中所有组件以add开始的方法</p>
+<pre><code>execution(* add*(..))</code></pre><p> 示例2:匹配CostService组件的所有方法</p>
+<pre><code>execution(* 
+
+  org.tarena.service.CostService.*(..))</code></pre><p> 示例3:匹配service包下所有类的所有方法</p>
+<pre><code>execution(* org.tarena.service.*.*(..))</code></pre><p> 示例4:匹配service包下及其子包中所有类的所有方法</p>
+<pre><code>execution(* org.tarena.service..*.*(..))</code></pre><p>   *b.类型限定表达式</p>
+<pre><code>within(类型)</code></pre><p>   示例1:匹配CostService类中所有方法</p>
+<pre><code>within(org.tarena.service.CostService)</code></pre><p>   示例2:匹配service包下所有类的所有方法</p>
+<pre><code>within(org.tarena.service.*)</code></pre><p>   示例3:匹配service包及其子包所有类所有方法</p>
+<pre><code>within(org.tarena.service..*)</code></pre><p>   c.Bean名称限定表达式</p>
+<pre><code>bean(Bean的id或name属性值)</code></pre><p>  示例1:匹配id=costAction的Bean组件方法</p>
+<pre><code>bean(costAction)</code></pre><p>  示例2:匹配名称以DAO结尾的Bean组件方法</p>
+<pre><code>bean(*DAO)</code></pre><p>   d.参数限定表达式</p>
+<pre><code>args(参数列表)</code></pre><p>  示例1:匹配只有一个参数,并且符合Serializable类型</p>
+<pre><code>args(java.io.Serializable)  </code></pre><p> (注意:上述表达式可以采用&amp;&amp;,||连接在一起)</p>
+<p>  5)通知类型</p>
+<p>   通知主要用于指定方面组件在目标组件方法上作用的时机。</p>
+<pre><code>a.前置通知&lt;aop:before&gt;
+
+ 方面组件在目标方法之前调用
+
+b.后置通知&lt;aop:after-returnning&gt;
+
+ 方面组件在目标方法之后调用,如果目标方法抛出异常,将不再执行方面组件
+
+c.最终通知&lt;aop:after&gt;
+
+ 方面组件在目标方法之后调用,目标方法有无异常都会执行
+
+d.异常通知&lt;aop:after-throwing&gt;
+
+ 方面组件在目标方法抛出异常后执行。
+
+e.环绕通知&lt;aop:around&gt;
+
+ 方面组件在目标方法之前和之后都要执行</code></pre><p>   try{</p>
+<pre><code>// 前置通知--执行方面组件
+
+// 执行目标方法
+
+// 后置通知--执行方面组件</code></pre><p>   }catch(Exception ex){</p>
+<pre><code>// 异常通知--执行方面组件</code></pre><p>   }finally{</p>
+<pre><code>// 最终通知--执行方面组件</code></pre><p>   }</p>
+<p>  6)采用AOP记录异常日志信息</p>
+<p>   a.编写记录异常信息的方面组件ExceptionBean</p>
+<p>   b.将方面组件定义到Spring容器</p>
+<p>   c.添加AOP配置,定义切入点,方面和通知元素</p>
+<p>  7)Log4j工具简介</p>
+<p> Log4j是一款日志工具。</p>
+<p> 优点:该日志器可以灵活的控制输出信息的级别和输出的方式。</p>
+<p> Log4j主要由以下3部分构成:</p>
+<pre><code>a.日志器组件</code></pre><p> (Logger)</p>
+<p> 提供了消息输出的方法,可以按消息级别输出</p>
+<pre><code>b.输出器组件(Appender)</code></pre><p> 用于指定消息采用哪种方式输出。例如以文件形式输出,以控制台形式输出</p>
+<pre><code>c.布局器组件(Layout)</code></pre><p> 用于指定消息输出的格式。</p>
+<p>   一个日志器可以指定多个不同的输出器,每个输出器只能对应一个布局器。</p>
+<p>==============</p>
+<p> 第三天</p>
+<p>===========</p>
+<p> 1.Spring注解配置的使用</p>
+<p>   注解技术源于JDK 5.0,从Spring2.5版本开始支持注解配置形式,可以替代原有的XML配置。</p>
+<p>   注解可以在类定义、方法定义、成员定义前使用。</p>
+<p>   1)<bean>元素和注入的配置</p>
+<pre><code> 可以采用组件扫描技术替代原有的&lt;bean&gt;定义和注入配置。
+
+ 使用方法如下:
+
+ a.在applicationContext.xml中开启组件扫描功能,指定要扫描的package路径   
+
+ b.如果需要将组件扫描到Spring容器,需要在组件类定义前使用以下注解标记。
+
+  \--@Controller
+
+  \--@Service
+
+  \--@Repository
+
+  \--@Component
+
+ 默认扫描到容器采用类名首字母小写当id值,
+
+ 如果需要指定可采用@Service(&quot;id值&quot;)格式指定。
+
+ 如果需要修改scope创建对象的模式,
+
+ 可使用@Scope(&quot;prototype&quot;)格式指定
+
+c.如果两个组件之间有注入关系,可以在变量定义前或setter方法前使用下面注解标记
+
+ \--@Resource
+
+ \--@Autowired
+
+ 如果不指定注入的id名,会采用类型匹配注入。
+
+ @Resource(name=&quot;costDao&quot;)将指定的costDao对象注入。</code></pre><p>   2)<aop>元素配置</p>
+<pre><code> AOP注解配置的使用方法如下:
+
+a.在applicationContext.xml中开启AOP注解配置。
+
+b.在方面组件中使用以下注解标记。
+
+\--@Aspect // 将Bean组件定义成方面,类定义前使用
+
+\--@Pointcut// 定义切入点表达式,方法定义前使用。因此需要编写个空方法,才能使用该标记。
+
+\--通知定义,@Around,@Before,
+
+  @After,@AfterReturning,
+
+  @AfterThrowing,在方法前使用</code></pre><p> 2.利用Spring整合JDBC和Hibernate </p>
+<p>  1)Spring框架对数据库访问技术提供了以下支持</p>
+<pre><code>a.提供了一致的异常处理层次.提供了一套异常类型,例如DataAccessException   
+
+b.提供了编写DAO的一套工具类,主要有DaoSupport和Template两种封装类型。</code></pre><p> JDBC技术:JdbcDaoSupport,JdbcTemplate</p>
+<p> Hibernate技术:HibernateDaoSupport,</p>
+<pre><code>             HibernateTemplate
+
+c.提供了事务管理的支持。只需要添加AOP配置即可。</code></pre><p>   2)Spring和Jdbc技术的整合</p>
+<p>   --新建工程,引入jar包</p>
+<pre><code>(spring开发包,ojdbc.jar,dbcp开发包)</code></pre><p>   --在src下添加applicationContext.xml</p>
+<p>   --针对COST表编写实体类</p>
+<p>   --编写CostDAO接口,定义要实现的方法</p>
+<p>   --编写JdbcCostDAO实现类</p>
+<pre><code>(继承JdbcDaoSupport,在方法体中使用JdbcTemplate类完成增删改查操作)
+
+  update:用于增、删、改操作
+
+  queryForObject:用于查询一条记录
+
+  query:用于查询多条记录
+
+  queryForInt:用于查询一个数值的</code></pre><p>   --将JdbcCostDAO在Spring容器中定义</p>
+<p>   --追加一个连接池,在Spring容器中定义一个dataSource组件对象Bean,</p>
+<p>   并将该Bean组件对象给JdbcCostDAO注入。</p>
+<p> (JdbcDaoSupport里有一个setDataSource方法,</p>
+<p>   接收容器注入的DataSource对象,</p>
+<p>   利用DataSource对象实例化JdbcTemplate)</p>
+<p>   3)Spring和Hibernate技术的整合</p>
+<pre><code>\--创建工程,引入开发包
+
+(spring开发包,ojdbc.jar,dbcp连接池,hibernate框架开发包)
+
+\--在src下添加applicationContext.xml
+
+\--针对数据表添加实体类和映射描述文件
+
+  (Cost类,Cost.hbm.xml)
+
+\--编写CostDAO接口
+
+\--编写实现类HibernateCostDAO
+
+ (继承HibernateDaoSupport,采用HibernateTemplate的方法完成增删改查)
+
+  save():添加
+
+  update():更新
+
+  delete():删除
+
+  load(),get():按主键查询
+
+  find():执行HQL语句
+
+\--在Spring容器配置HibernateCostDAO</code></pre><p>  需要事先定义DataSource,SessionFactory</p>
+<p> 组件对象,按DataSource-注入-&gt;</p>
+<p> SessionFactory-注入-&gt;</p>
+<p> HibernateCostDAO顺序建立关联</p>
+<p>   提示:如果需要在DAO中使用Session,</p>
+<p>   可以采用DaoSupport的getSession()获取,</p>
+<p>   也可以通过HibernateTemplate.execute方法以回调方式使用。</p>
+<p>   (参考spring_03_2中HibernateCostDAO.java的useSession()方法)</p>
+<p>=====================</p>
+<p> 第四天</p>
+<p>================</p>
+<p> 1.Spring框架整合Struts2步骤</p>
+<p>   a.创建工程,引入开发包</p>
+<pre><code>Struts开发包,Spring开发包</code></pre><p>   b.添加Struts控制器配置和struts.xml配置文件</p>
+<p>  *c.引入struts2-spring-plugin.jar整合包</p>
+<pre><code>然后将&lt;action&gt;配置的class指定为Spring容器中Action组件定义的id值。</code></pre><p> (plugin.jar整合包提供一个StrutsSpringObjectFactory,采用该组件获取Action对象。</p>
+<p>   该组件可以访问Spring容器,获取容器中定义的Bean对象)</p>
+<p>  *d.在web.xml中添ContextLoaderListener组件,用于在启动服务器时实例化Spring容器</p>
+<p> 2.struts-spring-plugin.jar作用</p>
+<p>   该plugin.jar提供了一个StrutsSpringObjectFactory类,</p>
+<p>   当引入该jar后,Struts2会采用该组件获取Action对象</p>
+<p>  ObjectFactory在获取Action对象时,有以下两种途径:</p>
+<p> a.利用<action>元素的class属性值去Spring容器中寻找Bean对象,寻找规则是id=class值 </p>
+<p>  参考(ssh2-2.jpg结构图)</p>
+<p> b.如果利用<action>的class属性值去Spring容器获取不到Bean对象,</p>
+<p>  ObjectFactory会利用反射机制创建一个Action对象,</p>
+<p>  然后访问Spring容器,</p>
+<p>  将容器中id名与Action属性一致的Bean对象注入给Action。</p>
+<p>  参考(ssh2-1.jpg结构图)</p>
+<p> try{</p>
+<p>  // 第一种利用class值去Spring获取Bean对象</p>
+<p> }catch(){</p>
+<p>  // 第二种自己创建一个Action,之后将Spring中的Bean对象给Action属性注入。</p>
+<p>  //注入规则是属性名=id值</p>
+<p> }</p>
+<p> 3.SSH学习建议</p>
+<p>   XML和注解配置,XML配置方式了解,学会使用注解配置形式。</p>
+<p>  Struts2+Spring整合,建议采用ssh2-1.jpg结构整合。</p>
+<p>   掌握:ssh2-1.jpg采用注解方法整合应用。</p>
+<p> (参考spring_04_4的demo2案例)</p>
+<p>======================</p>
+<p> 第五天</p>
+<p>===================</p>
+<p> *1.重构netctoss系统的资费管理模块处理</p>
+<p>  1)重构资费列表显示功能</p>
+<p>   a.梳理处理流程</p>
+<p> /cost/list.action–&gt;ListCostAction</p>
+<p> --&gt;CostDAO.findAll/getTotalPages</p>
+<p> --&gt;cost_list.jsp</p>
+<p>   b.重构CostDAO的findAll/getTotalPages</p>
+<pre><code>(参考原来总结过的Spring+Hibernate步骤)</code></pre><p>   c.测试Spring容器中的DAO</p>
+<p>   d.改造ListCostAction</p>
+<pre><code>\--引入struts-spring-plugin.jar
+
+\--将Spring容器中的DAO给Action注入</code></pre><p>   e.在web.xml中添加ContextLoaderListener配置,启动服务器时实例化Spring容器对象。</p>
+<p>  2)重构资费修改操作</p>
+<p>   a.梳理处理流程</p>
+<p> /cost/detail.action–&gt;DetailCostAction</p>
+<p> --&gt;CostDAO.findById–&gt;cost_detail.jsp</p>
+<p>   b.重构CostDAO.findById方法</p>
+<pre><code>由于前面重构已经将CostDAO交给Spring容器管理,因此只要将findById实现就可以了</code></pre><p>   c.重构DetailCostAction</p>
+<pre><code>\--将Spring容器中的DAO给Action注入</code></pre><p>   d.测试功能</p>
+<p> *3)Spring对Hibernate延迟加载操作的支持</p>
+<p>   为了支持Hibernate延迟加载操作,</p>
+<p>   Spring提供了一个Filter组件,</p>
+<p>   该组件为OpenSessionInViewFilter。</p>
+<p>   可以在web.xml中定义该Filter。</p>
+<p>   这样可以将Template方法关闭Session时机推迟到JSP解析之后。</p>
+<p>   注意:定义在StrutsFilter之前才有效</p>
+<p> *2.Spring的事务管理</p>
+<pre><code>Spring提供了以下两种事务管理方法</code></pre><p>   *a.声明式事务管理</p>
+<pre><code>以AOP配置的形式实现事务管理</code></pre><p>  JDBC事务管理的方面组件:</p>
+<p>  (DataSourceTransactionManager)</p>
+<p>  Hibernate事务管理的方面组件:</p>
+<p>   (HibernateTransactionManager)</p>
+<p>   事务管理通知:<a href="tx:advice">tx:advice</a></p>
+<p>   切入点:根据实际情况编写表达式</p>
+<p>  -—-如果采用注解方式配置事务——</p>
+<p>   首先在applicationContext中开启事务注解</p>
+<p> &lt;bean id=”txManager” </p>
+<p>  class=”org.springframework.orm.hibernate3.HibernateTransactionManager”&gt;</p>
+<p>  &lt;property name=”sessionFactory” </p>
+<pre><code>ref=&quot;sessionFactory&quot;&gt;</code></pre>  </property>
+
+ </bean>
+
+<p> &lt;tx:annotation-driven </p>
+<p>  transaction-manager=”txManager”/&gt;</p>
+<p>   然后在目标组件中,使用@Transactional.</p>
+<p>   该标记可用在类定义和方法定前。类定义前指定全局,方法定以前指定当前方法。</p>
+<p>   b.编程式事务管理(简单了解)</p>
+<pre><code> 在业务组件中添加事务管理代码.
+
+代码中使用TransactionTemplate控制事务</code></pre><p> 3.Spring MVC框架</p>
+<p>   1)了解Spring MVC主要实现</p>
+<pre><code>Spring提供的MVC框架主要有以下实现组件:
+
+控制器DispatcherServlet,Controller
+
+映射处理器HandlerMapping
+
+视图解析器ViewResolver
+
+模型和视图ModelAndView</code></pre><p>   2)了解Spring MVC的处理流程</p>
+<pre><code>a.客户端发送请求,请求交给DispatcherServlet控制器
+
+b.DispatcherServlet控制器调用HandlerMapping映射器组件,
+
+根据请求找到对应的Controller组件</code></pre><p> (HandlerMapping组件负责维护请求和Controller组件的对应关系)</p>
+<pre><code>c.控制器调用请求对应的Controller处理请求,也可以调用DAO实现对数据库的操作
+
+d.Controller处理完毕后,会返回一个ModelAndView对象。</code></pre><p> (ModelAndView负责封装响应数据和视图名)</p>
+<pre><code>e.控制器会调用ViewResolver组件,
+
+根据ModelAndView信息,
+
+定位到指定的JSP,生成响应的HTML结果
+
+f.将响应结果输出,为客户浏览器显示</code></pre><p>   3)入门示例</p>
+<pre><code>\--基于XML配置的示例
+
+  a.引入spring ioc和springmvc开发包
+
+  b.在src下添加applicationContext.xml
+
+  c.在web.xml中添加DispatcherServlet配置,
+
+  指定classpath:applicationContext.xml
+
+  d.编写Controller组件,实现Controller接口,
+
+  实现handleRequest方法。
+
+  e.在Spring配置文件中定义Controller组件,
+
+  定义handlerMapping和viewResolver组件
+
+
+
+\--基于注解配置的示例(推荐)
+
+  a.引入spring ioc和springmvc开发包
+
+  b.在src下添加applicationContext.xml
+
+  c.在web.xml中添加DispatcherServlet配置,
+
+  指定classpath:applicationContext.xml
+
+  d.在applicationContext.xml中定义</code></pre><p> AnnotationMethodHandlerAdapter(支持注解的handlerMapping组件)和viewResolver组件。</p>
+<p> 开启组件扫描配置。</p>
+<pre><code>e.编写Action组件。
+
+Action类定义前使用@Controller将Action扫描到容器。</code></pre><p> 业务方法前使用@RequestMapping,指定该方法处理哪个请求</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&text=spring五天" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&title=spring五天" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&is_video=false&description=spring五天" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=spring五天&body=Check out this article: http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&title=spring五天" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&title=spring五天" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&title=spring五天" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&title=spring五天" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&name=spring五天&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2019/04/28/spring%E4%BA%94%E5%A4%A9/&t=spring五天" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="热门频道 [首页  ](https:&#x2F;&#x2F;www.csdn.net&#x2F; “CSDN首页”)  [博客  ](https:&#x2F;&#x2F;blog.csdn.net&#x2F; “博客”)  [学院  ](https:&#x2F;&#x2F;edu.csdn.net&#x2F; “学院”)  [VIP  ](https:&#x2F;&#x2F;mall.csdn.net&#x2F;vip “VIP”)  [APP  ](https:&#x2F;&#x2F;www.csdn.net&#x2F;apps&#x2F;downlo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客">
+<meta property="og:url" content="http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="热门频道 [首页  ](https:&#x2F;&#x2F;www.csdn.net&#x2F; “CSDN首页”)  [博客  ](https:&#x2F;&#x2F;blog.csdn.net&#x2F; “博客”)  [学院  ](https:&#x2F;&#x2F;edu.csdn.net&#x2F; “学院”)  [VIP  ](https:&#x2F;&#x2F;mall.csdn.net&#x2F;vip “VIP”)  [APP  ](https:&#x2F;&#x2F;www.csdn.net&#x2F;apps&#x2F;downlo">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2014-08-02T12:35:11.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:15.001Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2014/08/19/Thedifferencecharthepointerandchar%5B%5Dthearrayishowyouinteractwitht/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2014/07/27/windows/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&text=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&title=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&is_video=false&description=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客&body=Check out this article: http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&title=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&title=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&title=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&title=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&name=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&t=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#热门频道"><span class="toc-number">1.</span> <span class="toc-text">热门频道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐频道"><span class="toc-number">2.</span> <span class="toc-text">推荐频道</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#转-c-之指针作为函数参数传递的问题"><span class="toc-number"></span> <span class="toc-text">转 c++之指针作为函数参数传递的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-作为-函数-参数传递-的-问题"><span class="toc-number">0.1.</span> <span class="toc-text">指针 作为 函数 参数传递 的 问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数组和-指针-作为-函数-参数——高质量C、-C-编程指南"><span class="toc-number">0.2.</span> <span class="toc-text">数组和 指针 作为 函数 参数——高质量C、 C++ 编程指南</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-作为-函数-参数传递-时需要注意的-问题-ascend的专栏-CSDN博客"><span class="toc-number">0.3.</span> <span class="toc-text">指针 作为 函数 参数传递 时需要注意的 问题 - ascend的专栏 - CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-c-使用-指针-做-函数-返回值和-指针-作-函数-参数-问题-zha…-CSDN博客"><span class="toc-number">0.4.</span> <span class="toc-text">c&#x2F; c++ 使用 指针 做 函数 返回值和 指针 作 函数 参数 问题 - zha…_CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-作为-参数传入-函数-的陷阱"><span class="toc-number">0.5.</span> <span class="toc-text">指针 作为 参数传入 函数 的陷阱</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-用指向-函数-的-指针-作为-函数-参数-Lavi的专栏-CSDN博客"><span class="toc-number">0.6.</span> <span class="toc-text">C++ 用指向 函数 的 指针 作为 函数 参数 - Lavi的专栏 - CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#函数-参数的传递-问题-指针-的-指针-杨正的专栏-CSDN博客"><span class="toc-number">0.7.</span> <span class="toc-text">函数 参数的传递 问题 ( 指针 的 指针 ) - 杨正的专栏 - CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-的学习（3）-指针-作为-函数-的参数的输入和输出的参数的特性"><span class="toc-number">0.8.</span> <span class="toc-text">指针 的学习（3） 指针 作为 函数 的参数的输入和输出的参数的特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-作为-参数的经典例子"><span class="toc-number">0.9.</span> <span class="toc-text">指针 作为 参数的经典例子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-作为-函数-参数传递-的-问题-Cheatscat的博客-CSDN博客"><span class="toc-number">0.10.</span> <span class="toc-text">指针 作为 函数 参数传递 的 问题 - Cheatscat的博客 - CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C语言-函数-传递-指针-参数的-问题-L-Aster的专栏-CSDN博客"><span class="toc-number">0.11.</span> <span class="toc-text">C语言 函数 传递 指针 参数的 问题 - L_Aster的专栏 - CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-和引用-作为-函数-参数的区别"><span class="toc-number">0.12.</span> <span class="toc-text">指针 和引用 作为 函数 参数的区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c语言-指针-作为-函数-的参数"><span class="toc-number">0.13.</span> <span class="toc-text">c语言 指针 作为 函数 的参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-中-函数-参数传递-值传递、-指针-传递-引用传递-进一步…-CSDN博客"><span class="toc-number">0.14.</span> <span class="toc-text">c++ 中 函数 参数传递 (值传递、 指针 传递,引用传递)进一步…_CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#普通值、-指针-、引用-作为-函数-参数时的理解-夏天的风的…-CSDN博客"><span class="toc-number">0.15.</span> <span class="toc-text">普通值、 指针 、引用 作为 函数 参数时的理解 - 夏天的风的…_CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#普通值、-指针-、引用-作为-函数-参数时的理解"><span class="toc-number">0.16.</span> <span class="toc-text">普通值、 指针 、引用 作为 函数 参数时的理解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C语言-指针-作为-函数-参数传递-学习-一-行者三个石的博客-CSDN博客"><span class="toc-number">0.17.</span> <span class="toc-text">C语言 指针 作为 函数 参数传递 学习(一) - 行者三个石的博客 - CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#浅谈C-C-回调-函数-（Callback）-amp-函数-指针"><span class="toc-number">0.18.</span> <span class="toc-text">浅谈C&#x2F; C++ 回调 函数 （Callback）&amp; 函数 指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C语言-指针-作为-函数-参数传递-学习-一"><span class="toc-number">0.19.</span> <span class="toc-text">C语言 指针 作为 函数 参数传递 学习(一)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C语言学习笔记——-指针-、数组-作为-函数-参数传递-的方式"><span class="toc-number">0.20.</span> <span class="toc-text">C语言学习笔记—— 指针 、数组 作为 函数 参数传递 的方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#以-指针-作为-引用参数-一"><span class="toc-number">0.21.</span> <span class="toc-text">以 指针 作为 引用参数(一)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-中namespace的用法"><span class="toc-number">0.22.</span> <span class="toc-text">C++ 中namespace的用法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数组传参，-指针-作为-参数"><span class="toc-number">0.23.</span> <span class="toc-text">数组传参， 指针 作为 参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-变量-作为-函数-参数"><span class="toc-number">0.24.</span> <span class="toc-text">指针 变量 作为 函数 参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-用-指针-将-函数-作为-参数传参"><span class="toc-number">0.25.</span> <span class="toc-text">c++ 用 指针 将 函数 作为 参数传参</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-类成员-函数-的-函数-指针"><span class="toc-number">0.26.</span> <span class="toc-text">C++ 类成员 函数 的 函数 指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C语言中-指针-变量-作为-函数-参数和一般变量-作为-函数-参数的区别"><span class="toc-number">0.27.</span> <span class="toc-text">C语言中 指针 变量 作为 函数 参数和一般变量 作为 函数 参数的区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C语言中“-指针-”-作为-“-函数-参数”时的注意事项"><span class="toc-number">0.28.</span> <span class="toc-text">C语言中“ 指针 ” 作为 “ 函数 参数”时的注意事项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-作为-函数-参数传递-时需要注意的-问题"><span class="toc-number">0.29.</span> <span class="toc-text">指针 作为 函数 参数传递 时需要注意的 问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#函数-指针-作为-某个-函数-的参数及定义-函数-指针-（回调-函数-）"><span class="toc-number">0.30.</span> <span class="toc-text">函数 指针 作为 某个 函数 的参数及定义 函数 指针 （回调 函数 ）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-中一级-指针-和双重（二级）-指针-作为-函数-参数传递"><span class="toc-number">0.31.</span> <span class="toc-text">C++ 中一级 指针 和双重（二级） 指针 作为 函数 参数传递</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#如何正确使用-指针-指针-作为-输出型参数-与结构体-指针-作为-函数-参数"><span class="toc-number">0.32.</span> <span class="toc-text">如何正确使用 指针 ( 指针 作为 输出型参数)与结构体 指针 作为 函数 参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#【-C-】用-指针-做-函数-参数"><span class="toc-number">0.33.</span> <span class="toc-text">【 C++ 】用 指针 做 函数 参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-指针-的引用做-函数-参数"><span class="toc-number">0.34.</span> <span class="toc-text">C++ 指针 的引用做 函数 参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-中-函数-参数类型为-指针-的-指针"><span class="toc-number">0.35.</span> <span class="toc-text">C++ 中 函数 参数类型为 指针 的 指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-中参数何时用引用或是-指针"><span class="toc-number">0.36.</span> <span class="toc-text">C++ 中参数何时用引用或是 指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-成员-函数-指针-的本质"><span class="toc-number">0.37.</span> <span class="toc-text">c++ 成员 函数 指针 的本质</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-C-回调方式系列之一-函数-指针-和-函数-回调模式"><span class="toc-number">0.38.</span> <span class="toc-text">C&#x2F; C++ 回调方式系列之一 函数 指针 和 函数 回调模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#【转】嗯，让我们彻底搞懂C-C-函数-指针-吧"><span class="toc-number">0.39.</span> <span class="toc-text">【转】嗯，让我们彻底搞懂C&#x2F; C++ 函数 指针 吧</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-委托实现-函数-指针-，function-bind，委托模式"><span class="toc-number">0.40.</span> <span class="toc-text">C++ 委托实现( 函数 指针 ，function+bind，委托模式)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-那些细节–-函数-指针"><span class="toc-number">0.41.</span> <span class="toc-text">C++ 那些细节– 函数 指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-浅析-函数-指针"><span class="toc-number">0.42.</span> <span class="toc-text">C++ 浅析 函数 指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-c-向-函数-传递-指针-并修改其指向的-问题"><span class="toc-number">0.43.</span> <span class="toc-text">c&#x2F; c++ 向 函数 传递 指针 并修改其指向的 问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-中-函数-指针-的使用"><span class="toc-number">0.44.</span> <span class="toc-text">C++ 中 函数 指针 的使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Qt-C-函数-指针-作为-函数-的参数"><span class="toc-number">0.45.</span> <span class="toc-text">Qt C++ 函数 指针 作为 函数 的参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#函数-指针-作为-某个-函数-的参数"><span class="toc-number">0.46.</span> <span class="toc-text">函数 指针 作为 某个 函数 的参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#函数-指针-及含参-函数-指针-做参数的实现"><span class="toc-number">0.47.</span> <span class="toc-text">函数 指针 及含参 函数 指针 做参数的实现</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2014-08-02T12:35:11.000Z" itemprop="datePublished">2014-08-02</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h3 id="热门频道"><a href="#热门频道" class="headerlink" title="热门频道"></a>热门频道</h3><ul>
+<li>[首页</li>
+</ul>
+<p>](<a href="https://www.csdn.net/" target="_blank" rel="noopener">https://www.csdn.net/</a> “CSDN首页”)</p>
+<ul>
+<li>[博客</li>
+</ul>
+<p>](<a href="https://blog.csdn.net/" target="_blank" rel="noopener">https://blog.csdn.net/</a> “博客”)</p>
+<ul>
+<li>[学院</li>
+</ul>
+<p>](<a href="https://edu.csdn.net/" target="_blank" rel="noopener">https://edu.csdn.net/</a> “学院”)</p>
+<ul>
+<li>[VIP</li>
+</ul>
+<p>](<a href="https://mall.csdn.net/vip" target="_blank" rel="noopener">https://mall.csdn.net/vip</a> “VIP”)</p>
+<ul>
+<li>[APP</li>
+</ul>
+<p>](<a href="https://www.csdn.net/apps/download?code=wap_1555569676" target="_blank" rel="noopener">https://www.csdn.net/apps/download?code=wap_1555569676</a> “App”)</p>
+<ul>
+<li>[问答</li>
+</ul>
+<p>](<a href="https://ask.csdn.net/" target="_blank" rel="noopener">https://ask.csdn.net/</a> “问答”)</p>
+<ul>
+<li>[下载</li>
+</ul>
+<p>](<a href="https://download.csdn.net/" target="_blank" rel="noopener">https://download.csdn.net/</a> “下载”)</p>
+<h3 id="推荐频道"><a href="#推荐频道" class="headerlink" title="推荐频道"></a>推荐频道</h3><ul>
+<li>[商城</li>
+</ul>
+<p>](<a href="https://h5.youzan.com/v2/showcase/homepage?alias=BUj3rrGa2J&amp;ps=760" target="_blank" rel="noopener">https://h5.youzan.com/v2/showcase/homepage?alias=BUj3rrGa2J&amp;ps=760</a> “商城”)</p>
+<ul>
+<li>[论坛</li>
+</ul>
+<p>](<a href="https://bbs.csdn.net/" target="_blank" rel="noopener">https://bbs.csdn.net/</a> “论坛”)</p>
+<ul>
+<li>[活动</li>
+</ul>
+<p>](<a href="http://huiyi.csdn.net/" target="_blank" rel="noopener">http://huiyi.csdn.net/</a> “活动”)</p>
+<ul>
+<li>[招聘</li>
+</ul>
+<p>](<a href="http://job.csdn.net/" target="_blank" rel="noopener">http://job.csdn.net/</a> “招聘”)</p>
+<ul>
+<li>[GitChat</li>
+</ul>
+<p>](<a href="https://gitbook.cn/?ref=csdn" target="_blank" rel="noopener">https://gitbook.cn/?ref=csdn</a> “GitChat”)</p>
+<ul>
+<li>[ITeye</li>
+</ul>
+<p>](<a href="http://www.iteye.com/" target="_blank" rel="noopener">http://www.iteye.com/</a> “ITeye”)</p>
+<ul>
+<li>[专题</li>
+</ul>
+<p>](<a href="https://spec.csdn.net/" target="_blank" rel="noopener">https://spec.csdn.net/</a> “专题”)</p>
+<p><a href="https://www.csdn.net/apps/download?code=wap_1555569676" target="_blank" rel="noopener">打开CSDN APP</a></p>
+<p>Copyright © 1999-2019, CSDN.NET, All Rights Reserved</p>
+<p><a href="http://so.csdn.net/so/?t=blog" target="_blank" rel="noopener"></a></p>
+<p><a href="https://passport.csdn.net/account/login?ref=toolbar" target="_blank" rel="noopener">登录</a></p>
+<p><a href="https://my.csdn.net/" target="_blank" rel="noopener"></a></p>
+<h1 id="转-c-之指针作为函数参数传递的问题"><a href="#转-c-之指针作为函数参数传递的问题" class="headerlink" title="转 c++之指针作为函数参数传递的问题"></a>转 c++之指针作为函数参数传递的问题</h1><p><a href="https://blog.csdn.net/wang386476890" target="_blank" rel="noopener"> wang386476890 </a> 阅读数：3277 2018-09-30</p>
+<p>转自：<a href="http://blog.csdn.net/fjb2080/article/details/5623427" target="_blank" rel="noopener">http://blog.csdn.net/fjb2080/article/details/5623427</a></p>
+<p>原创文章，转载请注明出处，谢谢！<br>作者：清林，博客名：飞空静渡</p>
+<p>博客地址：<a href="http://blog.csdn.net/fjb2080" target="_blank" rel="noopener">http://blog.csdn.net/fjb2080</a></p>
+<p>其实，对于C 或者C++ ，最难的一块地方估计就是指针了。指针是强大的，但也是很多人载在这里的地方。</p>
+<p>前段时间写了一篇文章《<a href="http://blog.csdn.net/fjb2080/archive/2010/05/14/5591580.aspx" target="_blank" rel="noopener">C</a> <a href="http://blog.csdn.net/fjb2080/archive/2010/05/14/5591580.aspx" target="_blank" rel="noopener">＋＋之 数组与指针的异同</a> 》对C 和C ＋＋中的指针做了一个初步的讲解。这次将讲解一下指针作为函数参数传递的问题。</p>
+<p>很多人对于指针的使用是有所了解的，但还是经常会载在指针的问题上，是因为还不够了解指针的本质，其实如果了解指针的本质，对指针的使用也就一目了然了。</p>
+<p>作为C 的初学者，经常会遇到指针作为函数参数传递的两个经典的问题。这里，我将透过指针的本质来来讲解这两个问题，这样以后无论你遇到什么样的指针问题，如果你以这样的方法来分析指针也许就迎刃而解了！</p>
+<p>首先，第一个问题是这样的：</p>
+<p>写一个函数，交换两个参数中的值。</p>
+<p>初学者往往会这样写：</p>
+<p>void exchange(int x, int y)</p>
+<p>{</p>
+<p>int p=x;</p>
+<p>x = y;</p>
+<p>y = p;</p>
+<p>}</p>
+<p>之后，你会查找资料了解到应该这样写：</p>
+<p>void exchange(int ＊x, int ＊y)</p>
+<p>{</p>
+<p>int ＊p=x;</p>
+<p>＊x = ＊y;</p>
+<p>＊y = ＊p;</p>
+<p>}</p>
+<p>第二个问题是，写一个给某个指针分配内存的函数：</p>
+<p>初学者往往是这样写：</p>
+<p>void my_malloc(void* p, int size)</p>
+<p>{</p>
+<p>p = malloc(sizeof(int)*size);</p>
+<p>}</p>
+<p>然后又查在资料，知道应该这么写：</p>
+<p>void my_malloc(void** p, int size)</p>
+<p>{</p>
+<p><em>p = malloc(sizeof(int)</em>size);</p>
+<p>}</p>
+<p>虽然，网上很多这样的讨论，也有很多人做过很多的解释，但始终都无法给出一个令人一目了然，并可以长久记住的说法，这篇文章就是想试图解决这样的问题，给初学者一个原理性的了解！</p>
+<p>首先，一定一定记住一点，  <strong>指针和变量一样，也是有地址的，只不过变量的值被解释成一个值，而指针的值被解释成一个地址。</strong></p>
+<p>下面，我们看一下代码：</p>
+<p>void main()</p>
+<p>{</p>
+<p>int x;</p>
+<p>int *p;</p>
+<p>}</p>
+<p>我们看这个函数的内存结构：</p>
+<p>这是一个函数的栈结构，我们可以看到，变量和指针都占用了4 个字节。而且，由于我们对它们没有初始化，所以变量x 和指针p 里的内容都是随机的，就是说x 的值是不确定的，p 有可能指向某个内存地址，如果现在对p 操作也许会导致程序崩溃。</p>
+<p>其实，我们记住了，指针也是有地址的 这个概念，很多问题就迎刃而解了。</p>
+<p>下面，我来分析一下，指针作为函数参数传递的情况。</p>
+<p>如果，我们的代码是这样的，你看会怎么样：</p>
+<p>int main(int argc, char* argv[])</p>
+<p>{</p>
+<p>int *a = new int(10);</p>
+<p>func(a);</p>
+<p>return 0;</p>
+<p>}</p>
+<p>第一个要说的当然是：指针也是有地址的。</p>
+<p>第二个要说的是：当给一个函数的参数传递一个变量是，这个变量是复制过去的。</p>
+<p>对于第二点，我们在理解void exchange(int x, int y) 函数想交换这两个变量的的值时就应该理解了。</p>
+<p>例如：</p>
+<p>int a;</p>
+<p>int b;</p>
+<p>exchange(a,b);</p>
+<p>不能交换a 和b 的值，因为此时exchange(a,b) 中的a 和b 并不是原来的a 和b 变量，它们只不过是被复制过去了。</p>
+<p>有了这两个概念，就不难理解指针作为函数参数传递的问题。</p>
+<p>首先，我们来看下上面的代码中的a 指针和p 指针的内存结构。</p>
+<p>我们看到，当我们以a 作为func 函数的参数传递进去的时候，函数复制了这个指针，但这两个指针的内容是一样的，也就是说是指向同一个内存，即10 。</p>
+<p>如果你还不了解的话，我就通过一段代码和测试再来说明：</p>
+<p><strong>[cpp]</strong>  <a href="http://blog.csdn.net/fjb2080/article/details/5623427#" target="_blank" rel="noopener">view plain</a> <a href="http://blog.csdn.net/fjb2080/article/details/5623427#" target="_blank" rel="noopener">copy</a></p>
+<p> <a href="http://blog.csdn.net/fjb2080/article/details/5623427#" target="_blank" rel="noopener">print</a><a href="http://blog.csdn.net/fjb2080/article/details/5623427#" target="_blank" rel="noopener">?</a></p>
+<ol>
+<li>#include &lt;stdio.h&gt;  </li>
+<li>void func(int* p)  </li>
+<li>{  </li>
+<li>printf(“*p = %d/n”, *p);  </li>
+<li>printf(“&amp;p = %p/n”, &amp;p);  </li>
+<li>}  </li>
+<li>int main(int argc, char *argv[])  </li>
+<li>{  </li>
+<li>int *a = new int(10);  </li>
+<li>printf(“*a = %d/n”, *a);  </li>
+<li>printf(“&amp;a = %p/n”, &amp;a);  </li>
+<li>func(a);  </li>
+<li>return 0;  </li>
+<li>}  </li>
+</ol>
+<p>编译：g++ -g -Wall test1.cpp</p>
+<p>运行：./a.out</p>
+<p>输出：</p>
+<p>*a = 10</p>
+<p>&amp;a = 0xbfd4447c</p>
+<p>*p = 10</p>
+<p>&amp;p = 0xbfd44460</p>
+<p>我们看到输出，a 指向的地址的值和p 指向的地址里的值是一样的，都是10 。然而，对于指针a 和p 来说，它们自身的地址是不一样的，所以我们看到，函数func 复制了指针a 给p ，它们的值一样，但有不同的地址，是不同的指针。</p>
+<p>我们再进一步：</p>
+<p><strong>[cpp]</strong>  <a href="http://blog.csdn.net/fjb2080/article/details/5623427#" target="_blank" rel="noopener">view plain</a> <a href="http://blog.csdn.net/fjb2080/article/details/5623427#" target="_blank" rel="noopener">copy</a></p>
+<p> <a href="http://blog.csdn.net/fjb2080/article/details/5623427#" target="_blank" rel="noopener">print</a><a href="http://blog.csdn.net/fjb2080/article/details/5623427#" target="_blank" rel="noopener">?</a></p>
+<ol>
+<li>#include &lt;stdio.h&gt;  </li>
+<li>void func(int* p)  </li>
+<li>{  </li>
+<li>printf(“*p = %d/n”, *p);  </li>
+<li>printf(“&amp;p = %p/n”, &amp;p);  </li>
+<li>printf(“&amp;<em>p = %p/n”, &amp;</em>p);  </li>
+<li>}  </li>
+<li>int main(int argc, char *argv[])  </li>
+<li>{  </li>
+<li>int *a = new int(10);  </li>
+<li>printf(“*a = %d/n”, *a);  </li>
+<li>printf(“&amp;a = %p/n”, &amp;a);  </li>
+<li>printf(“&amp;<em>a = %p/n”, &amp;</em>a);  </li>
+<li>func(a);  </li>
+<li>return 0;  </li>
+<li>}  </li>
+</ol>
+<p>编译输出：</p>
+<p>*a = 10</p>
+<p>&amp;a = 0xbfe1c77c</p>
+<p>&amp;*a = 0x94b6008</p>
+<p>*p = 10</p>
+<p>&amp;p = 0xbfe1c760</p>
+<p>&amp;*p = 0x94b6008</p>
+<p>我们可以进一步看到，a 指针所指向的值的地址和p 指针所指向的值的地址是一样的，都是 0x94b6008 ，就如同上图所示，为了加深印象，再看一下这个图 ，然后再对比一下程序输出 ，然后在体会一下我在上面提到的两点 ，一点是：指针是有地址的 。另一点是：函数的参数是复制过去的 。</p>
+<p>说到这里，我们再回到文章开始时提到的两个问题，一个是交换问题：</p>
+<p>void exchange(int ＊x, int ＊y)</p>
+<p>{</p>
+<p>int ＊p=x;</p>
+<p>＊x = ＊y;</p>
+<p>＊y = ＊p;</p>
+<p>}</p>
+<p>那么这样为什么可以交换：</p>
+<p>int a = 2;</p>
+<p>int b = 3;</p>
+<p>exchange(&amp;a, &amp;b);</p>
+<p>上我们以a 和b 的地址传递给exchange 函数时，函数复制了这两个地址，并赋值给x 和y 这个两个指针，这两个指针是指向变量a 和b 的，它们的图形如下：</p>
+<p>那么，当我们反引用指针时：</p>
+<p>int ＊p=x;</p>
+<p>＊x = ＊y;</p>
+<p>＊y = ＊p;</p>
+<p>我们操作的是a 和b 里面的变量的值，所以，我们交换a 和b 的值就成功了。</p>
+<p>我们再来看下第二个问题：</p>
+<p>void my_malloc(void* p, int size)</p>
+<p>{</p>
+<p>p = malloc(sizeof(int)*size);</p>
+<p>}</p>
+<p>当这样时：</p>
+<p>int *a;</p>
+<p>my_malloc(a, 10);</p>
+<p>为什么这个会失败！</p>
+<p>下面，我来分析一下：</p>
+<p>当我们调用my_malloc(a, 10); 函数，而函数还没执行到p = malloc(size); 语句时，情况是这样的：</p>
+<p>我们看到a 和p 的指针的值都是一样的，都是指向某个不确定的地址。</p>
+<p>这时，我们执行这个语句：</p>
+<p>p = malloc(sizeof(int)*size);</p>
+<p>我们把这个语句分开两部分来看，一个是先执行malloc(sizeof(int)<em>size) ，然后在执行赋值语句，把malloc(sizeof(int)</em>size) 的返回值付给p 。</p>
+<p>第一步：先执行malloc(sizeof(int)*size) ；（这里我们只考虑malloc 分配内存成功的情况）</p>
+<p>第二步：把执行malloc(sizeof(int)*size) 的返回值付给了p ，如下图：</p>
+<p>由上图，我们可以知道，这就是为什么，我们还是不能给a 分配地址的了。</p>
+<p>下面我们来分析这个：</p>
+<p>void my_malloc(void** p, int size)</p>
+<p>{</p>
+<p><em>p = malloc(sizeof(int)</em>size);</p>
+<p>}</p>
+<p>int *a;</p>
+<p>my_malloc(&amp;a ， 10);</p>
+<p>这样执行，为什么会成功！</p>
+<p>我们看到，当执行函数</p>
+<p>my_malloc(void** p, int size);</p>
+<p>但还没有执行</p>
+<p><em>p = malloc(sizeof(int)</em>size);</p>
+<p>语句时，它们的内存结构图如下所示：</p>
+<p>其实这里，我们可以把二维指针和一维指针当成和变量一样，也是有地址的。只不过它的解释不一样而已。</p>
+<p>变量：里面的值是一个数值。</p>
+<p>一维指针：里面的值是个地址，而这个地址里的值是个数值。</p>
+<p>二维指针：里面的值是个地址，而这个地址里的值也是个地址。</p>
+<p>那么，我看着图来解释p ：</p>
+<p>p 里面是一个地址，这个地址是&amp;a ，即是a 指针的地址值，而a 指针地址里面的值也是个地址，这个地址是指向一个不确定的地方，说得坳口，慢慢对比图来理解就会好了！</p>
+<p>执行malloc(size) 后的图如下：</p>
+<p>然后在执行赋值语句：</p>
+<p><em>p = malloc(sizeof(int)</em>size);</p>
+<p>后，如下图所示：</p>
+<p>然后，我们就给指针a 分配内存成功了。</p>
+<p>本文的pdf下载地址：<a href="http://download.csdn.net/source/2392586" target="_blank" rel="noopener">c++之指针作为函数参数传递的问题.pdf</a></p>
+<p><a href="https://blog.csdn.net/wang386476890/article/details/82907259" target="_blank" rel="noopener">打开APP，阅读全文</a></p>
+<p>当前没有评论 <a href="https://blog.csdn.net/wang386476890/comment/post?id=82907259" target="_blank" rel="noopener"> 点击发表评论</a></p>
+<p>[</p>
+<h4 id="指针-作为-函数-参数传递-的-问题"><a href="#指针-作为-函数-参数传递-的-问题" class="headerlink" title="指针 作为 函数 参数传递 的 问题"></a><em>指针</em> <em>作为</em> <em>函数</em> <em>参数传递</em> 的 <em>问题</em></h4><p>Cheatscat 948次阅读 08-23 APP打开 ](<a href="https://blog.csdn.net/Cheatscat/article/details/77508878" target="_blank" rel="noopener">https://blog.csdn.net/Cheatscat/article/details/77508878</a> “指针作为函数参数传递的问题”)</p>
+<p>[</p>
+<h4 id="数组和-指针-作为-函数-参数——高质量C、-C-编程指南"><a href="#数组和-指针-作为-函数-参数——高质量C、-C-编程指南" class="headerlink" title="数组和 指针 作为 函数 参数——高质量C、 C++ 编程指南"></a>数组和 <em>指针</em> <em>作为</em> <em>函数</em> 参数——高质量C、 <em>C++</em> 编程指南</h4><p>wxc237786026 2195次阅读 06-14 APP打开 ](<a href="https://blog.csdn.net/wxc237786026/article/details/46489329" target="_blank" rel="noopener">https://blog.csdn.net/wxc237786026/article/details/46489329</a> “数组和指针作为函数参数——高质量C、C++编程指南”)</p>
+<p>[</p>
+<h4 id="指针-作为-函数-参数传递-时需要注意的-问题-ascend的专栏-CSDN博客"><a href="#指针-作为-函数-参数传递-时需要注意的-问题-ascend的专栏-CSDN博客" class="headerlink" title="指针 作为 函数 参数传递 时需要注意的 问题 - ascend的专栏 - CSDN博客"></a><em>指针</em> <em>作为</em> <em>函数</em> <em>参数传递</em> 时需要注意的 <em>问题</em> - ascend的专栏 - CSDN博客</h4><p>2019-6-14](<a href="https://blog.csdn.net/avrmcu1/article/details/39001641" target="_blank" rel="noopener">https://blog.csdn.net/avrmcu1/article/details/39001641</a>)</p>
+<p>[</p>
+<h4 id="c-c-使用-指针-做-函数-返回值和-指针-作-函数-参数-问题-zha…-CSDN博客"><a href="#c-c-使用-指针-做-函数-返回值和-指针-作-函数-参数-问题-zha…-CSDN博客" class="headerlink" title="c/ c++ 使用 指针 做 函数 返回值和 指针 作 函数 参数 问题 - zha…_CSDN博客"></a>c/ <em>c++</em> 使用 <em>指针</em> 做 <em>函数</em> 返回值和 <em>指针</em> 作 <em>函数</em> 参数 <em>问题</em> - zha…_CSDN博客</h4><p>2019-6-7](<a href="https://blog.csdn.net/zhangjikuan/article/details/51848567" target="_blank" rel="noopener">https://blog.csdn.net/zhangjikuan/article/details/51848567</a>)</p>
+<p>[</p>
+<h4 id="指针-作为-参数传入-函数-的陷阱"><a href="#指针-作为-参数传入-函数-的陷阱" class="headerlink" title="指针 作为 参数传入 函数 的陷阱"></a><em>指针</em> <em>作为</em> 参数传入 <em>函数</em> 的陷阱</h4><p>Move_now 5397次阅读 05-14 APP打开 ](<a href="https://blog.csdn.net/Move_now/article/details/71944689" target="_blank" rel="noopener">https://blog.csdn.net/Move_now/article/details/71944689</a> “指针作为参数传入函数的陷阱”)</p>
+<p>[</p>
+<h4 id="C-用指向-函数-的-指针-作为-函数-参数-Lavi的专栏-CSDN博客"><a href="#C-用指向-函数-的-指针-作为-函数-参数-Lavi的专栏-CSDN博客" class="headerlink" title="C++ 用指向 函数 的 指针 作为 函数 参数 - Lavi的专栏 - CSDN博客"></a><em>C++</em> 用指向 <em>函数</em> 的 <em>指针</em> <em>作为</em> <em>函数</em> 参数 - Lavi的专栏 - CSDN博客</h4><p>2019-7-3](<a href="https://blog.csdn.net/liuweiyuxiang/article/details/84842075" target="_blank" rel="noopener">https://blog.csdn.net/liuweiyuxiang/article/details/84842075</a>)</p>
+<p>[</p>
+<h4 id="函数-参数的传递-问题-指针-的-指针-杨正的专栏-CSDN博客"><a href="#函数-参数的传递-问题-指针-的-指针-杨正的专栏-CSDN博客" class="headerlink" title="函数 参数的传递 问题 ( 指针 的 指针 ) - 杨正的专栏 - CSDN博客"></a><em>函数</em> 参数的传递 <em>问题</em> ( <em>指针</em> 的 <em>指针</em> ) - 杨正的专栏 - CSDN博客</h4><p>2018-11-22](<a href="https://blog.csdn.net/yangzheng_yz/article/details/52487085" target="_blank" rel="noopener">https://blog.csdn.net/yangzheng_yz/article/details/52487085</a>)</p>
+<p>[</p>
+<h4 id="指针-的学习（3）-指针-作为-函数-的参数的输入和输出的参数的特性"><a href="#指针-的学习（3）-指针-作为-函数-的参数的输入和输出的参数的特性" class="headerlink" title="指针 的学习（3） 指针 作为 函数 的参数的输入和输出的参数的特性"></a><em>指针</em> 的学习（3） <em>指针</em> <em>作为</em> <em>函数</em> 的参数的输入和输出的参数的特性</h4><p>Poisx 1977次阅读 08-26 APP打开 ](<a href="https://blog.csdn.net/Poisx/article/details/77606566" target="_blank" rel="noopener">https://blog.csdn.net/Poisx/article/details/77606566</a> “指针的学习（3）指针作为函数的参数的输入和输出的参数的特性”)</p>
+<p>[</p>
+<h4 id="指针-作为-参数的经典例子"><a href="#指针-作为-参数的经典例子" class="headerlink" title="指针 作为 参数的经典例子"></a><em>指针</em> <em>作为</em> 参数的经典例子</h4><p>lyshahaha 1307次阅读 03-02 APP打开 ](<a href="https://blog.csdn.net/lyshahaha/article/details/79426985" target="_blank" rel="noopener">https://blog.csdn.net/lyshahaha/article/details/79426985</a> “指针作为参数的经典例子”)</p>
+<p>[</p>
+<h4 id="指针-作为-函数-参数传递-的-问题-Cheatscat的博客-CSDN博客"><a href="#指针-作为-函数-参数传递-的-问题-Cheatscat的博客-CSDN博客" class="headerlink" title="指针 作为 函数 参数传递 的 问题 - Cheatscat的博客 - CSDN博客"></a><em>指针</em> <em>作为</em> <em>函数</em> <em>参数传递</em> 的 <em>问题</em> - Cheatscat的博客 - CSDN博客</h4><p>2019-6-23](<a href="https://blog.csdn.net/Cheatscat/article/details/77508878" target="_blank" rel="noopener">https://blog.csdn.net/Cheatscat/article/details/77508878</a>)</p>
+<p>[</p>
+<h4 id="C语言-函数-传递-指针-参数的-问题-L-Aster的专栏-CSDN博客"><a href="#C语言-函数-传递-指针-参数的-问题-L-Aster的专栏-CSDN博客" class="headerlink" title="C语言 函数 传递 指针 参数的 问题 - L_Aster的专栏 - CSDN博客"></a>C语言 <em>函数</em> 传递 <em>指针</em> 参数的 <em>问题</em> - L_Aster的专栏 - CSDN博客</h4><p>2019-7-8](<a href="https://blog.csdn.net/gl486546/article/details/53375999" target="_blank" rel="noopener">https://blog.csdn.net/gl486546/article/details/53375999</a>)</p>
+<p>[</p>
+<h4 id="指针-和引用-作为-函数-参数的区别"><a href="#指针-和引用-作为-函数-参数的区别" class="headerlink" title="指针 和引用 作为 函数 参数的区别"></a><em>指针</em> 和引用 <em>作为</em> <em>函数</em> 参数的区别</h4><p>lannister_awalys_pay 1286次阅读 12-02 APP打开 ](<a href="https://blog.csdn.net/lannister_awalys_pay/article/details/84699574" target="_blank" rel="noopener">https://blog.csdn.net/lannister_awalys_pay/article/details/84699574</a> “指针和引用作为函数参数的区别”)</p>
+<p>[</p>
+<h4 id="c语言-指针-作为-函数-的参数"><a href="#c语言-指针-作为-函数-的参数" class="headerlink" title="c语言 指针 作为 函数 的参数"></a>c语言 <em>指针</em> <em>作为</em> <em>函数</em> 的参数</h4><p>qq_39248122 10631次阅读 07-09 APP打开 ](<a href="https://blog.csdn.net/qq_39248122/article/details/80976942" target="_blank" rel="noopener">https://blog.csdn.net/qq_39248122/article/details/80976942</a> “c语言指针作为函数的参数”)</p>
+<p>[</p>
+<h4 id="c-中-函数-参数传递-值传递、-指针-传递-引用传递-进一步…-CSDN博客"><a href="#c-中-函数-参数传递-值传递、-指针-传递-引用传递-进一步…-CSDN博客" class="headerlink" title="c++ 中 函数 参数传递 (值传递、 指针 传递,引用传递)进一步…_CSDN博客"></a><em>c++</em> 中 <em>函数</em> <em>参数传递</em> (值传递、 <em>指针</em> 传递,引用传递)进一步…_CSDN博客</h4><p>2019-4-2](<a href="https://blog.csdn.net/richerg85/article/details/14450183" target="_blank" rel="noopener">https://blog.csdn.net/richerg85/article/details/14450183</a>)</p>
+<p>[</p>
+<h4 id="普通值、-指针-、引用-作为-函数-参数时的理解-夏天的风的…-CSDN博客"><a href="#普通值、-指针-、引用-作为-函数-参数时的理解-夏天的风的…-CSDN博客" class="headerlink" title="普通值、 指针 、引用 作为 函数 参数时的理解 - 夏天的风的…_CSDN博客"></a>普通值、 <em>指针</em> 、引用 <em>作为</em> <em>函数</em> 参数时的理解 - 夏天的风的…_CSDN博客</h4><p>2019-4-16](<a href="https://blog.csdn.net/this_is_me_anyway/article/details/80192574" target="_blank" rel="noopener">https://blog.csdn.net/this_is_me_anyway/article/details/80192574</a>)</p>
+<p>[</p>
+<h4 id="普通值、-指针-、引用-作为-函数-参数时的理解"><a href="#普通值、-指针-、引用-作为-函数-参数时的理解" class="headerlink" title="普通值、 指针 、引用 作为 函数 参数时的理解"></a>普通值、 <em>指针</em> 、引用 <em>作为</em> <em>函数</em> 参数时的理解</h4><p>this_is_me_anyway 1502次阅读 05-04 APP打开 ](<a href="https://blog.csdn.net/this_is_me_anyway/article/details/80192574" target="_blank" rel="noopener">https://blog.csdn.net/this_is_me_anyway/article/details/80192574</a> “普通值、指针、引用作为函数参数时的理解”)</p>
+<p>[</p>
+<h4 id="C语言-指针-作为-函数-参数传递-学习-一-行者三个石的博客-CSDN博客"><a href="#C语言-指针-作为-函数-参数传递-学习-一-行者三个石的博客-CSDN博客" class="headerlink" title="C语言 指针 作为 函数 参数传递 学习(一) - 行者三个石的博客 - CSDN博客"></a>C语言 <em>指针</em> <em>作为</em> <em>函数</em> <em>参数传递</em> 学习(一) - 行者三个石的博客 - CSDN博客</h4><p>2019-7-26](<a href="https://blog.csdn.net/qq_33706673/article/details/84669784)undefined" target="_blank" rel="noopener">https://blog.csdn.net/qq_33706673/article/details/84669784)undefined</a> </p>
+<p>[</p>
+<h4 id="浅谈C-C-回调-函数-（Callback）-amp-函数-指针"><a href="#浅谈C-C-回调-函数-（Callback）-amp-函数-指针" class="headerlink" title="浅谈C/ C++ 回调 函数 （Callback）&amp; 函数 指针"></a>浅谈C/ <em>C++</em> 回调 <em>函数</em> （Callback）&amp; <em>函数</em> <em>指针</em></h4><p>u012339743 14475次阅读 04-08 APP打开 ](<a href="https://blog.csdn.net/u012339743/article/details/69789300" target="_blank" rel="noopener">https://blog.csdn.net/u012339743/article/details/69789300</a> “浅谈C/C++回调函数（Callback）&amp; 函数指针”)</p>
+<p>[</p>
+<h4 id="C语言-指针-作为-函数-参数传递-学习-一"><a href="#C语言-指针-作为-函数-参数传递-学习-一" class="headerlink" title="C语言 指针 作为 函数 参数传递 学习(一)"></a>C语言 <em>指针</em> <em>作为</em> <em>函数</em> <em>参数传递</em> 学习(一)</h4><p>qq_33706673 1636次阅读 12-01 APP打开 ](<a href="https://blog.csdn.net/qq_33706673/article/details/84669784" target="_blank" rel="noopener">https://blog.csdn.net/qq_33706673/article/details/84669784</a> “C语言指针作为函数参数传递学习(一)“)</p>
+<p>[</p>
+<h4 id="C语言学习笔记——-指针-、数组-作为-函数-参数传递-的方式"><a href="#C语言学习笔记——-指针-、数组-作为-函数-参数传递-的方式" class="headerlink" title="C语言学习笔记—— 指针 、数组 作为 函数 参数传递 的方式"></a>C语言学习笔记—— <em>指针</em> 、数组 <em>作为</em> <em>函数</em> <em>参数传递</em> 的方式</h4><p>qq_21834027 2713次阅读 01-03 APP打开 ](<a href="https://blog.csdn.net/qq_21834027/article/details/85705266" target="_blank" rel="noopener">https://blog.csdn.net/qq_21834027/article/details/85705266</a> “C语言学习笔记——指针、数组作为函数参数传递的方式”)</p>
+<p>[</p>
+<h4 id="以-指针-作为-引用参数-一"><a href="#以-指针-作为-引用参数-一" class="headerlink" title="以 指针 作为 引用参数(一)"></a>以 <em>指针</em> <em>作为</em> 引用参数(一)</h4><p>Li_haiyu 407次阅读 10-30 APP打开 ](<a href="https://blog.csdn.net/Li_haiyu/article/details/83539135" target="_blank" rel="noopener">https://blog.csdn.net/Li_haiyu/article/details/83539135</a> “以指针作为引用参数(一)“)</p>
+<p>[</p>
+<h4 id="C-中namespace的用法"><a href="#C-中namespace的用法" class="headerlink" title="C++ 中namespace的用法"></a><em>C++</em> 中namespace的用法</h4><p>RainVictor1 3915次阅读 02-02 APP打开 ](<a href="https://blog.csdn.net/RainVictor1/article/details/79235936" target="_blank" rel="noopener">https://blog.csdn.net/RainVictor1/article/details/79235936</a> “C++中namespace的用法”)</p>
+<p>[</p>
+<h4 id="数组传参，-指针-作为-参数"><a href="#数组传参，-指针-作为-参数" class="headerlink" title="数组传参， 指针 作为 参数"></a>数组传参， <em>指针</em> <em>作为</em> 参数</h4><p>SoYangA 2504次阅读 06-09 APP打开 ](<a href="https://blog.csdn.net/SoYangA/article/details/80633463" target="_blank" rel="noopener">https://blog.csdn.net/SoYangA/article/details/80633463</a> “数组传参，指针作为参数”)</p>
+<p>[</p>
+<h4 id="指针-变量-作为-函数-参数"><a href="#指针-变量-作为-函数-参数" class="headerlink" title="指针 变量 作为 函数 参数"></a><em>指针</em> 变量 <em>作为</em> <em>函数</em> 参数</h4><p>Coder__CS 11699次阅读 07-04 APP打开 ](<a href="https://blog.csdn.net/Coder__CS/article/details/51823035" target="_blank" rel="noopener">https://blog.csdn.net/Coder__CS/article/details/51823035</a> “指针变量作为函数参数”)</p>
+<p>[</p>
+<h4 id="c-用-指针-将-函数-作为-参数传参"><a href="#c-用-指针-将-函数-作为-参数传参" class="headerlink" title="c++ 用 指针 将 函数 作为 参数传参"></a><em>c++</em> 用 <em>指针</em> 将 <em>函数</em> <em>作为</em> 参数传参</h4><p>qq_36615589 674次阅读 05-16 APP打开 ](<a href="https://blog.csdn.net/qq_36615589/article/details/80336708" target="_blank" rel="noopener">https://blog.csdn.net/qq_36615589/article/details/80336708</a> “c++ 用指针将函数作为参数传参”)</p>
+<p>[</p>
+<h4 id="C-类成员-函数-的-函数-指针"><a href="#C-类成员-函数-的-函数-指针" class="headerlink" title="C++ 类成员 函数 的 函数 指针"></a><em>C++</em> 类成员 <em>函数</em> 的 <em>函数</em> <em>指针</em></h4><p>afei__ 3969次阅读 08-23 APP打开 ](<a href="https://blog.csdn.net/afei__/article/details/81985937" target="_blank" rel="noopener">https://blog.csdn.net/afei__/article/details/81985937</a> “C++ 类成员函数的函数指针”)</p>
+<p>[</p>
+<h4 id="C语言中-指针-变量-作为-函数-参数和一般变量-作为-函数-参数的区别"><a href="#C语言中-指针-变量-作为-函数-参数和一般变量-作为-函数-参数的区别" class="headerlink" title="C语言中 指针 变量 作为 函数 参数和一般变量 作为 函数 参数的区别"></a>C语言中 <em>指针</em> 变量 <em>作为</em> <em>函数</em> 参数和一般变量 <em>作为</em> <em>函数</em> 参数的区别</h4><p>fullbug 14033次阅读 04-09 APP打开 ](<a href="https://blog.csdn.net/fullbug/article/details/1557508" target="_blank" rel="noopener">https://blog.csdn.net/fullbug/article/details/1557508</a> “C语言中指针变量作为函数参数和一般变量作为函数参数的区别”)</p>
+<p>[</p>
+<h4 id="C语言中“-指针-”-作为-“-函数-参数”时的注意事项"><a href="#C语言中“-指针-”-作为-“-函数-参数”时的注意事项" class="headerlink" title="C语言中“ 指针 ” 作为 “ 函数 参数”时的注意事项"></a>C语言中“ <em>指针</em> ” <em>作为</em> “ <em>函数</em> 参数”时的注意事项</h4><p>dan15188387481 8939次阅读 10-23 APP打开 ](<a href="https://blog.csdn.net/dan15188387481/article/details/49363605" target="_blank" rel="noopener">https://blog.csdn.net/dan15188387481/article/details/49363605</a> “C语言中“指针”作为“函数参数”时的注意事项”)</p>
+<p>[</p>
+<h4 id="指针-作为-函数-参数传递-时需要注意的-问题"><a href="#指针-作为-函数-参数传递-时需要注意的-问题" class="headerlink" title="指针 作为 函数 参数传递 时需要注意的 问题"></a><em>指针</em> <em>作为</em> <em>函数</em> <em>参数传递</em> 时需要注意的 <em>问题</em></h4><p>avrmcu1 1743次阅读 09-02 APP打开 ](<a href="https://blog.csdn.net/avrmcu1/article/details/39001641" target="_blank" rel="noopener">https://blog.csdn.net/avrmcu1/article/details/39001641</a> “指针作为函数参数传递时需要注意的问题”)</p>
+<p>[</p>
+<h4 id="函数-指针-作为-某个-函数-的参数及定义-函数-指针-（回调-函数-）"><a href="#函数-指针-作为-某个-函数-的参数及定义-函数-指针-（回调-函数-）" class="headerlink" title="函数 指针 作为 某个 函数 的参数及定义 函数 指针 （回调 函数 ）"></a><em>函数</em> <em>指针</em> <em>作为</em> 某个 <em>函数</em> 的参数及定义 <em>函数</em> <em>指针</em> （回调 <em>函数</em> ）</h4><p>dagefeijiqumeiguo 16743次阅读 06-17 APP打开 ](<a href="https://blog.csdn.net/dagefeijiqumeiguo/article/details/73393369" target="_blank" rel="noopener">https://blog.csdn.net/dagefeijiqumeiguo/article/details/73393369</a> “函数指针作为某个函数的参数及定义函数指针（回调函数）”)</p>
+<p>[</p>
+<h4 id="C-中一级-指针-和双重（二级）-指针-作为-函数-参数传递"><a href="#C-中一级-指针-和双重（二级）-指针-作为-函数-参数传递" class="headerlink" title="C++ 中一级 指针 和双重（二级） 指针 作为 函数 参数传递"></a><em>C++</em> 中一级 <em>指针</em> 和双重（二级） <em>指针</em> <em>作为</em> <em>函数</em> <em>参数传递</em></h4><p>u014694994 2624次阅读 06-07 APP打开 ](<a href="https://blog.csdn.net/u014694994/article/details/80611268" target="_blank" rel="noopener">https://blog.csdn.net/u014694994/article/details/80611268</a> “C++中一级指针和双重（二级）指针作为函数参数传递”)</p>
+<p>[</p>
+<h4 id="如何正确使用-指针-指针-作为-输出型参数-与结构体-指针-作为-函数-参数"><a href="#如何正确使用-指针-指针-作为-输出型参数-与结构体-指针-作为-函数-参数" class="headerlink" title="如何正确使用 指针 ( 指针 作为 输出型参数)与结构体 指针 作为 函数 参数"></a>如何正确使用 <em>指针</em> ( <em>指针</em> <em>作为</em> 输出型参数)与结构体 <em>指针</em> <em>作为</em> <em>函数</em> 参数</h4><p>TongxinV 5123次阅读 02-10 APP打开 ](<a href="https://blog.csdn.net/TongxinV/article/details/54970733" target="_blank" rel="noopener">https://blog.csdn.net/TongxinV/article/details/54970733</a> “如何正确使用指针(指针作为输出型参数)与结构体指针作为函数参数”)</p>
+<p>[</p>
+<h4 id="【-C-】用-指针-做-函数-参数"><a href="#【-C-】用-指针-做-函数-参数" class="headerlink" title="【 C++ 】用 指针 做 函数 参数"></a>【 <em>C++</em> 】用 <em>指针</em> 做 <em>函数</em> 参数</h4><p>CSDN___CSDN 163次阅读 10-05 APP打开 ](<a href="https://blog.csdn.net/CSDN___CSDN/article/details/82944252" target="_blank" rel="noopener">https://blog.csdn.net/CSDN___CSDN/article/details/82944252</a> “【C++】用指针做函数参数”)</p>
+<p>[</p>
+<h4 id="C-指针-的引用做-函数-参数"><a href="#C-指针-的引用做-函数-参数" class="headerlink" title="C++ 指针 的引用做 函数 参数"></a><em>C++</em> <em>指针</em> 的引用做 <em>函数</em> 参数</h4><p>error0_dameng 852次阅读 08-19 APP打开 ](<a href="https://blog.csdn.net/error0_dameng/article/details/81836285" target="_blank" rel="noopener">https://blog.csdn.net/error0_dameng/article/details/81836285</a> “C++    指针的引用做函数参数”)</p>
+<p>[</p>
+<h4 id="C-中-函数-参数类型为-指针-的-指针"><a href="#C-中-函数-参数类型为-指针-的-指针" class="headerlink" title="C++ 中 函数 参数类型为 指针 的 指针"></a><em>C++</em> 中 <em>函数</em> 参数类型为 <em>指针</em> 的 <em>指针</em></h4><p>hou09tian 1745次阅读 08-08 APP打开 ](<a href="https://blog.csdn.net/hou09tian/article/details/81501621" target="_blank" rel="noopener">https://blog.csdn.net/hou09tian/article/details/81501621</a> “C++中函数参数类型为指针的指针”)</p>
+<p>[</p>
+<h4 id="C-中参数何时用引用或是-指针"><a href="#C-中参数何时用引用或是-指针" class="headerlink" title="C++ 中参数何时用引用或是 指针"></a><em>C++</em> 中参数何时用引用或是 <em>指针</em></h4><p>xuzheng11332 1909次阅读 04-21 APP打开 ](<a href="https://blog.csdn.net/xuzheng11332/article/details/70318228" target="_blank" rel="noopener">https://blog.csdn.net/xuzheng11332/article/details/70318228</a> “C++中参数何时用引用或是指针”)</p>
+<p>[</p>
+<h4 id="c-成员-函数-指针-的本质"><a href="#c-成员-函数-指针-的本质" class="headerlink" title="c++ 成员 函数 指针 的本质"></a><em>c++</em> 成员 <em>函数</em> <em>指针</em> 的本质</h4><p>tangchuxian080 1654次阅读 06-16 APP打开 ](<a href="https://blog.csdn.net/tangchuxian080/article/details/80711339" target="_blank" rel="noopener">https://blog.csdn.net/tangchuxian080/article/details/80711339</a> “c++成员函数指针的本质”)</p>
+<p>[</p>
+<h4 id="C-C-回调方式系列之一-函数-指针-和-函数-回调模式"><a href="#C-C-回调方式系列之一-函数-指针-和-函数-回调模式" class="headerlink" title="C/ C++ 回调方式系列之一 函数 指针 和 函数 回调模式"></a>C/ <em>C++</em> 回调方式系列之一 <em>函数</em> <em>指针</em> 和 <em>函数</em> 回调模式</h4><p>SweetTool 2698次阅读 05-20 APP打开 ](<a href="https://blog.csdn.net/SweetTool/article/details/72578801" target="_blank" rel="noopener">https://blog.csdn.net/SweetTool/article/details/72578801</a> “C/C++回调方式系列之一  函数指针和函数回调模式”)</p>
+<p>[</p>
+<h4 id="【转】嗯，让我们彻底搞懂C-C-函数-指针-吧"><a href="#【转】嗯，让我们彻底搞懂C-C-函数-指针-吧" class="headerlink" title="【转】嗯，让我们彻底搞懂C/ C++ 函数 指针 吧"></a>【转】嗯，让我们彻底搞懂C/ <em>C++</em> <em>函数</em> <em>指针</em> 吧</h4><p>u010525694 4520次阅读 06-07 APP打开 ](<a href="https://blog.csdn.net/u010525694/article/details/72897766" target="_blank" rel="noopener">https://blog.csdn.net/u010525694/article/details/72897766</a> “【转】嗯，让我们彻底搞懂C/C++函数指针吧”)</p>
+<p>[</p>
+<h4 id="C-委托实现-函数-指针-，function-bind，委托模式"><a href="#C-委托实现-函数-指针-，function-bind，委托模式" class="headerlink" title="C++ 委托实现( 函数 指针 ，function+bind，委托模式)"></a><em>C++</em> 委托实现( <em>函数</em> <em>指针</em> ，function+bind，委托模式)</h4><p>lijun538 3322次阅读 04-28 APP打开 ](<a href="https://blog.csdn.net/lijun538/article/details/51277199" target="_blank" rel="noopener">https://blog.csdn.net/lijun538/article/details/51277199</a> “C++委托实现(函数指针，function+bind，委托模式)“)</p>
+<p>[</p>
+<h4 id="C-那些细节–-函数-指针"><a href="#C-那些细节–-函数-指针" class="headerlink" title="C++ 那些细节– 函数 指针"></a><em>C++</em> 那些细节– <em>函数</em> <em>指针</em></h4><p>puppet_master 2737次阅读 10-31 APP打开 ](<a href="https://blog.csdn.net/puppet_master/article/details/49368863" target="_blank" rel="noopener">https://blog.csdn.net/puppet_master/article/details/49368863</a> “C++那些细节–函数指针”)</p>
+<p>[</p>
+<h4 id="C-浅析-函数-指针"><a href="#C-浅析-函数-指针" class="headerlink" title="C++ 浅析 函数 指针"></a><em>C++</em> 浅析 <em>函数</em> <em>指针</em></h4><p>zhang_alongzd 203次阅读 05-29 APP打开 ](<a href="https://blog.csdn.net/zhang_alongzd/article/details/51532928" target="_blank" rel="noopener">https://blog.csdn.net/zhang_alongzd/article/details/51532928</a> “C++浅析函数指针”)</p>
+<p>[</p>
+<h4 id="c-c-向-函数-传递-指针-并修改其指向的-问题"><a href="#c-c-向-函数-传递-指针-并修改其指向的-问题" class="headerlink" title="c/ c++ 向 函数 传递 指针 并修改其指向的 问题"></a>c/ <em>c++</em> 向 <em>函数</em> 传递 <em>指针</em> 并修改其指向的 <em>问题</em></h4><p>bin510729392 4811次阅读 05-22 APP打开 ](<a href="https://blog.csdn.net/bin510729392/article/details/51476327" target="_blank" rel="noopener">https://blog.csdn.net/bin510729392/article/details/51476327</a> “c/c++向函数传递指针并修改其指向的问题”)</p>
+<p>[</p>
+<h4 id="C-中-函数-指针-的使用"><a href="#C-中-函数-指针-的使用" class="headerlink" title="C++ 中 函数 指针 的使用"></a><em>C++</em> 中 <em>函数</em> <em>指针</em> 的使用</h4><p>sruru 63505次阅读 08-28 APP打开 ](<a href="https://blog.csdn.net/sruru/article/details/7916296" target="_blank" rel="noopener">https://blog.csdn.net/sruru/article/details/7916296</a> “C++中函数指针的使用”)</p>
+<p>[</p>
+<h4 id="Qt-C-函数-指针-作为-函数-的参数"><a href="#Qt-C-函数-指针-作为-函数-的参数" class="headerlink" title="Qt C++ 函数 指针 作为 函数 的参数"></a>Qt <em>C++</em> <em>函数</em> <em>指针</em> <em>作为</em> <em>函数</em> 的参数</h4><p>u012230798 366次阅读 03-07 APP打开 ](<a href="https://blog.csdn.net/u012230798/article/details/88288821" target="_blank" rel="noopener">https://blog.csdn.net/u012230798/article/details/88288821</a> “Qt   C++ 函数指针作为函数的参数”)</p>
+<p>[</p>
+<h4 id="函数-指针-作为-某个-函数-的参数"><a href="#函数-指针-作为-某个-函数-的参数" class="headerlink" title="函数 指针 作为 某个 函数 的参数"></a><em>函数</em> <em>指针</em> <em>作为</em> 某个 <em>函数</em> 的参数</h4><p>dengm155 1810次阅读 01-07 APP打开 ](<a href="https://blog.csdn.net/dengm155/article/details/54176505" target="_blank" rel="noopener">https://blog.csdn.net/dengm155/article/details/54176505</a> “函数指针作为某个函数的参数”)</p>
+<p>[</p>
+<h4 id="函数-指针-及含参-函数-指针-做参数的实现"><a href="#函数-指针-及含参-函数-指针-做参数的实现" class="headerlink" title="函数 指针 及含参 函数 指针 做参数的实现"></a><em>函数</em> <em>指针</em> 及含参 <em>函数</em> <em>指针</em> 做参数的实现</h4><p>xishuang_gongzi 1138次阅读 07-30 APP打开 ](<a href="https://blog.csdn.net/xishuang_gongzi/article/details/81279854" target="_blank" rel="noopener">https://blog.csdn.net/xishuang_gongzi/article/details/81279854</a> “函数指针及含参函数指针做参数的实现”)</p>
+<p>点赞 2</p>
+<p>评论</p>
+<p>收藏</p>
+<p><a href="https://blog.csdn.net/wang386476890/article/details/82907259" target="_blank" rel="noopener"> 返回<br>顶部 </a></p>
+<p>文章收藏成功</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#热门频道"><span class="toc-number">1.</span> <span class="toc-text">热门频道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐频道"><span class="toc-number">2.</span> <span class="toc-text">推荐频道</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#转-c-之指针作为函数参数传递的问题"><span class="toc-number"></span> <span class="toc-text">转 c++之指针作为函数参数传递的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-作为-函数-参数传递-的-问题"><span class="toc-number">0.1.</span> <span class="toc-text">指针 作为 函数 参数传递 的 问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数组和-指针-作为-函数-参数——高质量C、-C-编程指南"><span class="toc-number">0.2.</span> <span class="toc-text">数组和 指针 作为 函数 参数——高质量C、 C++ 编程指南</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-作为-函数-参数传递-时需要注意的-问题-ascend的专栏-CSDN博客"><span class="toc-number">0.3.</span> <span class="toc-text">指针 作为 函数 参数传递 时需要注意的 问题 - ascend的专栏 - CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-c-使用-指针-做-函数-返回值和-指针-作-函数-参数-问题-zha…-CSDN博客"><span class="toc-number">0.4.</span> <span class="toc-text">c&#x2F; c++ 使用 指针 做 函数 返回值和 指针 作 函数 参数 问题 - zha…_CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-作为-参数传入-函数-的陷阱"><span class="toc-number">0.5.</span> <span class="toc-text">指针 作为 参数传入 函数 的陷阱</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-用指向-函数-的-指针-作为-函数-参数-Lavi的专栏-CSDN博客"><span class="toc-number">0.6.</span> <span class="toc-text">C++ 用指向 函数 的 指针 作为 函数 参数 - Lavi的专栏 - CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#函数-参数的传递-问题-指针-的-指针-杨正的专栏-CSDN博客"><span class="toc-number">0.7.</span> <span class="toc-text">函数 参数的传递 问题 ( 指针 的 指针 ) - 杨正的专栏 - CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-的学习（3）-指针-作为-函数-的参数的输入和输出的参数的特性"><span class="toc-number">0.8.</span> <span class="toc-text">指针 的学习（3） 指针 作为 函数 的参数的输入和输出的参数的特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-作为-参数的经典例子"><span class="toc-number">0.9.</span> <span class="toc-text">指针 作为 参数的经典例子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-作为-函数-参数传递-的-问题-Cheatscat的博客-CSDN博客"><span class="toc-number">0.10.</span> <span class="toc-text">指针 作为 函数 参数传递 的 问题 - Cheatscat的博客 - CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C语言-函数-传递-指针-参数的-问题-L-Aster的专栏-CSDN博客"><span class="toc-number">0.11.</span> <span class="toc-text">C语言 函数 传递 指针 参数的 问题 - L_Aster的专栏 - CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-和引用-作为-函数-参数的区别"><span class="toc-number">0.12.</span> <span class="toc-text">指针 和引用 作为 函数 参数的区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c语言-指针-作为-函数-的参数"><span class="toc-number">0.13.</span> <span class="toc-text">c语言 指针 作为 函数 的参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-中-函数-参数传递-值传递、-指针-传递-引用传递-进一步…-CSDN博客"><span class="toc-number">0.14.</span> <span class="toc-text">c++ 中 函数 参数传递 (值传递、 指针 传递,引用传递)进一步…_CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#普通值、-指针-、引用-作为-函数-参数时的理解-夏天的风的…-CSDN博客"><span class="toc-number">0.15.</span> <span class="toc-text">普通值、 指针 、引用 作为 函数 参数时的理解 - 夏天的风的…_CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#普通值、-指针-、引用-作为-函数-参数时的理解"><span class="toc-number">0.16.</span> <span class="toc-text">普通值、 指针 、引用 作为 函数 参数时的理解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C语言-指针-作为-函数-参数传递-学习-一-行者三个石的博客-CSDN博客"><span class="toc-number">0.17.</span> <span class="toc-text">C语言 指针 作为 函数 参数传递 学习(一) - 行者三个石的博客 - CSDN博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#浅谈C-C-回调-函数-（Callback）-amp-函数-指针"><span class="toc-number">0.18.</span> <span class="toc-text">浅谈C&#x2F; C++ 回调 函数 （Callback）&amp; 函数 指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C语言-指针-作为-函数-参数传递-学习-一"><span class="toc-number">0.19.</span> <span class="toc-text">C语言 指针 作为 函数 参数传递 学习(一)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C语言学习笔记——-指针-、数组-作为-函数-参数传递-的方式"><span class="toc-number">0.20.</span> <span class="toc-text">C语言学习笔记—— 指针 、数组 作为 函数 参数传递 的方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#以-指针-作为-引用参数-一"><span class="toc-number">0.21.</span> <span class="toc-text">以 指针 作为 引用参数(一)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-中namespace的用法"><span class="toc-number">0.22.</span> <span class="toc-text">C++ 中namespace的用法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数组传参，-指针-作为-参数"><span class="toc-number">0.23.</span> <span class="toc-text">数组传参， 指针 作为 参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-变量-作为-函数-参数"><span class="toc-number">0.24.</span> <span class="toc-text">指针 变量 作为 函数 参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-用-指针-将-函数-作为-参数传参"><span class="toc-number">0.25.</span> <span class="toc-text">c++ 用 指针 将 函数 作为 参数传参</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-类成员-函数-的-函数-指针"><span class="toc-number">0.26.</span> <span class="toc-text">C++ 类成员 函数 的 函数 指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C语言中-指针-变量-作为-函数-参数和一般变量-作为-函数-参数的区别"><span class="toc-number">0.27.</span> <span class="toc-text">C语言中 指针 变量 作为 函数 参数和一般变量 作为 函数 参数的区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C语言中“-指针-”-作为-“-函数-参数”时的注意事项"><span class="toc-number">0.28.</span> <span class="toc-text">C语言中“ 指针 ” 作为 “ 函数 参数”时的注意事项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指针-作为-函数-参数传递-时需要注意的-问题"><span class="toc-number">0.29.</span> <span class="toc-text">指针 作为 函数 参数传递 时需要注意的 问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#函数-指针-作为-某个-函数-的参数及定义-函数-指针-（回调-函数-）"><span class="toc-number">0.30.</span> <span class="toc-text">函数 指针 作为 某个 函数 的参数及定义 函数 指针 （回调 函数 ）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-中一级-指针-和双重（二级）-指针-作为-函数-参数传递"><span class="toc-number">0.31.</span> <span class="toc-text">C++ 中一级 指针 和双重（二级） 指针 作为 函数 参数传递</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#如何正确使用-指针-指针-作为-输出型参数-与结构体-指针-作为-函数-参数"><span class="toc-number">0.32.</span> <span class="toc-text">如何正确使用 指针 ( 指针 作为 输出型参数)与结构体 指针 作为 函数 参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#【-C-】用-指针-做-函数-参数"><span class="toc-number">0.33.</span> <span class="toc-text">【 C++ 】用 指针 做 函数 参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-指针-的引用做-函数-参数"><span class="toc-number">0.34.</span> <span class="toc-text">C++ 指针 的引用做 函数 参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-中-函数-参数类型为-指针-的-指针"><span class="toc-number">0.35.</span> <span class="toc-text">C++ 中 函数 参数类型为 指针 的 指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-中参数何时用引用或是-指针"><span class="toc-number">0.36.</span> <span class="toc-text">C++ 中参数何时用引用或是 指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-成员-函数-指针-的本质"><span class="toc-number">0.37.</span> <span class="toc-text">c++ 成员 函数 指针 的本质</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-C-回调方式系列之一-函数-指针-和-函数-回调模式"><span class="toc-number">0.38.</span> <span class="toc-text">C&#x2F; C++ 回调方式系列之一 函数 指针 和 函数 回调模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#【转】嗯，让我们彻底搞懂C-C-函数-指针-吧"><span class="toc-number">0.39.</span> <span class="toc-text">【转】嗯，让我们彻底搞懂C&#x2F; C++ 函数 指针 吧</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-委托实现-函数-指针-，function-bind，委托模式"><span class="toc-number">0.40.</span> <span class="toc-text">C++ 委托实现( 函数 指针 ，function+bind，委托模式)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-那些细节–-函数-指针"><span class="toc-number">0.41.</span> <span class="toc-text">C++ 那些细节– 函数 指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-浅析-函数-指针"><span class="toc-number">0.42.</span> <span class="toc-text">C++ 浅析 函数 指针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-c-向-函数-传递-指针-并修改其指向的-问题"><span class="toc-number">0.43.</span> <span class="toc-text">c&#x2F; c++ 向 函数 传递 指针 并修改其指向的 问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-中-函数-指针-的使用"><span class="toc-number">0.44.</span> <span class="toc-text">C++ 中 函数 指针 的使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Qt-C-函数-指针-作为-函数-的参数"><span class="toc-number">0.45.</span> <span class="toc-text">Qt C++ 函数 指针 作为 函数 的参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#函数-指针-作为-某个-函数-的参数"><span class="toc-number">0.46.</span> <span class="toc-text">函数 指针 作为 某个 函数 的参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#函数-指针-及含参-函数-指针-做参数的实现"><span class="toc-number">0.47.</span> <span class="toc-text">函数 指针 及含参 函数 指针 做参数的实现</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&text=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&title=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&is_video=false&description=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客&body=Check out this article: http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&title=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&title=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&title=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&title=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&name=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2014/08/02/c++%E4%B9%8B%E6%8C%87%E9%92%88%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E7%9A%84%E9%97%AE%E9%A2%98-wang386476890%E7%9A%84%E4%B8%93%E6%A0%8F-CSDN%E5%8D%9A%E5%AE%A2/&t=c++之指针作为函数参数传递的问题-wang386476890的专栏-CSDN博客" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

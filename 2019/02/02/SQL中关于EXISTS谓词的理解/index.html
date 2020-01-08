@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="SQL中关于EXISTS谓词的理解2017年12月06日 15:35:14 阅读数：1502更多 个人分类： 数据库 版权声明：本文为博主原创文章，未经博主允许不得转载。 https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_19782019&#x2F;article&#x2F;details&#x2F;78730882   在SQL语言中，EXISTS（存在）谓词是一个非常重要的查询关键词。 让我们先看看EXISTS的用法：EX">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL中关于EXISTS谓词的理解">
+<meta property="og:url" content="http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="SQL中关于EXISTS谓词的理解2017年12月06日 15:35:14 阅读数：1502更多 个人分类： 数据库 版权声明：本文为博主原创文章，未经博主允许不得转载。 https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_19782019&#x2F;article&#x2F;details&#x2F;78730882   在SQL语言中，EXISTS（存在）谓词是一个非常重要的查询关键词。 让我们先看看EXISTS的用法：EX">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img-blog.csdn.net/20171206153207079?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMTk3ODIwMTk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="article:published_time" content="2019-02-02T01:21:35.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.742Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20171206153207079?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMTk3ODIwMTk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>SQL中关于EXISTS谓词的理解</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/02/12/SpringBootwar%E5%8C%85%E9%83%A8%E7%BD%B2%E5%88%B0Tomcat%E6%9C%8D%E5%8A%A1%E5%99%A8/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/01/27/yum%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&text=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&title=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&is_video=false&description=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=SQL中关于EXISTS谓词的理解&body=Check out this article: http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&title=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&title=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&title=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&title=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&name=SQL中关于EXISTS谓词的理解&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&t=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL中关于EXISTS谓词的理解"><span class="toc-number">1.</span> <span class="toc-text">SQL中关于EXISTS谓词的理解</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        SQL中关于EXISTS谓词的理解
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-02-02T01:21:35.000Z" itemprop="datePublished">2019-02-02</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="SQL中关于EXISTS谓词的理解"><a href="#SQL中关于EXISTS谓词的理解" class="headerlink" title="SQL中关于EXISTS谓词的理解"></a>SQL中关于EXISTS谓词的理解</h1><p>2017年12月06日 15:35:14 阅读数：1502更多</p>
+<p>个人分类： <a href="https://blog.csdn.net/qq_19782019/article/category/7330212" target="_blank" rel="noopener">数据库</a></p>
+<p>版权声明：本文为博主原创文章，未经博主允许不得转载。 <a href="https://blog.csdn.net/qq_19782019/article/details/78730882" target="_blank" rel="noopener">https://blog.csdn.net/qq_19782019/article/details/78730882</a></p>
+<p>  在SQL语言中，EXISTS（存在）谓词是一个非常重要的查询关键词。</p>
+<p>让我们先看看EXISTS的用法：EXISTS代表存在量词。带有EXISTS谓词的子查询不返回任何数据，只产生逻辑真值“true”或逻辑假值“false”。</p>
+<p>例如，以下的SQL语句：</p>
+<p>SELECT sname</p>
+<p>FROM student</p>
+<p>WHERE exists</p>
+<p>(</p>
+<p>SELECT *</p>
+<p>FROM sc</p>
+<p>WHERE sc.sno=student.sno AND cno=’1;</p>
+<p>)</p>
+<p>本查询涉及表student和sc表。我们可以这样理解上面的SQL语句做的事情：在student表中从头到尾每次取一个元组出来，用这个元组的sno与sc表所有的元组做比较，如果比较条件成立（sc表中存在sno值等于student.sno中值并且其cno=’1’的元组），即exists语句中的SQL语句有返回值过来，则EXISTS返回给上一级元组一个true值，则表示允许现在student表中的这个元组可以放入结果表中。</p>
+<p><img src="https://img-blog.csdn.net/20171206153207079?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMTk3ODIwMTk=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
+<p>使用exists后，若内层查询结果非空，则外层的WHERE子句返回真值，否则返回假值。</p>
+<p>由exists引出的子查询，其目标列表达式通常都用*，因为EXISTS的子查询只返回真值或者假值，不返回选择出来的结果，因此，你给什么样的列名最后返回的都是true或者false，所以给出实际列名无意义。</p>
+<p>对于如何写带有EXISTS查询的子句，我是这样理解的：</p>
+<p>1.首先子查询中必须要有依赖父查询的条件，即我们单独把子查询的select语句提出来不能正常运行。</p>
+<p>2.每次查询时父查询表中的一个元组对子查询所有的元组进行判定，如果为true则父查询中的这个元组允许放入结果表，否则进行父查询下一个元组的判定。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL中关于EXISTS谓词的理解"><span class="toc-number">1.</span> <span class="toc-text">SQL中关于EXISTS谓词的理解</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&text=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&title=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&is_video=false&description=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=SQL中关于EXISTS谓词的理解&body=Check out this article: http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&title=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&title=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&title=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&title=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&name=SQL中关于EXISTS谓词的理解&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2019/02/02/SQL%E4%B8%AD%E5%85%B3%E4%BA%8EEXISTS%E8%B0%93%E8%AF%8D%E7%9A%84%E7%90%86%E8%A7%A3/&t=SQL中关于EXISTS谓词的理解" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

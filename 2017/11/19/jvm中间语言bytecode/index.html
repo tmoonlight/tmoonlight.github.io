@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Write Once,Run Anywhere——byteCodebyteCode 平台无关  java通过存储编译后的字节码，并将字码加载到JVM中，实现了java语言的跨平台。字节码是平台中立的代码存储格式，任意一个平台只要安装了JRE(跟平台有关),那么程序就是可以运行的。  byteCode 语言无关  除此之外，更值得注意的是字节码不仅是平台无关的，也同样是语言无关的，并不是说只有jav">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jvm中间语言bytecode">
+<meta property="og:url" content="http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="Write Once,Run Anywhere——byteCodebyteCode 平台无关  java通过存储编译后的字节码，并将字码加载到JVM中，实现了java语言的跨平台。字节码是平台中立的代码存储格式，任意一个平台只要安装了JRE(跟平台有关),那么程序就是可以运行的。  byteCode 语言无关  除此之外，更值得注意的是字节码不仅是平台无关的，也同样是语言无关的，并不是说只有jav">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://csdnimg.cn/F/img.blog.csdn.net/20170406231813514?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGVtb244OQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="article:published_time" content="2017-11-18T22:18:22.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.821Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://csdnimg.cn/F/img.blog.csdn.net/20170406231813514?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGVtb244OQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>jvm中间语言bytecode</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/11/20/JavaSpringMVC%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AD%EF%BC%89%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E4%B9%8B%E5%AE%9E%E8%B7%B5%E9%83%A8%E5%88%86-scofi-%E5%8D%9A%E5%AE%A2%E5%9B%AD/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/11/18/git%E6%8E%92%E9%99%A4%E6%96%87%E4%BB%B6%E4%B8%8D%E7%94%9F%E6%95%88%E7%9A%84%E6%96%B9%E6%A1%88/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&text=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&title=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&is_video=false&description=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=jvm中间语言bytecode&body=Check out this article: http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&title=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&title=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&title=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&title=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&name=jvm中间语言bytecode&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&t=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Write-Once-Run-Anywhere——byteCode"><span class="toc-number">1.</span> <span class="toc-text">Write Once,Run Anywhere——byteCode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Class文件"><span class="toc-number">2.</span> <span class="toc-text">Class文件</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        jvm中间语言bytecode
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-11-18T22:18:22.000Z" itemprop="datePublished">2017-11-19</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="Write-Once-Run-Anywhere——byteCode"><a href="#Write-Once-Run-Anywhere——byteCode" class="headerlink" title="Write Once,Run Anywhere——byteCode"></a>Write Once,Run Anywhere——byteCode</h2><p>byteCode 平台无关 </p>
+<p>java通过存储编译后的字节码，并将字码加载到JVM中，实现了java语言的跨平台。字节码是平台中立的代码存储格式，任意一个平台只要安装了JRE(跟平台有关),那么程序就是可以运行的。 </p>
+<p>byteCode 语言无关 </p>
+<p>除此之外，更值得注意的是字节码不仅是平台无关的，也同样是语言无关的，并不是说只有java语言才能生成byteCode，byteCode比java语言有着更强的描述性,而且JVM不与语言进行绑定，所以其他语言(Jython,groovy等)，也是可以通过编译为byteCode运行在JVM中的。 </p>
+<h2 id="Class文件"><a href="#Class文件" class="headerlink" title="Class文件"></a>Class文件</h2><p>类文件 {</p>
+<p>0xCAFEBABE，小版本号，大版本号，常量池大小，常量池数组，</p>
+<p>访问控制标记，当前类信息，父类信息，实现的接口个数，实现的接口信息数组，域个数，</p>
+<p>域信息数组，方法个数，方法信息数组，属性个数，属性信息数组</p>
+<p>}</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>一个byteCode文件（.class）一定对应一个java接口或者类，但是一个java接口或者类不一定对应一个.class文件，也有可能只在内存中生成。</p>
+<p>一个class文件是一个以Byte为基础单位的二进制流，各项数据、指令紧凑的排列，中间没有任何分隔符、间隙。</p>
+<p>javap -verbose 执行后的可视byteCode:</p>
+<p>public class com.zs.jvm.byteCode.TestClass</p>
+<p>minor version: 0</p>
+<p>major version: 51</p>
+<p>flags: ACC_PUBLIC, ACC_SUPER</p>
+<p>Constant pool:</p>
+<p>#1 = Class #2 // com/zs/jvm/byteCode/TestClass</p>
+<p>#2 = Utf8 com/zs/jvm/byteCode/TestClass</p>
+<p>#3 = Class #4 // java/lang/Object</p>
+<p>#4 = Utf8 java/lang/Object</p>
+<p>#5 = Utf8 m</p>
+<p>#6 = Utf8 I</p>
+<p>#7 = Utf8 <init></p>
+<p>#8 = Utf8 ()V</p>
+<p>#9 = Utf8 Code</p>
+<p>#10 = Methodref #3.#11 // java/lang/Object.”<init>“:()V</p>
+<p>#11 = NameAndType #7:#8 // “<init>“:()V</p>
+<p>#12 = Utf8 LineNumberTable</p>
+<p>#13 = Utf8 LocalVariableTable</p>
+<p>#14 = Utf8 this</p>
+<p>#15 = Utf8 Lcom/zs/jvm/byteCode/TestClass;</p>
+<p>#16 = Utf8 inc</p>
+<p>#17 = Utf8 ()I</p>
+<p>#18 = Fieldref #1.#19 // com/zs/jvm/byteCode/TestClass.m:I</p>
+<p>#19 = NameAndType #5:#6 // m:I</p>
+<p>#20 = Utf8 SourceFile</p>
+<p>#21 = Utf8 TestClass.java</p>
+<p>{</p>
+<p>public com.zs.jvm.byteCode.TestClass();</p>
+<p>descriptor: ()V</p>
+<p>flags: ACC_PUBLIC</p>
+<p>Code:</p>
+<p>stack=1, locals=1, args_size=1</p>
+<p>0: aload_0</p>
+<p>1: invokespecial #10 // Method java/lang/Object.”<init>“:()V</p>
+<p>4: return</p>
+<p>LineNumberTable:</p>
+<p>line 3: 0</p>
+<p>LocalVariableTable:</p>
+<p>Start Length Slot Name Signature</p>
+<p>0 5 0 this Lcom/zs/jvm/byteCode/TestClass;</p>
+<p>public int inc();</p>
+<p>descriptor: ()I</p>
+<p>flags: ACC_PUBLIC</p>
+<p>Code:</p>
+<p>stack=2, locals=1, args_size=1</p>
+<p>0: aload_0</p>
+<p>1: getfield #18 // Field m:I</p>
+<p>4: iconst_1</p>
+<p>5: iadd</p>
+<p>6: ireturn</p>
+<p>LineNumberTable:</p>
+<p>line 7: 0</p>
+<p>LocalVariableTable:</p>
+<p>Start Length Slot Name Signature</p>
+<p>0 7 0 this Lcom/zs/jvm/byteCode/TestClass;</p>
+<p>}</p>
+<p>byteCode只存在两种数据类型：无符号数字 与 表。 </p>
+<p>无符号数字： </p>
+<p>基本的数据类型，以u1、u2、u4、u8来分别代表1个字节，2个字节、4个字节，8个字节的无符号数字。无符号数字用来描述数字、索引引用、数据值、UTF-8编码的字符串值。</p>
+<p>表：由无符号数字或者表构成的复合数据类型。表通常以”_info”结尾。class文件本质上就是一个表，如下图 </p>
+<p>从头到尾一项项来看: </p>
+<p>magic: </p>
+<p>一个4byte的无符号数字，用来确认当前文件是否是class格式文件，是否可以被jvm接收。 </p>
+<p>minor_version、major_version: </p>
+<p>用来判断当前编译的byteCode所属JDK版本号，JDK向下兼容. </p>
+<p>constant_pool_count: </p>
+<p>用来记录常量池中数据类型的个数。最大值为22(1-22)，也就是说常量池总共有21中数据类型。 </p>
+<p>constant_pool: </p>
+<p>常量池 通常存储两种数据： </p>
+<p>字面量（litera），如字符串，final常量等 </p>
+<p>符号引用（Symblic Reference），如类、接口的全限定名称、字段的名称和描述、方法的名称和描述。</p>
+<p>access_flag: </p>
+<p>用来描述类或接口的访问类型、修饰符等。方法内部也会有这个字段用来描述方法的修饰关键字 </p>
+<p>this class、super_class、interfaces_count、interfaces </p>
+<p>这几个无符号数字，用来描述当前class所属的类型、父类、接口等继承与实现信息</p>
+<ul>
+<li>字段段表集合 field_info fields* </li>
+</ul>
+<p>这个表用于描述接口或类中声明的变量，但不包括方法中的局部变量。 </p>
+<p>field_info具体结构，如下：</p>
+<p><img src="http://csdnimg.cn/F/img.blog.csdn.net/20170406231813514?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGVtb244OQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
+<p>access_flags与之前说过，只是这里的access_flag针对成员变量(类级别的变量)，用来描述这个方法是否使用了final、static、volatile等关键字修饰。 </p>
+<p>name_index\descriptor_index这两个都是对ConstantPool的引用。</p>
+<p>name_index:用来描述成员变量的简单名称,如int indexOf（…)这个方法，name_index在常量池中对应的描述字符串为：“indexOf”</p>
+<p>descriptor_index:参数列表、返回值等。 </p>
+<p>对于数组类型，每一维度将使用一个前置的“[”字符来描述，如一个定义为“java.lang.String[][]”类型的二维数组， </p>
+<p>将被记录为：“[[Ljava/lang/String；”，一个整型数组“int[]”将被记录为“[I”。</p>
+<p>如：</p>
+<p>int indexOf（char[]source,int sourceOffset,int sourceCount,char[]target,int targetOffset,int</p>
+<p>targetCount,int fromIndex）</p>
+<p>1</p>
+<p>2</p>
+<p>描述为：([CII[CIII)I。 </p>
+<p>注意顺序：“参数列表 返回类型”</p>
+<p>方法表集合 method_info methods </p>
+<p>与字段表集合类似，结构如下： </p>
+<p>attribute_info后文详细描述。</p>
+<p><a href="https://kastor.opaak.org/articles/69-0xcafebabe-java-class-file-format-an-overview.htmlo" target="_blank" rel="noopener">https://kastor.opaak.org/articles/69-0xcafebabe-java-class-file-format-an-overview.htmlo</a></p>
+<p>属性表集合 attribute_info </p>
+<p>class文件本身、方法表(methods_info)、属性表(fields_info)都可以携带属性表(attribute_info)，用来描述某些信息。</p>
+<p>attribute_info属性表预定义属性如下（不完全）： </p>
+<p>属性表结构： </p>
+<p>待续。。。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Write-Once-Run-Anywhere——byteCode"><span class="toc-number">1.</span> <span class="toc-text">Write Once,Run Anywhere——byteCode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Class文件"><span class="toc-number">2.</span> <span class="toc-text">Class文件</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&text=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&title=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&is_video=false&description=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=jvm中间语言bytecode&body=Check out this article: http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&title=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&title=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&title=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&title=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&name=jvm中间语言bytecode&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2017/11/19/jvm%E4%B8%AD%E9%97%B4%E8%AF%AD%E8%A8%80bytecode/&t=jvm中间语言bytecode" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="spring cloud+.net core搭建微服务架构：服务发现（二）前言上篇文章实际上只讲了服务治理中的服务注册，服务与服务之间如何调用呢？传统的方式，服务A调用服务B，那么服务A访问的是服务B的负载均衡地址，通过负载均衡来指向到服务B的真实地址，上篇文章已经说了这种方式的缺点。那么下面讲如何在spring cloud+dotnet core的应用下进行服务调用。 代码实现假设一种场景，有一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springcloud+steeltoe实现微服务架构：服务发现（二）">
+<meta property="og:url" content="http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="spring cloud+.net core搭建微服务架构：服务发现（二）前言上篇文章实际上只讲了服务治理中的服务注册，服务与服务之间如何调用呢？传统的方式，服务A调用服务B，那么服务A访问的是服务B的负载均衡地址，通过负载均衡来指向到服务B的真实地址，上篇文章已经说了这种方式的缺点。那么下面讲如何在spring cloud+dotnet core的应用下进行服务调用。 代码实现假设一种场景，有一">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.cnblogs.com/cnblogs_com/longxianghui/1085116/o_1.png">
+<meta property="og:image" content="https://images.cnblogs.com/cnblogs_com/longxianghui/1085116/o_2.png">
+<meta property="og:image" content="https://images.cnblogs.com/cnblogs_com/longxianghui/1085116/o_3.png">
+<meta property="og:image" content="https://images.cnblogs.com/cnblogs_com/longxianghui/1085116/o_4.png">
+<meta property="article:published_time" content="2018-11-16T04:13:25.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.755Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.cnblogs.com/cnblogs_com/longxianghui/1085116/o_1.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>springcloud+steeltoe实现微服务架构：服务发现（二）</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/11/27/%E5%B8%B8%E8%A7%84%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E4%B8%AD%E9%9C%80%E8%A6%81%E5%8C%85%E5%90%AB%E7%9A%84%E7%BB%84%E4%BB%B6/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/11/06/NETCore%E6%BA%90%E7%A0%81%E5%AF%BC%E8%88%AA%EF%BC%88%E6%8C%89%E7%A8%8B%E5%BA%8F%E9%9B%86%E9%93%BE%E6%8E%A5%EF%BC%89/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&text=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&title=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&is_video=false&description=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=springcloud+steeltoe实现微服务架构：服务发现（二）&body=Check out this article: http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&title=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&title=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&title=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&title=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&name=springcloud+steeltoe实现微服务架构：服务发现（二）&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&t=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#spring-cloud-net-core搭建微服务架构：服务发现（二）"><span class="toc-number">1.</span> <span class="toc-text">spring cloud+.net core搭建微服务架构：服务发现（二）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">2.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码实现"><span class="toc-number">3.</span> <span class="toc-text">代码实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#后记"><span class="toc-number">4.</span> <span class="toc-text">后记</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#示例代码"><span class="toc-number">5.</span> <span class="toc-text">示例代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#传送门"><span class="toc-number">6.</span> <span class="toc-text">传送门</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考资料"><span class="toc-number">7.</span> <span class="toc-text">参考资料</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        springcloud+steeltoe实现微服务架构：服务发现（二）
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-11-16T04:13:25.000Z" itemprop="datePublished">2018-11-16</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="spring-cloud-net-core搭建微服务架构：服务发现（二）"><a href="#spring-cloud-net-core搭建微服务架构：服务发现（二）" class="headerlink" title="spring cloud+.net core搭建微服务架构：服务发现（二）"></a><a href="https://www.cnblogs.com/longxianghui/p/7576736.html" target="_blank" rel="noopener">spring cloud+.net core搭建微服务架构：服务发现（二）</a></h1><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><a href="http://www.cnblogs.com/longxianghui/p/7561259.html" target="_blank" rel="noopener">上篇文章</a>实际上只讲了服务治理中的服务注册，服务与服务之间如何调用呢？传统的方式，服务A调用服务B，那么服务A访问的是服务B的负载均衡地址，通过负载均衡来指向到服务B的真实地址，上篇文章已经说了这种方式的缺点。那么下面讲如何在spring cloud+dotnet core的应用下进行服务调用。</p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>假设一种场景，有一个订单服务，有一个产品服务，其中产品服务是由两个服务节点组成一个集群。需求是订单服务访问产品服务的一个API接口。根据上一章文章的内容创建3个应用程序ServiceOne（端口8010），ServiceTwo（端口8011），ServiceThree（8012）。其中ServiceOne设置应用程序名称为order。ServiceTwo和ServiceThree的应用程序名称为product，做成集群。</p>
+<p>ServiceOne.appsettings.json</p>
+<p>{</p>
+<p>“Logging”: {</p>
+<p>“IncludeScopes”: false,</p>
+<p>“LogLevel”: {</p>
+<p>“Default”: “Warning”</p>
+<p>}</p>
+<p>},</p>
+<p>“spring”: {</p>
+<p>“application”: {</p>
+<p>“name”: “order”</p>
+<p>}</p>
+<p>},</p>
+<p>“eureka”: {</p>
+<p>“client”: {</p>
+<p>“serviceUrl”: “<a href="http://localhost:5000/eureka/" target="_blank" rel="noopener">http://localhost:5000/eureka/</a>“</p>
+<p>},</p>
+<p>“instance”: {</p>
+<p>“port”: 8010</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>ServiceOne.Controllers.ValuesController.CS</p>
+<p>private readonly DiscoveryHttpClientHandler _handler;</p>
+<p>private const string ProductUrl = “<a href="http://product/api/values" target="_blank" rel="noopener">http://product/api/values</a>“;</p>
+<p>public ValuesController(IDiscoveryClient client, ILoggerFactory logFactory)</p>
+<p>{</p>
+<p>_handler = new DiscoveryHttpClientHandler(client);</p>
+<p>}</p>
+<p>[HttpGet(“product”)]</p>
+<p>public async Task<string> GoProductAsync()</p>
+<p>{</p>
+<p>var client = new HttpClient(_handler, false);</p>
+<p>return await client.GetStringAsync(ProductUrl);</p>
+<p>}</p>
+<p>ServiceTwo.appsettings.json</p>
+<p>{</p>
+<p>“Logging”: {</p>
+<p>“IncludeScopes”: false,</p>
+<p>“LogLevel”: {</p>
+<p>“Default”: “Warning”</p>
+<p>}</p>
+<p>},</p>
+<p>“spring”: {</p>
+<p>“application”: {</p>
+<p>“name”: “product”</p>
+<p>}</p>
+<p>},</p>
+<p>“eureka”: {</p>
+<p>“client”: {</p>
+<p>“serviceUrl”: “<a href="http://localhost:5000/eureka/" target="_blank" rel="noopener">http://localhost:5000/eureka/</a>“</p>
+<p>},</p>
+<p>“instance”: {</p>
+<p>“port”: 8011</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>ServiceTwo.appsettings.json</p>
+<p>{</p>
+<p>“Logging”: {</p>
+<p>“IncludeScopes”: false,</p>
+<p>“LogLevel”: {</p>
+<p>“Default”: “Warning”</p>
+<p>}</p>
+<p>},</p>
+<p>“spring”: {</p>
+<p>“application”: {</p>
+<p>“name”: “product”</p>
+<p>}</p>
+<p>},</p>
+<p>“eureka”: {</p>
+<p>“client”: {</p>
+<p>“serviceUrl”: “<a href="http://localhost:5000/eureka/" target="_blank" rel="noopener">http://localhost:5000/eureka/</a>“</p>
+<p>},</p>
+<p>“instance”: {</p>
+<p>“port”: 8012</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>为了展现访问的差异，设置不同的返回值。</p>
+<p>ServiceTwo.Controllers.ValuesController.cs</p>
+<p>[HttpGet]</p>
+<p>public string Get(){</p>
+<p>return “ServiceTwo”;</p>
+<p>}</p>
+<p>ServiceThree.Controllers.ValuesController.cs</p>
+<p>[HttpGet]</p>
+<p>public string Get(){</p>
+<p>return “ServiceThree”;</p>
+<p>}</p>
+<p>同时启动这3个项目，先看看服务中心<a href="http://localhost:5000/" target="_blank" rel="noopener">http://localhost:5000/</a></p>
+<p><img src="https://images.cnblogs.com/cnblogs_com/longxianghui/1085116/o_1.png" alt=""></p>
+<p>这个3个应用程序都已经注册到了服务中心。ServiceOne被注册到ORDER，ServiceTwo和ServiceThree注册到了PRODUCT。</p>
+<p>分别访问</p>
+<p><a href="http://localhost:8011/api/values" target="_blank" rel="noopener">http://localhost:8011/api/values</a> 返回ServiceTwo</p>
+<p><a href="http://localhost:8012/api/values" target="_blank" rel="noopener">http://localhost:8012/api/values</a> 返回ServiceThree</p>
+<p>证明这两个服务是没有问题的。</p>
+<p>再访问<a href="http://localhost:8010/api/values/product" target="_blank" rel="noopener">http://localhost:8010/api/values/product</a>，</p>
+<p>如图所示，分别返回了“ServiceTwo”和“ServiceThree”，多刷新几次，发现结果是来回变动的，这说明服务中心帮我们实现了负载均衡。</p>
+<p><img src="https://images.cnblogs.com/cnblogs_com/longxianghui/1085116/o_2.png" alt=""></p>
+<p><img src="https://images.cnblogs.com/cnblogs_com/longxianghui/1085116/o_3.png" alt=""></p>
+<p>我们再做一个测试，断开ServiceTwo这个应该程序。我们继续访问<a href="http://localhost:8010/api/values/product" target="_blank" rel="noopener">http://localhost:8010/api/values/product</a>，发现一次错误，一次正常返回ServiceThree。30秒以后（可配置）再访问正常返回ServiceThree，同时发现服务中心已经踢掉了端口为8011的应用程序（ServiceTwo）。</p>
+<p><img src="https://images.cnblogs.com/cnblogs_com/longxianghui/1085116/o_4.png" alt=""></p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>通过上面3个实例我们模拟了分布式的调用场景，其中Order访问Product集群的时候，并没有指定具体的地址，而是指定了服务名称（product），服务中心自动分配了地址，并实现了负载均衡。联系实际应用场景，配合docker，我们可以快速的对某个服务进行添加，不再需要维护服务节点。同时某个服务节点挂掉以后，服务中心也会踢出这个服务节点（会有短暂的不可用）。结合CAP理论来说，服务中心满足了AP。</p>
+<p>这篇文章讲解了服务之间的调用，我们实际的应用场景，还有各种客户端（IOS，Andriod，Web…）来访问，而服务一般是内网不对外暴露的，所以客户端访问服务的时候就需要有一个专门对外暴露的入口，那么就引入了下篇文章的API网关。</p>
+<h1 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h1><p>所有代码均上传<a href="https://github.com/longxianghui/microservice" target="_blank" rel="noopener">github</a>。代码按照章节的顺序上传，例如第一章demo1，第二章demo2以此类推。</p>
+<p>求推荐，你们的支持是我写作最大的动力，我的QQ群：328438252,交流微服务。</p>
+<h1 id="传送门"><a href="#传送门" class="headerlink" title="传送门"></a>传送门</h1><ul>
+<li><p><a href="http://www.cnblogs.com/longxianghui/p/7561259.html" target="_blank" rel="noopener">spring cloud+dotnet core搭建微服务架构：服务注册（一）</a></p>
+</li>
+<li><p><a href="http://www.cnblogs.com/longxianghui/p/7576736.html" target="_blank" rel="noopener">spring cloud+dotnet core搭建微服务架构：服务发现（二）</a></p>
+</li>
+<li><p><a href="http://www.cnblogs.com/longxianghui/p/7646870.html" target="_blank" rel="noopener">spring cloud+dotnet core搭建微服务架构： Api网关（三）</a></p>
+</li>
+<li><p><a href="http://www.cnblogs.com/longxianghui/p/7660752.html" target="_blank" rel="noopener">spring cloud+dotnet core搭建微服务架构：配置中心（四）</a></p>
+</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>java部分</p>
+<ul>
+<li><p><a href="https://github.com/SpringCloud/spring-cloud-docs" target="_blank" rel="noopener">spring cloud文档</a></p>
+</li>
+<li><p><a href="http://www.cnblogs.com/ityouknow/category/994104.html" target="_blank" rel="noopener">纯洁大神spring cloud系列</a></p>
+</li>
+</ul>
+<p>.net部分</p>
+<ul>
+<li><p><a href="http://steeltoe.io/docs/" target="_blank" rel="noopener">SteeltoeOSS文档</a></p>
+</li>
+<li><p><a href="https://github.com/SteeltoeOSS/" target="_blank" rel="noopener">SteeltoeOSS源码</a></p>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#spring-cloud-net-core搭建微服务架构：服务发现（二）"><span class="toc-number">1.</span> <span class="toc-text">spring cloud+.net core搭建微服务架构：服务发现（二）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">2.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码实现"><span class="toc-number">3.</span> <span class="toc-text">代码实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#后记"><span class="toc-number">4.</span> <span class="toc-text">后记</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#示例代码"><span class="toc-number">5.</span> <span class="toc-text">示例代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#传送门"><span class="toc-number">6.</span> <span class="toc-text">传送门</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考资料"><span class="toc-number">7.</span> <span class="toc-text">参考资料</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&text=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&title=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&is_video=false&description=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=springcloud+steeltoe实现微服务架构：服务发现（二）&body=Check out this article: http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&title=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&title=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&title=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&title=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&name=springcloud+steeltoe实现微服务架构：服务发现（二）&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/11/16/springcloud+steeltoe%E5%AE%9E%E7%8E%B0%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89/&t=springcloud+steeltoe实现微服务架构：服务发现（二）" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

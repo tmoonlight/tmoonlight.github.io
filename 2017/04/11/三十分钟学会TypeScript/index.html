@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="三十分钟学会TypeScript2016&#x2F;08&#x2F;18 · JavaScript · 2 评论 · TypeScript 分享到：7 本文由 伯乐在线 - lunarun 翻译，刘唱 校稿。未经许可，禁止转载！英文出处：Danny Markov。欢迎加入翻译组。 今天我们来看一看 TypeScript，它是一种可以编译成 JavaScript 的编程语言，是为构建大型复杂应用程序的开发者们而设计的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三十分钟学会TypeScript">
+<meta property="og:url" content="http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="三十分钟学会TypeScript2016&#x2F;08&#x2F;18 · JavaScript · 2 评论 · TypeScript 分享到：7 本文由 伯乐在线 - lunarun 翻译，刘唱 校稿。未经许可，禁止转载！英文出处：Danny Markov。欢迎加入翻译组。 今天我们来看一看 TypeScript，它是一种可以编译成 JavaScript 的编程语言，是为构建大型复杂应用程序的开发者们而设计的。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://cdn.tutorialzine.com/wp-content/uploads/2016/07/tscript-trend.png">
+<meta property="article:published_time" content="2017-04-11T13:34:04.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.851Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://cdn.tutorialzine.com/wp-content/uploads/2016/07/tscript-trend.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>三十分钟学会TypeScript</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/04/12/IIS7%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%B1%A0%E6%A0%87%E8%AF%86ApplicationPoolIdentify%E5%BA%94%E7%94%A8/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/04/07/%E7%90%86%E8%A7%A3OAuth2.0/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&text=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&title=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&is_video=false&description=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=三十分钟学会TypeScript&body=Check out this article: http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&title=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&title=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&title=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&title=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&name=三十分钟学会TypeScript&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&t=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#三十分钟学会TypeScript"><span class="toc-number">1.</span> <span class="toc-text">三十分钟学会TypeScript</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-TypeScript-的好处"><span class="toc-number">1.0.1.</span> <span class="toc-text">使用 TypeScript 的好处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装TypeScript"><span class="toc-number">1.0.2.</span> <span class="toc-text">安装TypeScript</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#支持-TypeScript-的文本编辑器"><span class="toc-number">1.0.3.</span> <span class="toc-text">支持 TypeScript 的文本编辑器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编译成-JavaScript"><span class="toc-number">1.0.4.</span> <span class="toc-text">编译成 JavaScript</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Initializes-a-watcher-process-that-will-keep-main-js-up-to-date"><span class="toc-number">2.</span> <span class="toc-text">Initializes a watcher process that will keep main.js up to date.</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#静态类型"><span class="toc-number">2.0.1.</span> <span class="toc-text">静态类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Interfaces-接口"><span class="toc-number">2.0.2.</span> <span class="toc-text">Interfaces 接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类"><span class="toc-number">2.0.3.</span> <span class="toc-text">类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#泛型"><span class="toc-number">2.0.4.</span> <span class="toc-text">泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#exporter-ts"><span class="toc-number">2.0.4.1.</span> <span class="toc-text">exporter.ts</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#importer-ts"><span class="toc-number">2.0.4.2.</span> <span class="toc-text">importer.ts</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第三方声明文件"><span class="toc-number">2.0.5.</span> <span class="toc-text">第三方声明文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TypeScript-2-0将带来的新特性"><span class="toc-number">2.0.6.</span> <span class="toc-text">TypeScript 2.0将带来的新特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#扩展阅读"><span class="toc-number">2.0.7.</span> <span class="toc-text">扩展阅读</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">2.0.8.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        三十分钟学会TypeScript
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-04-11T13:34:04.000Z" itemprop="datePublished">2017-04-11</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="三十分钟学会TypeScript"><a href="#三十分钟学会TypeScript" class="headerlink" title="三十分钟学会TypeScript"></a>三十分钟学会TypeScript</h1><p>2016/08/18 · <a href="http://web.jobbole.com/category/javascript-2/" target="_blank" rel="noopener">JavaScript</a> · <a href="http://web.jobbole.com/87535/#article-comment" target="_blank" rel="noopener">2 评论 </a>· <a href="http://web.jobbole.com/tag/typescript/" target="_blank" rel="noopener">TypeScript</a></p>
+<p>分享到：<a href="http://www.jiathis.com/share?uid=1745061" target="_blank" rel="noopener"></a>7</p>
+<p>本文由 <a href="http://web.jobbole.com/" target="_blank" rel="noopener">伯乐在线</a> - <a href="http://www.jobbole.com/members/nanadeweibohehe" target="_blank" rel="noopener">lunarun</a> 翻译，<a href="http://www.jobbole.com/members/liuchang" target="_blank" rel="noopener">刘唱</a> 校稿。未经许可，禁止转载！<br>英文出处：<a href="http://tutorialzine.com/2016/07/learn-typescript-in-30-minutes/" target="_blank" rel="noopener">Danny Markov</a>。欢迎加入<a href="http://group.jobbole.com/category/feedback/trans-team/" target="_blank" rel="noopener">翻译组</a>。</p>
+<p>今天我们来看一看 TypeScript，它是一种可以编译成 JavaScript 的编程语言，是为构建大型复杂应用程序的开发者们而设计的。它继承了许多语言的编程思想，比如 C# 和 Java，并且相对于宽松自由式的 JavaScript，它添加了更多的规则和约束。</p>
+<p>这个教程适用于相当精通 JavaScript，但刚接触 TypeScript 的开发者们。本教程涵盖了大部分的基础知识和主要特性，同时包含了许多带有注释的例子，来帮助你学习这门语言。</p>
+<p>让我们开始吧！</p>
+<h3 id="使用-TypeScript-的好处"><a href="#使用-TypeScript-的好处" class="headerlink" title="使用 TypeScript 的好处"></a>使用 TypeScript 的好处</h3><p>JavaScript 已经很棒了，你或许会怀疑，我真的需要学习 TypeScript 吗？从技术层面上来说，成为一位出色的开发者确实不需要学习 TypeScript，大多数人没有学习 TypeScript 也做的很好。但是，工作中使用 TypeScript 确实有许多好处：</p>
+<ul>
+<li>基于静态类型，用 TypeScript 编辑代码有更高的预测性，更易纠错。</li>
+<li>由于模块，命名空间和强大的面向对象编程支持，使构建大型复杂应用程序的代码库更加容易。</li>
+<li>TypeScript在编译为JavaScript的过程中，在它到达运行时间前可以捕获所有类型的错误，并中断它们的执行。</li>
+<li>即将到来的 Angular 2 框架就是用 TypeScript 编写的，同时推荐开发人员在项目中也使用这种语言。</li>
+</ul>
+<p>（上述原因中的）最后一点，实际上是对于很多开发者们来说最重要的一点，也是使他们对 TypeScript 产生兴趣的主要原因。Angular 2是现在最热门的框架之一，尽管开发者们可以一起使用常规的 JavaScript，但是大部分的教程和例子都是用 TypeScript 写的。随着Angular 2逐渐扩展自己的社区，越来越多的人将会选择 TypeScript。</p>
+<p><img src="http://cdn.tutorialzine.com/wp-content/uploads/2016/07/tscript-trend.png" alt="Image of TypeScript"></p>
+<p>最近 TypeScript 的人气上升趋势，数据来源于Google Trends。</p>
+<h3 id="安装TypeScript"><a href="#安装TypeScript" class="headerlink" title="安装TypeScript"></a>安装TypeScript</h3><p>该教程需要Node.js 和 Npm。如果没有安装请<a href="https://docs.npmjs.com/getting-started/installing-node" target="_blank" rel="noopener">点击这里</a>。</p>
+<p>安装 TypeScript 最简单的方式就是通过 npm。使用以下命令行，可以全局安装 TypeScript 包，然后就可以在所有项目中使用TypeScript编译器了:</p>
+<p>1</p>
+<p>| </p>
+<p>npm install -g typescript  </p>
+<p>—|—  </p>
+<p>打开终端然后运行 tsc -v 命令来查看是否正确安装了 TypeScript.</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>| </p>
+<p>tsc -v</p>
+<p>Version 1.8.10  </p>
+<p>—|—  </p>
+<h3 id="支持-TypeScript-的文本编辑器"><a href="#支持-TypeScript-的文本编辑器" class="headerlink" title="支持 TypeScript 的文本编辑器"></a>支持 TypeScript 的文本编辑器</h3><p>TypeScript是开源的项目，由微软开发和维护，因此最初只有微软的 <a href="https://www.visualstudio.com/" target="_blank" rel="noopener">Visual Studio</a> 支持。现在，出现了更多本身支持或者通过插件支持 TypeScript 语法、智能提示、纠错、甚至是内置编译器的文本编辑器和IDE。</p>
+<ul>
+<li><a href="https://code.visualstudio.com/" target="_blank" rel="noopener">Visual Studio Code</a>– 微软另外一个轻量级的开源代码编辑器。内置支持TypeScript。</li>
+<li>Sublime Text的官方<a href="https://github.com/Microsoft/TypeScript-Sublime-Plugin" target="_blank" rel="noopener">免费插件</a>。</li>
+<li><a href="https://www.jetbrains.com/webstorm/" target="_blank" rel="noopener">WebStorm</a>的最新版本带有内置支持。</li>
+<li><a href="https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support" target="_blank" rel="noopener">其他</a>包括Vim，Atom，Emacs等。</li>
+</ul>
+<h3 id="编译成-JavaScript"><a href="#编译成-JavaScript" class="headerlink" title="编译成 JavaScript"></a>编译成 JavaScript</h3><p>TypeScript 是 写在 ** .ts** 文件（或者 JSX的.tsx）里，不能直接在浏览器端运行，需要首先转译为vanilla.js。这个编译的过程可以有多种实现方式：</p>
+<ul>
+<li>在终端上运行前面提到的命令行工具 <code>tsc</code>。</li>
+<li>直接在 Visual Studio 或者其他 IDE 和文本编辑器上（操作）。</li>
+<li>使用自动化构建工具，例如 <a href="http://gulpjs.com/" target="_blank" rel="noopener">gulp</a>。</li>
+</ul>
+<p>我们发现第一个方法是最简单的，对于初学者也是最容易接受的，因此我们将在教程中使用该方法。</p>
+<p>下面的命令行把 TypeScript 文件 main.ts编译为 JavaScript 版本的 main.js。如果 main.js 已经存在的话会被覆盖。</p>
+<p>1</p>
+<p>| </p>
+<p>tsc main.ts  </p>
+<p>—|—  </p>
+<p>也可以通过列出所有的文件或者使用通配符来一次编译多个文件：</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>| </p>
+<p>#Will result in separate .js files: main.js worker.js.</p>
+<p>tsc main.ts worker.ts</p>
+<p>#Compiles all .ts files in the current folder. Does NOT work recursively.</p>
+<p>tsc *.ts  </p>
+<p>—|—  </p>
+<p>有更改的时候也可以使用 –watch 来自动编译成 TypeScript 文件：</p>
+<p>1</p>
+<p>2</p>
+<p>| </p>
+<h1 id="Initializes-a-watcher-process-that-will-keep-main-js-up-to-date"><a href="#Initializes-a-watcher-process-that-will-keep-main-js-up-to-date" class="headerlink" title="Initializes a watcher process that will keep main.js up to date."></a>Initializes a watcher process that will keep main.js up to date.</h1><p>tsc main.ts --watch  </p>
+<p>—|—  </p>
+<p>更高级的 TypeScript 用户也可以创建一个 tsconfig.json 文件，包含多种构建设置。因为配置文件在某种程度上是可以自动化进程的，所以在有许多.ts文件的大型项目中有配置文件是很方便的。可以在<a href="http://www.typescriptlang.org/docs/handbook/tsconfig-json.html" target="_blank" rel="noopener">这里</a>阅读到更多关于 tsconfig.json 的TypeScript 文档。</p>
+<h3 id="静态类型"><a href="#静态类型" class="headerlink" title="静态类型"></a>静态类型</h3><p>TypeScript 一个很独特的特征是支持静态类型。意思就是可以声明变量的类型，（因此）编译器就可以确保赋值时不会产生类型错误。如果省略了类型声明，TypeScript 将会从代码中自动推测出正确的类型。</p>
+<p>这有个例子。任意变量，函数自变量或者返回值在初始化时都可以定义自己的类型。</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>| </p>
+<p>var burger: string = ‘hamburger’,     // String</p>
+<pre><code>calories: number = 300,           // Numeric
+
+tasty: boolean = true;            // Boolean</code></pre><p>// Alternatively, you can omit the type declaration:</p>
+<p>// var burger = ‘hamburger’;</p>
+<p>// The function expects a string and an integer.</p>
+<p>// It doesn’t return anything so the type of the function itself is void.</p>
+<p>function speak(food: string, energy: number): void {</p>
+<p>  console.log(“Our “ + food + “ has “ + energy + “ calories.”);</p>
+<p>}</p>
+<p>speak(burger, calories);  </p>
+<p>—|—  </p>
+<p>因为 JavaScript 是弱类型语言（即不声明变量类型），因此 TypeScript 编译为 JavaScript 时，（变量类型的声明）全部被移除：</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>| </p>
+<p>// JavaScript code from the above TS example.</p>
+<p>var burger = ‘hamburger’,</p>
+<pre><code>calories = 300,
+
+tasty = true;</code></pre><p>function speak(food, energy) {</p>
+<pre><code>console.log(&quot;Our &quot; + food + &quot; has &quot; + energy + &quot; calories.&quot;);</code></pre><p>}</p>
+<p>speak(burger, calories);  </p>
+<p>—|—  </p>
+<p>然而，如果我们试着输入非法的语句，tsc 会警告代码里有错误。例如：</p>
+<p>1</p>
+<p>2</p>
+<p>| </p>
+<p>// The given type is boolean, the provided value is a string.</p>
+<p>var tasty: boolean = “I haven’t tried it yet”;  </p>
+<p>—|—  </p>
+<p>1</p>
+<p>| </p>
+<p>main.ts(1,5): error TS2322: Type ‘string’ is not assignable to type ‘boolean’.  </p>
+<p>—|—  </p>
+<p>如果传入错误的函数自变量也会发出警告：</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>| </p>
+<p>function speak(food: string, energy: number): void{</p>
+<p>  console.log(“Our “ + food + “ has “ + energy + “ calories.”);</p>
+<p>}</p>
+<p>// Arguments don’t match the function parameters.</p>
+<p>speak(“tripple cheesburger”, “a ton of”);  </p>
+<p>—|—  </p>
+<p>1</p>
+<p>| </p>
+<p>main.ts(5,30): error TS2345: Argument of type ‘string’ is not assignable to parameter of type ‘number’.  </p>
+<p>—|—  </p>
+<p>以下是一些最常用的数据类型：</p>
+<ul>
+<li>Number (数值类型)  –  所有数字都是数值类型的，无论是整数、浮点型或者其他数值类型都相同。</li>
+<li>String（字符串类型） –  文本类型，就如 vanilla JS 字符串一样可以使用单引号或者双引号。</li>
+<li>Boolean（布尔类型） –   true 或者 false，用 0 和 1 会造成编译错误。</li>
+<li>Any（任意类型） – 该类型的变量可以设定为字符串类型，数值类型或者任何其他类型。</li>
+<li>Arrays（数组类型） – 有两种语法：my_arr: number[];或者my_arr: Array<number></li>
+<li>Void （空类型）- 用在不返回任何值的函数中。</li>
+</ul>
+<p>可以到官方的TypeScript文档查看所有变量类型列表 –  点击<a href="http://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" rel="noopener">这里</a>。</p>
+<h3 id="Interfaces-接口"><a href="#Interfaces-接口" class="headerlink" title="Interfaces 接口"></a>Interfaces 接口</h3><p>接口通常会根据一个对象是否符合某种特定结构来进行类型检查。通过定义一个接口我们可以命名一个特殊的组合变量，确保它们会一直一起运行。当转译成 JavaScript 时，接口会消失 – 它们唯一的目的是在开发阶段里起到辅助的作用。</p>
+<p>在下面的例子中我们定义了一个简单的接口来对一个函数自变量进行类型检查：</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>16</p>
+<p>17</p>
+<p>18</p>
+<p>19</p>
+<p>20</p>
+<p>| </p>
+<p>// Here we define our Food interface, its properties, and their types.</p>
+<p>interface Food {</p>
+<pre><code>name: string;
+
+calories: number;</code></pre><p>}</p>
+<p>// We tell our function to expect an object that fulfills the Food interface.</p>
+<p>// This way we know that the properties we need will always be available.</p>
+<p>function speak(food: Food): void{</p>
+<p>  console.log(“Our “ + food.name + “ has “ + food.calories + “ calories.”);</p>
+<p>}</p>
+<p>// We define an object that has all of the properties the Food interface expects.</p>
+<p>// Notice that types will be inferred automatically.</p>
+<p>var ice_cream = {</p>
+<p>  name: “ice cream”,</p>
+<p>  calories: 200</p>
+<p>}</p>
+<p>speak(ice_cream);  </p>
+<p>—|—  </p>
+<p>属性的顺序并不重要。我们只需必要的属性存在并且是正确的类型。如果哪里有遗漏，类型错误，或者命名不同的话，编译器都会报警告信息。</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>16</p>
+<p>| </p>
+<p>interface Food {</p>
+<pre><code>name: string;
+
+calories: number;</code></pre><p>}</p>
+<p>function speak(food: Food): void{</p>
+<p>  console.log(“Our “ + food.name + “ has “ + food.calories + “ grams.”);</p>
+<p>}</p>
+<p>// We’ve made a deliberate mistake and name is misspelled as nmae.</p>
+<p>var ice_cream = {</p>
+<p>  nmae: “ice cream”,</p>
+<p>  calories: 200</p>
+<p>}</p>
+<p>speak(ice_cream);  </p>
+<p>—|—  </p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>| </p>
+<p>main.ts(16,7): error TS2345: Argument of type ‘{ nmae: string; calories: number; }</p>
+<p>is not assignable to parameter of type ‘Food’.</p>
+<p>Property ‘name’ is missing in type ‘{ nmae: string; calories: number; }’.  </p>
+<p>—|—  </p>
+<p>这只是入门指南，所以我们并不准备介绍更多关于接口的细节。不过，有很多没有提及到的地方，我们推荐查看TypeScript文档 – 点击<a href="http://www.typescriptlang.org/docs/handbook/interfaces.html" target="_blank" rel="noopener">这里</a>。</p>
+<h3 id="类"><a href="#类" class="headerlink" title="类"></a>类</h3><p>在搭建大型规模的应用程序时，尤其是在 Java 或 C# 当中，许多开发者会优先选择面向对象编程。TypeScript 提供一个类系统，和 Java、C# 中的非常相似，包括了继承，抽象类，接口实现，setters/getters 方法等。</p>
+<p>值得一提的是由于最新的 JavaScript 更新（ECMAScript 2015），这些类对于 vanilla JS 来说是原生的，并且在没有 TypeScript 的情况下也可以使用。这两种实现方式非常相似但是也有不同的地方，TypeScript 更加严格一些。</p>
+<p>继续上面的 food的 例子，这里有一个简单的TypeScript类：</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>16</p>
+<p>17</p>
+<p>18</p>
+<p>19</p>
+<p>20</p>
+<p>21</p>
+<p>22</p>
+<p>23</p>
+<p>24</p>
+<p>25</p>
+<p>26</p>
+<p>27</p>
+<p>28</p>
+<p>| </p>
+<p>class Menu {</p>
+<p>  // Our properties:</p>
+<p>  // By default they are public, but can also be private or protected.</p>
+<p>  items: Array<string>;  // The items in the menu, an array of strings.</p>
+<p>  pages: number;         // How many pages will the menu be, a number.</p>
+<p>  // A straightforward constructor.</p>
+<p>  constructor(item_list: Array<string>, total_pages: number) {</p>
+<pre><code>// The this keyword is mandatory.
+
+this.items = item_list;    
+
+this.pages = total_pages;</code></pre><p>  }</p>
+<p>  // Methods</p>
+<p>  list(): void {</p>
+<pre><code>console.log(&quot;Our menu for today:&quot;);
+
+for(var i=0; i&lt;this.items.length; i++) {
+
+  console.log(this.items[i]);
+
+}</code></pre><p>  }</p>
+<p>}</p>
+<p>// Create a new instance of the Menu class.</p>
+<p>var sundayMenu = new Menu([“pancakes”,”waffles”,”orange juice”], 1);</p>
+<p>// Call the list method.</p>
+<p>sundayMenu.list();  </p>
+<p>—|—  </p>
+<p>只要写过一点 Java 或者 C# ，就会发现TypeScript和它们在语法上非常相似。继承也是一样：</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>16</p>
+<p>17</p>
+<p>18</p>
+<p>19</p>
+<p>20</p>
+<p>21</p>
+<p>22</p>
+<p>23</p>
+<p>24</p>
+<p>25</p>
+<p>26</p>
+<p>| </p>
+<p>class HappyMeal extends Menu {</p>
+<p>  // Properties are inherited</p>
+<p>  // A new constructor has to be defined.</p>
+<p>  constructor(item_list: Array<string>, total_pages: number) {</p>
+<pre><code>// In this case we want the exact same constructor as the parent class (Menu),
+
+// To automatically copy it we can call super() - a reference to the parent&apos;s constructor.
+
+super(item_list, total_pages);</code></pre><p>  }</p>
+<p>  // Just like the properties, methods are inherited from the parent.</p>
+<p>  // However, we want to override the list() function so we redefine it.</p>
+<p>  list(): void{</p>
+<pre><code>console.log(&quot;Our special menu for children:&quot;);
+
+for(var i=0; i&lt;this.items.length; i++) {
+
+  console.log(this.items[i]);
+
+}</code></pre><p>  }</p>
+<p>}</p>
+<p>// Create a new instance of the HappyMeal class.</p>
+<p>var menu_for_children = new HappyMeal([“candy”,”drink”,”toy”], 1);</p>
+<p>// This time the log message will begin with the special introduction.</p>
+<p>menu_for_children.list();  </p>
+<p>—|—  </p>
+<p>更深入了解类，可以阅读 TypeScript 文档 – 点击<a href="http://www.typescriptlang.org/docs/handbook/classes.html" target="_blank" rel="noopener">这里</a>。</p>
+<h3 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h3><p>泛型（Generics）是允许同一个函数接受不同类型参数的一种模板。相比于使用 any 类型，使用泛型来创建可复用的组件要更好，因为泛型会保留参数类型。</p>
+<p>一段简单的脚本例子，传入一个参数，返回一个包含了同样参数的数组。</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>11</p>
+<p>12</p>
+<p>13</p>
+<p>14</p>
+<p>15</p>
+<p>16</p>
+<p>17</p>
+<p>18</p>
+<p>19</p>
+<p>| </p>
+<p>// The <T> after the function name symbolizes that it’s a generic function.</p>
+<p>// When we call the function, every instance of T will be replaced with the actual provided type.</p>
+<p>// Receives one argument of type T,</p>
+<p>// Returns an array of type T.</p>
+<p>function genericFunc<T>(argument: T): T[] {    </p>
+<p>  var arrayOfT: T[] = [];    // Create empty array of type T.</p>
+<p>  arrayOfT.push(argument);   // Push, now arrayOfT = [argument].</p>
+<p>  return arrayOfT;</p>
+<p>}</p>
+<p>var arrayFromString = genericFunc<string>(“beep”);</p>
+<p>console.log(arrayFromString[0]);         // “beep”</p>
+<p>console.log(typeof arrayFromString[0])   // String</p>
+<p>var arrayFromNumber = genericFunc(42);</p>
+<p>console.log(arrayFromNumber[0]);         // 42</p>
+<p>console.log(typeof arrayFromNumber[0])   // number  </p>
+<p>—|—  </p>
+<p>第一次调用函数的时候，我们将类型手动设置成字符串。第二次及以后再次调用的时候就不必这样做了，因为编译器会判断传递过什么参数并且自动决定哪种类型最适合。虽然不是强制性的，但是由于编译器在众多复杂环境中确定正确类型的时候可能会失败，所以每次都传入类型是好的做法。</p>
+<p>TypeScript 文档里包含了一些比较新的例子，包括泛型类，泛型类与接口绑定等等，更多请点击<a href="http://www.typescriptlang.org/docs/handbook/generics.html" target="_blank" rel="noopener">这里</a>。</p>
+<p>在开发大型应用时，另一个重要的概念是模块化。与一个有 10000 行代码的文件相比，把代码分成多个可复用组件，这样可以帮助项目保持条理性和易懂性。</p>
+<p>TypeScript 介绍了导入和导出模块的语句，但是并不能解决文件间的真正连接。TypeScript 依赖于第三方函数库来加载外部模块：用于浏览器应用程序的 <a href="http://requirejs.org/" target="_blank" rel="noopener">require.js</a> 和用于 Node.js 的 <a href="https://en.wikipedia.org/wiki/CommonJS" target="_blank" rel="noopener">CommonJS</a>。我们来看一个简单的带有 require.js 的TypeScript 模块例子：</p>
+<p>我们会有两个文件。一个是导出函数，另一个是导入并调用函数。</p>
+<h4 id="exporter-ts"><a href="#exporter-ts" class="headerlink" title="exporter.ts"></a>exporter.ts</h4><p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>| </p>
+<p>var sayHi = function(): void {</p>
+<pre><code>console.log(&quot;Hello!&quot;);</code></pre><p>}</p>
+<p>export = sayHi;  </p>
+<p>—|—  </p>
+<h4 id="importer-ts"><a href="#importer-ts" class="headerlink" title="importer.ts"></a>importer.ts</h4><p>1</p>
+<p>2</p>
+<p>| </p>
+<p>import sayHi = require(‘./exporter’);</p>
+<p>sayHi();  </p>
+<p>—|—  </p>
+<p>现在我们需要下载 require.js，包含在一个script标签里 – 如何设置请点击<a href="http://requirejs.org/docs/start.html" target="_blank" rel="noopener">这里</a>。最后一步是编译这两个 .ts 文件。需要添加一个额外的参数来告诉 TypeScript，我们是为 require.js 创建模块的（也被称为AMD），而不是 CommonJS。</p>
+<p>1</p>
+<p>| </p>
+<p>tsc --module amd *.ts  </p>
+<p>—|—  </p>
+<p>模块是相当复杂的而且也超出了本教程的范围。如果想继续学习更多关于模块的知识，可以查看 TypeScript 文档 – 点击<a href="http://www.typescriptlang.org/docs/handbook/modules.html" target="_blank" rel="noopener">这里</a>。</p>
+<h3 id="第三方声明文件"><a href="#第三方声明文件" class="headerlink" title="第三方声明文件"></a>第三方声明文件</h3><p>在使用一个常规 JavaScript 库时，我们需要用到一个声明文件来使这个库是否和 TypeScript 兼容。一个声明文件包含 .d.ts 扩展名和关于该库的多种信息，还有API。</p>
+<p>TypeScript的声明文件通常是手写的，但是极有可能你需要的库中已经有了一个由其他人创建的 .d.ts 文件。<a href="http://definitelytyped.org/" target="_blank" rel="noopener">DefinitelyTyped</a> 是最大的公共存储库，包括1000多个库文件。也有一个用来管理 TypeScript 定义的 Node.js 流行模块，叫 <a href="https://github.com/typings/typings" target="_blank" rel="noopener">Typings</a>。</p>
+<p>如果仍需要亲自写声明文件，可以从<a href="http://www.typescriptlang.org/docs/handbook/writing-declaration-files.html" target="_blank" rel="noopener">这里</a>开始。</p>
+<h3 id="TypeScript-2-0将带来的新特性"><a href="#TypeScript-2-0将带来的新特性" class="headerlink" title="TypeScript 2.0将带来的新特性"></a>TypeScript 2.0将带来的新特性</h3><p>TypeScript 目前仍在积极开发和持续演变中。编写这个教程的时候，LTS 是 1.8.10 版本，但微软方面已经发布了一个TypeScript 2.0测试版。这个版本可以用来做公共测试，现在可以来试一试：</p>
+<p>1</p>
+<p>| </p>
+<p>npm install -g typescript@beta  </p>
+<p>—|—  </p>
+<p>介绍些新概念，例如：</p>
+<ul>
+<li>Non-nullable 类型标志，防止变量值被设定为 null 或者 undefined。</li>
+<li>通过 npm install 来直接获取声明文件的新改进系统。</li>
+<li>控制流类型分析来抓取之前被编译器漏掉的错误。</li>
+<li>模块导入/导出语句方面的一些创新。</li>
+</ul>
+<p>另一个被期待已久的特性是在 async/await 块中能够控制异步流功能。这个特性应该会在未来 2.1 版本更新中可用。</p>
+<h3 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h3><p>虽然会被官方文档的信息量震撼到，但是通读文档带来的好处是巨大的。我们的教程只是做个介绍，并没有涵盖 TypeScript 文档里的所有章节。这里有一些更有用的但是被跳过的概念。</p>
+<ul>
+<li>命名空间 – <a href="http://www.typescriptlang.org/docs/handbook/namespaces.html" target="_blank" rel="noopener"> <em>这里</em></a>.</li>
+<li>枚举 – <a href="http://www.typescriptlang.org/docs/handbook/enums.html" target="_blank" rel="noopener"> <em>这里</em></a>.</li>
+<li>高级类型和类型保护 – <a href="http://www.typescriptlang.org/docs/handbook/advanced-types.html" target="_blank" rel="noopener"> <em>这里</em></a>.</li>
+<li>用TypeScript写JSX – <a href="http://www.typescriptlang.org/docs/handbook/jsx.html" target="_blank" rel="noopener"> <em>这里</em></a>.</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>我们希望您喜欢这个教程！</p>
+<p>您对 TypeScript 有什么想法吗？会考虑在您的项目上使用 TypeScript 吗？请在下面留下您的评论！</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#三十分钟学会TypeScript"><span class="toc-number">1.</span> <span class="toc-text">三十分钟学会TypeScript</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-TypeScript-的好处"><span class="toc-number">1.0.1.</span> <span class="toc-text">使用 TypeScript 的好处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装TypeScript"><span class="toc-number">1.0.2.</span> <span class="toc-text">安装TypeScript</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#支持-TypeScript-的文本编辑器"><span class="toc-number">1.0.3.</span> <span class="toc-text">支持 TypeScript 的文本编辑器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编译成-JavaScript"><span class="toc-number">1.0.4.</span> <span class="toc-text">编译成 JavaScript</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Initializes-a-watcher-process-that-will-keep-main-js-up-to-date"><span class="toc-number">2.</span> <span class="toc-text">Initializes a watcher process that will keep main.js up to date.</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#静态类型"><span class="toc-number">2.0.1.</span> <span class="toc-text">静态类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Interfaces-接口"><span class="toc-number">2.0.2.</span> <span class="toc-text">Interfaces 接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类"><span class="toc-number">2.0.3.</span> <span class="toc-text">类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#泛型"><span class="toc-number">2.0.4.</span> <span class="toc-text">泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#exporter-ts"><span class="toc-number">2.0.4.1.</span> <span class="toc-text">exporter.ts</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#importer-ts"><span class="toc-number">2.0.4.2.</span> <span class="toc-text">importer.ts</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第三方声明文件"><span class="toc-number">2.0.5.</span> <span class="toc-text">第三方声明文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TypeScript-2-0将带来的新特性"><span class="toc-number">2.0.6.</span> <span class="toc-text">TypeScript 2.0将带来的新特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#扩展阅读"><span class="toc-number">2.0.7.</span> <span class="toc-text">扩展阅读</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">2.0.8.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&text=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&title=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&is_video=false&description=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=三十分钟学会TypeScript&body=Check out this article: http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&title=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&title=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&title=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&title=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&name=三十分钟学会TypeScript&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2017/04/11/%E4%B8%89%E5%8D%81%E5%88%86%E9%92%9F%E5%AD%A6%E4%BC%9ATypeScript/&t=三十分钟学会TypeScript" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

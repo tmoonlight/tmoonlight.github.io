@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="CoreCLR源码探索(七) JIT的工作原理(入门篇)很多C#的初学者都会有这么一个疑问, .Net程序代码是如何被机器加载执行的? 最简单的解答是, C#会通过编译器(CodeDom, Roslyn)编译成IL代码, 然后CLR(.Net Framework, .Net Core, Mono)会把这些IL代码编译成目标机器的机器代码并执行. 相信大多数的C#的书籍都是这样一笔带过的. 这篇和下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CoreCLR源码探索(七)JIT的工作原理(入门篇)">
+<meta property="og:url" content="http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="CoreCLR源码探索(七) JIT的工作原理(入门篇)很多C#的初学者都会有这么一个疑问, .Net程序代码是如何被机器加载执行的? 最简单的解答是, C#会通过编译器(CodeDom, Roslyn)编译成IL代码, 然后CLR(.Net Framework, .Net Core, Mono)会把这些IL代码编译成目标机器的机器代码并执行. 相信大多数的C#的书籍都是这样一笔带过的. 这篇和下">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171020085650334-654730236.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018170911021-270571488.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018170923474-101412584.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018170934115-1960918074.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018170939677-1803666129.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018170949615-116222337.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171002052-454073754.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171015099-1039055213.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171023427-554503621.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171028334-88323564.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171038427-47061114.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171050990-1998870058.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171100521-794837589.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171110459-2142623924.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171119974-1389563809.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171129021-148487134.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171138006-58838255.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171148115-2057306438.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171157177-1001089272.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171203365-50100994.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171212599-809861991.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171221959-2011838068.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171238365-1515982750.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171250474-1099732361.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171300865-1208396172.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171311631-790566433.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171321381-1322853419.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171329271-1854550097.jpg">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171335709-554953081.jpg">
+<meta property="article:published_time" content="2018-12-28T02:05:59.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.749Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images2017.cnblogs.com/blog/881857/201710/881857-20171020085650334-654730236.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>CoreCLR源码探索(七)JIT的工作原理(入门篇)</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/12/24/%E5%86%8D%E8%B0%88%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%92%8Chttpmodule%E7%9A%84%E5%8C%BA%E5%88%AB/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&text=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&title=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&is_video=false&description=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CoreCLR源码探索(七)JIT的工作原理(入门篇)&body=Check out this article: http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&title=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&title=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&title=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&title=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&name=CoreCLR源码探索(七)JIT的工作原理(入门篇)&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&t=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CoreCLR源码探索-七-JIT的工作原理-入门篇"><span class="toc-number">1.</span> <span class="toc-text">CoreCLR源码探索(七) JIT的工作原理(入门篇)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JIT的作用介绍"><span class="toc-number"></span> <span class="toc-text">JIT的作用介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JIT的流程总览"><span class="toc-number"></span> <span class="toc-text">JIT的流程总览</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JIT的流程实例"><span class="toc-number"></span> <span class="toc-text">JIT的流程实例</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JIT的数据结构"><span class="toc-number"></span> <span class="toc-text">JIT的数据结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JIT的触发"><span class="toc-number"></span> <span class="toc-text">JIT的触发</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Frontend"><span class="toc-number"></span> <span class="toc-text">Frontend</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Importer"><span class="toc-number">0.1.</span> <span class="toc-text">Importer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Inliner"><span class="toc-number">0.2.</span> <span class="toc-text">Inliner</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Morph"><span class="toc-number">0.3.</span> <span class="toc-text">Morph</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flowgraph-Analysis"><span class="toc-number">0.4.</span> <span class="toc-text">Flowgraph Analysis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LclVar-sorting-amp-Tree-Ordering"><span class="toc-number">0.5.</span> <span class="toc-text">LclVar sorting &amp; Tree Ordering</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Optimize"><span class="toc-number"></span> <span class="toc-text">Optimize</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SSA-amp-VN"><span class="toc-number">0.1.</span> <span class="toc-text">SSA &amp; VN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Loop-Optimizations"><span class="toc-number">0.2.</span> <span class="toc-text">Loop Optimizations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Copy-Propagation"><span class="toc-number">0.3.</span> <span class="toc-text">Copy Propagation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CSE"><span class="toc-number">0.4.</span> <span class="toc-text">CSE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Assertion-Propagation"><span class="toc-number">0.5.</span> <span class="toc-text">Assertion Propagation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Range-Check-Elimination"><span class="toc-number">0.6.</span> <span class="toc-text">Range Check Elimination</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Backend"><span class="toc-number"></span> <span class="toc-text">Backend</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Rationalization"><span class="toc-number">0.1.</span> <span class="toc-text">Rationalization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lowering"><span class="toc-number">0.2.</span> <span class="toc-text">Lowering</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LSRA"><span class="toc-number">0.3.</span> <span class="toc-text">LSRA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CodeGen"><span class="toc-number">0.4.</span> <span class="toc-text">CodeGen</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Emiiter"><span class="toc-number">0.5.</span> <span class="toc-text">Emiiter</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考链接"><span class="toc-number"></span> <span class="toc-text">参考链接</span></a>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        CoreCLR源码探索(七)JIT的工作原理(入门篇)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-12-28T02:05:59.000Z" itemprop="datePublished">2018-12-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="CoreCLR源码探索-七-JIT的工作原理-入门篇"><a href="#CoreCLR源码探索-七-JIT的工作原理-入门篇" class="headerlink" title="CoreCLR源码探索(七) JIT的工作原理(入门篇)"></a><a href="https://www.cnblogs.com/zkweb/p/7687737.html" target="_blank" rel="noopener">CoreCLR源码探索(七) JIT的工作原理(入门篇)</a></h2><p>很多C#的初学者都会有这么一个疑问, .Net程序代码是如何被机器加载执行的?</p>
+<p>最简单的解答是, C#会通过编译器(CodeDom, Roslyn)编译成IL代码,</p>
+<p>然后CLR(.Net Framework, .Net Core, Mono)会把这些IL代码编译成目标机器的机器代码并执行.</p>
+<p>相信大多数的C#的书籍都是这样一笔带过的.</p>
+<p>这篇和下篇文章会深入讲解JIT的具体工作流程,</p>
+<p>和前面的<a href="http://www.cnblogs.com/zkweb/p/6625049.html" target="_blank" rel="noopener">GC篇</a>一样, 实现中的很多细节都是无标准文档的, 用搜索引擎不会找到它们相关的资料.</p>
+<p>因为内容相当多, 讲解JIT的文章将会分为两篇.</p>
+<p>第一篇是入门篇, 看过这个系列之前的文章和CLR via C#, 了解一些编译原理的都可以看的明白.</p>
+<p>第二篇是详解篇, 会分析JIT的具体实现流程, 算法和数据结构.</p>
+<p>这篇的内容是基于CoreCLR 1.1.0分析的, 其他CLR中的实现不一定和这篇分析的实现完全一样.</p>
+<p>微软最近提供了一篇<a href="https://github.com/dotnet/coreclr/blob/master/Documentation/botr/ryujit-tutorial.md" target="_blank" rel="noopener">JIT入门文档</a>,</p>
+<p>尽管里面写的相当潦草但是仍有很大的参考价值, 推荐同时参考这个文档.</p>
+<h1 id="JIT的作用介绍"><a href="#JIT的作用介绍" class="headerlink" title="JIT的作用介绍"></a>JIT的作用介绍</h1><p>相信很多C#程序员都知道, 我们编写的C#代码在经过编译后得出的exe或dll里面包含的并不是机器代码,</p>
+<p>而是一种中间代码, 也称为MSIL(简称IL).</p>
+<p>MSIL可以在不同的系统或者平台上执行, CLR中执行它们的模块就是这篇要讲的JIT.</p>
+<p>如图所示</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171020085650334-654730236.jpg" alt=""></p>
+<p>CoreCLR中的JIT代号是RyuJIT, RyuJIT可以把MSIL翻译为X86, X64或者ARM的机器代码.</p>
+<p>使用JIT的好处有</p>
+<ul>
+<li><p>同一个程序集可以在不同平台上运行</p>
+</li>
+<li><p>减少编译时间(编译到MSIL的时间比编译到机器代码的时间要短很多)</p>
+</li>
+<li><p>可以根据目标平台选择最优的代码(例如只在支持AVX指令的CPU使用AVX指令)</p>
+</li>
+</ul>
+<p>使用JIT的坏处有</p>
+<ul>
+<li><p>增加运行负担</p>
+</li>
+<li><p>不能执行过多的优化(否则将会增加更多的运行负担)</p>
+</li>
+<li><p>部分平台上无法使用(例如iOS)</p>
+</li>
+</ul>
+<p>为了解决这些坏处而出现的技术有NGEN, AOT, CoreRT等, 但是使用它们以后同时也就失去了使用JIT的好处.</p>
+<h1 id="JIT的流程总览"><a href="#JIT的流程总览" class="headerlink" title="JIT的流程总览"></a>JIT的流程总览</h1><p>以下的图片来源于微软提供的JIT入门文档:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018170911021-270571488.png" alt=""></p>
+<p>总体上来说RyuJIT可以分为两个部分.</p>
+<p>前端: 也就是图上的第一行, 负责把MSIL转换为JIT中的内部表现(IR)并且执行优化.</p>
+<p>后端: 也就是图上的第二行, 负责准备生产机器代码, 分配寄存器等与平台相关的处理.</p>
+<p>具体的步骤可以分为:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018170923474-101412584.png" alt=""></p>
+<p>前端的步骤有(导入MSIL和优化):</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018170934115-1960918074.png" alt=""></p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018170939677-1803666129.png" alt=""></p>
+<p>后端的步骤有(平台相关的处理):</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018170949615-116222337.png" alt=""></p>
+<h1 id="JIT的流程实例"><a href="#JIT的流程实例" class="headerlink" title="JIT的流程实例"></a>JIT的流程实例</h1><p>只看上面的图你可能会一头雾水, 我们来看看实际的流程.</p>
+<p>为了更容易理解这里我使用的是Debug模式.</p>
+<p>以下的内容来源于CoreCLR的输出, 设置环境变量”COMPlus_JitDump=Main”并且使用Debug版的CoreCLR即可得到.</p>
+<p>首先是C#代码, 非常简单的循环3次并且输出到控制台.</p>
+<p>using System;</p>
+<p>using System.Runtime.InteropServices;</p>
+<p>namespace ConsoleApplication</p>
+<p>{</p>
+<p>public class Program</p>
+<p>{</p>
+<p>public static void Main(string[] args)</p>
+<p>{</p>
+<p>for (int x = 0; x &lt; 3; ++x)</p>
+<p>{</p>
+<p>Console.WriteLine(x);</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>经过编译后会生成以下的IL, 下面我标记了运行堆栈的状态和简单的注释.</p>
+<p>IL to import:</p>
+<p>IL_0000 00 nop</p>
+<p>IL_0001 16 ldc.i4.0 ; 运行堆栈 [ 0 ]</p>
+<p>IL_0002 0a stloc.0 ; 运行堆栈 [ ], 保存到本地变量0 (x = 0)</p>
+<p>IL_0003 2b 0d br.s 13 (IL_0012) ; 跳转到IL_0012</p>
+<p>IL_0005 00 nop</p>
+<p>IL_0006 06 ldloc.0 ; 运行堆栈 [ x ]</p>
+<p>IL_0007 28 0c 00 00 0a call 0xA00000C ; 运行堆栈 [ ], 调用Console.WriteLine, 这里的0xA00000C是token</p>
+<p>IL_000c 00 nop</p>
+<p>IL_000d 00 nop</p>
+<p>IL_000e 06 ldloc.0 ; 运行堆栈 [ x ]</p>
+<p>IL_000f 17 ldc.i4.1 ; 运行堆栈 [ x, 1 ]</p>
+<p>IL_0010 58 add ; 运行堆栈 [ x+1 ]</p>
+<p>IL_0011 0a stloc.0 ; 运行堆栈 [ ], 保存到本地变量0 (x = x + 1)</p>
+<p>IL_0012 06 ldloc.0 ; 运行堆栈 [ x ]</p>
+<p>IL_0013 19 ldc.i4.3 ; 运行堆栈 [ x, 3 ]</p>
+<p>IL_0014 fe 04 clt ; 运行堆栈 [ x&lt;3 ]</p>
+<p>IL_0016 0b stloc.1 ; 运行堆栈 [ ], 保存到本地变量1 (tmp = x &lt; 3)</p>
+<p>IL_0017 07 ldloc.1 ; 运行堆栈 [ tmp ]</p>
+<p>IL_0018 2d eb brtrue.s -21 (IL_0005); 运行堆栈 [ ], 如果tmp为true则跳转到IL_0005</p>
+<p>IL_001a 2a ret ; 从函数返回</p>
+<p>RyuJIT的前端会把IL导入为中间表现(IR), 如下</p>
+<p>Importing BB02 (PC=000) of ‘ConsoleApplication.Program:Main(ref)’</p>
+<p>[ 0] 0 (0x000) nop</p>
+<p>[000004] ———— * stmtExpr void (IL 0x000… ???)</p>
+<p>[000003] ———— \–* no_op void</p>
+<p>[ 0] 1 (0x001) ldc.i4.0 0</p>
+<p>[ 1] 2 (0x002) stloc.0</p>
+<p>[000008] ———— * stmtExpr void (IL 0x001… ???)</p>
+<p>[000005] ———— | /–* const int 0</p>
+<p>[000007] -A———- \–* = int</p>
+<p>[000006] D——N—- \–* lclVar int V01 loc0</p>
+<p>[ 0] 3 (0x003) br.s</p>
+<p>[000010] ———— * stmtExpr void (IL 0x003… ???)</p>
+<p>[000009] ———— \–* nop void</p>
+<p>Importing BB03 (PC=005) of ‘ConsoleApplication.Program:Main(ref)’</p>
+<p>[ 0] 5 (0x005) nop</p>
+<p>[000025] ———— * stmtExpr void (IL 0x005… ???)</p>
+<p>[000024] ———— \–* no_op void</p>
+<p>[ 0] 6 (0x006) ldloc.0</p>
+<p>[ 1] 7 (0x007) call 0A00000C</p>
+<p>[000029] ———— * stmtExpr void (IL 0x006… ???)</p>
+<p>[000027] –C-G——- \–* call void System.Console.WriteLine</p>
+<p>[000026] ———— arg0 \–* lclVar int V01 loc0</p>
+<p>[ 0] 12 (0x00c) nop</p>
+<p>[000031] ———— * stmtExpr void (IL 0x00C… ???)</p>
+<p>[000030] ———— \–* no_op void</p>
+<p>[ 0] 13 (0x00d) nop</p>
+<p>[000033] ———— * stmtExpr void (IL 0x00D… ???)</p>
+<p>[000032] ———— \–* no_op void</p>
+<p>[ 0] 14 (0x00e) ldloc.0</p>
+<p>[ 1] 15 (0x00f) ldc.i4.1 1</p>
+<p>[ 2] 16 (0x010) add</p>
+<p>[ 1] 17 (0x011) stloc.0</p>
+<p>[000039] ———— * stmtExpr void (IL 0x00E… ???)</p>
+<p>[000035] ———— | /–* const int 1</p>
+<p>[000036] ———— | /–* + int</p>
+<p>[000034] ———— | | \–* lclVar int V01 loc0</p>
+<p>[000038] -A———- \–* = int</p>
+<p>[000037] D——N—- \–* lclVar int V01 loc0</p>
+<p>Importing BB04 (PC=018) of ‘ConsoleApplication.Program:Main(ref)’</p>
+<p>[ 0] 18 (0x012) ldloc.0</p>
+<p>[ 1] 19 (0x013) ldc.i4.3 3</p>
+<p>[ 2] 20 (0x014) clt</p>
+<p>[ 1] 22 (0x016) stloc.1</p>
+<p>[000017] ———— * stmtExpr void (IL 0x012… ???)</p>
+<p>[000013] ———— | /–* const int 3</p>
+<p>[000014] ———— | /–* &lt; int</p>
+<p>[000012] ———— | | \–* lclVar int V01 loc0</p>
+<p>[000016] -A———- \–* = int</p>
+<p>[000015] D——N—- \–* lclVar int V02 loc1</p>
+<p>[ 0] 23 (0x017) ldloc.1</p>
+<p>[ 1] 24 (0x018) brtrue.s</p>
+<p>[000022] ———— * stmtExpr void (IL 0x017… ???)</p>
+<p>[000021] ———— \–* jmpTrue void</p>
+<p>[000019] ———— | /–* const int 0</p>
+<p>[000020] ———— \–* != int</p>
+<p>[000018] ———— \–* lclVar int V02 loc1</p>
+<p>Importing BB05 (PC=026) of ‘ConsoleApplication.Program:Main(ref)’</p>
+<p>[ 0] 26 (0x01a) ret</p>
+<p>[000042] ———— * stmtExpr void (IL 0x01A… ???)</p>
+<p>[000041] ———— \–* return void</p>
+<p>我们可以看到IL被分成了好几组(BB02~BB05), 这里的BB是BasicBlock的缩写,</p>
+<p>一个BasicBlock中有多个语句(Statement), 一个语句就是一棵树(GenTree).</p>
+<p>上面的文本对应了以下的结构(又称HIR结构):</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171002052-454073754.jpg" alt=""></p>
+<p>BasicBlock: 保存了一组语句, BasicBlock内原则上跳转指令只会出现在最后一个语句</p>
+<p>Statement: 一个语句就是一棵树, 在内部Statement也是一个GenTree的子类(GenTreeStmt)</p>
+<p>GenTree: 组成树的节点, 有很多不同的类型例如GenTreeUnOp(unary op), GenTreeIntCon(int constant)</p>
+<p>有人可能会好奇为什么上面的BasicBlock从02开始, 这是因为01是内部用的block, 里面会保存函数开始时运行的内部处理.</p>
+<p>接下来RyuJIT的前端会不断的修改HIR结构, 做出各种变形和优化:</p>
+<p>Trees before IR Rationalize</p>
+<p>-————————————————————————————————————————————</p>
+<p>BBnum descAddr ref try hnd preds weight [IL range] [jump] [EH region] [flags]</p>
+<p>-————————————————————————————————————————————</p>
+<p>BB01 [00000000024701F8] 1 1 [???..???) i internal label target</p>
+<p>BB02 [0000000002473350] 1 BB01 1 [???..???)-&gt; BB04 ( cond ) internal</p>
+<p>BB03 [0000000002473460] 1 BB02 0.5 [???..???) internal</p>
+<p>BB04 [0000000002473240] 2 BB02,BB03 1 [???..???) i internal label target</p>
+<p>BB05 [0000000002470470] 1 BB04 1 [000..005)-&gt; BB07 (always) i</p>
+<p>BB06 [0000000002470580] 1 BB07 1 [005..012) i label target gcsafe bwd</p>
+<p>BB07 [0000000002470690] 2 BB05,BB06 1 [012..01A)-&gt; BB06 ( cond ) i label target bwd</p>
+<p>BB08 [00000000024707A0] 1 BB07 1 [01A..01B) (return) i</p>
+<p>-————————————————————————————————————————————</p>
+<p>-———– BB01 [???..???), preds={} succs={BB02}</p>
+<p>***** BB01, stmt 1</p>
+<p>( 0, 0) [000001] ———— * stmtExpr void (IL ???… ???)</p>
+<p>N001 ( 0, 0) [000000] ———— \–* nop void</p>
+<p>-———– BB02 [???..???) -&gt; BB04 (cond), preds={BB01} succs={BB03,BB04}</p>
+<p>***** BB02, stmt 2</p>
+<p>( 9, 16) [000055] ———— * stmtExpr void (IL ???… ???)</p>
+<p>N005 ( 9, 16) [000054] ———— \–* jmpTrue void</p>
+<p>N003 ( 1, 1) [000045] ———— | /–* const int 0</p>
+<p>N004 ( 7, 14) [000046] J——N—- \–* == int</p>
+<p>N002 ( 5, 12) [000044] ———— \–* indir int</p>
+<p>N001 ( 3, 10) [000043] ———— \–* const(h) long 0x7f95ea870610 token</p>
+<p>-———– BB03 [???..???), preds={BB02} succs={BB04}</p>
+<p>***** BB03, stmt 3</p>
+<p>( 14, 5) [000056] ———— * stmtExpr void (IL ???… ???)</p>
+<p>N001 ( 14, 5) [000047] –C-G-?—– \–* call help void HELPER.CORINFO_HELP_DBG_IS_JUST_MY_CODE</p>
+<p>-———– BB04 [???..???), preds={BB02,BB03} succs={BB05}</p>
+<p>-———– BB05 [000..005) -&gt; BB07 (always), preds={BB04} succs={BB07}</p>
+<p>***** BB05, stmt 4</p>
+<p>( 1, 1) [000004] ———— * stmtExpr void (IL 0x000…0x000)</p>
+<p>N001 ( 1, 1) [000003] ———— \–* no_op void</p>
+<p>***** BB05, stmt 5</p>
+<p>( 1, 3) [000008] ———— * stmtExpr void (IL 0x001…0x002)</p>
+<p>N001 ( 1, 1) [000005] ———— | /–* const int 0</p>
+<p>N003 ( 1, 3) [000007] -A——R— \–* = int</p>
+<p>N002 ( 1, 1) [000006] D——N—- \–* lclVar int V01 loc0</p>
+<p>***** BB05, stmt 6</p>
+<p>( 0, 0) [000010] ———— * stmtExpr void (IL 0x003…0x003)</p>
+<p>N001 ( 0, 0) [000009] ———— \–* nop void</p>
+<p>-———– BB06 [005..012), preds={BB07} succs={BB07}</p>
+<p>***** BB06, stmt 7</p>
+<p>( 1, 1) [000025] ———— * stmtExpr void (IL 0x005…0x005)</p>
+<p>N001 ( 1, 1) [000024] ———— \–* no_op void</p>
+<p>***** BB06, stmt 8</p>
+<p>( 15, 7) [000029] ———— * stmtExpr void (IL 0x006…0x00C)</p>
+<p>N005 ( 15, 7) [000027] –C-G——- \–* call void System.Console.WriteLine</p>
+<p>N003 ( 1, 1) [000026] ———— arg0 in rdi \–* lclVar int V01 loc0</p>
+<p>***** BB06, stmt 9</p>
+<p>( 1, 1) [000031] ———— * stmtExpr void (IL 0x00C… ???)</p>
+<p>N001 ( 1, 1) [000030] ———— \–* no_op void</p>
+<p>***** BB06, stmt 10</p>
+<p>( 1, 1) [000033] ———— * stmtExpr void (IL 0x00D…0x00D)</p>
+<p>N001 ( 1, 1) [000032] ———— \–* no_op void</p>
+<p>***** BB06, stmt 11</p>
+<p>( 3, 3) [000039] ———— * stmtExpr void (IL 0x00E…0x011)</p>
+<p>N002 ( 1, 1) [000035] ———— | /–* const int 1</p>
+<p>N003 ( 3, 3) [000036] ———— | /–* + int</p>
+<p>N001 ( 1, 1) [000034] ———— | | \–* lclVar int V01 loc0</p>
+<p>N005 ( 3, 3) [000038] -A——R— \–* = int</p>
+<p>N004 ( 1, 1) [000037] D——N—- \–* lclVar int V01 loc0</p>
+<p>-———– BB07 [012..01A) -&gt; BB06 (cond), preds={BB05,BB06} succs={BB08,BB06}</p>
+<p>***** BB07, stmt 12</p>
+<p>( 10, 6) [000017] ———— * stmtExpr void (IL 0x012…0x016)</p>
+<p>N002 ( 1, 1) [000013] ———— | /–* const int 3</p>
+<p>N003 ( 6, 3) [000014] ———— | /–* &lt; int</p>
+<p>N001 ( 1, 1) [000012] ———— | | \–* lclVar int V01 loc0</p>
+<p>N005 ( 10, 6) [000016] -A——R— \–* = int</p>
+<p>N004 ( 3, 2) [000015] D——N—- \–* lclVar int V02 loc1</p>
+<p>***** BB07, stmt 13</p>
+<p>( 7, 6) [000022] ———— * stmtExpr void (IL 0x017…0x018)</p>
+<p>N004 ( 7, 6) [000021] ———— \–* jmpTrue void</p>
+<p>N002 ( 1, 1) [000019] ———— | /–* const int 0</p>
+<p>N003 ( 5, 4) [000020] J——N—- \–* != int</p>
+<p>N001 ( 3, 2) [000018] ———— \–* lclVar int V02 loc1</p>
+<p>-———– BB08 [01A..01B) (return), preds={BB07} succs={}</p>
+<p>***** BB08, stmt 14</p>
+<p>( 0, 0) [000042] ———— * stmtExpr void (IL 0x01A…0x01A)</p>
+<p>N001 ( 0, 0) [000041] ———— \–* return void</p>
+<p>上面的内容目前可以不用理解, 我贴出来只是为了说明HIR结构经过了转换和变形.</p>
+<p>接下来就会进入RyuJIT的后端, RyuJIT的后端会根据HIR结构生成LIR结构:</p>
+<p>Trees after IR Rationalize</p>
+<p>-————————————————————————————————————————————</p>
+<p>BBnum descAddr ref try hnd preds weight [IL range] [jump] [EH region] [flags]</p>
+<p>-————————————————————————————————————————————</p>
+<p>BB01 [00000000024701F8] 1 1 [???..???) i internal label target LIR</p>
+<p>BB02 [0000000002473350] 1 BB01 1 [???..???)-&gt; BB04 ( cond ) internal LIR</p>
+<p>BB03 [0000000002473460] 1 BB02 0.5 [???..???) internal LIR</p>
+<p>BB04 [0000000002473240] 2 BB02,BB03 1 [???..???) i internal label target LIR</p>
+<p>BB05 [0000000002470470] 1 BB04 1 [000..005)-&gt; BB07 (always) i LIR</p>
+<p>BB06 [0000000002470580] 1 BB07 1 [005..012) i label target gcsafe bwd LIR</p>
+<p>BB07 [0000000002470690] 2 BB05,BB06 1 [012..01A)-&gt; BB06 ( cond ) i label target bwd LIR</p>
+<p>BB08 [00000000024707A0] 1 BB07 1 [01A..01B) (return) i LIR</p>
+<p>-————————————————————————————————————————————</p>
+<p>-———– BB01 [???..???), preds={} succs={BB02}</p>
+<p>N001 ( 0, 0) [000000] ———— nop void</p>
+<p>-———– BB02 [???..???) -&gt; BB04 (cond), preds={BB01} succs={BB03,BB04}</p>
+<p>N001 ( 3, 10) [000043] ———— t43 = const(h) long 0x7f95ea870610 token</p>
+<p>/–* t43 long</p>
+<p>N002 ( 5, 12) [000044] ———— t44 = * indir int</p>
+<p>N003 ( 1, 1) [000045] ———— t45 = const int 0</p>
+<p>/–* t44 int</p>
+<p>+–* t45 int</p>
+<p>N004 ( 7, 14) [000046] J——N—- t46 = * == int</p>
+<p>/–* t46 int</p>
+<p>N005 ( 9, 16) [000054] ———— * jmpTrue void</p>
+<p>-———– BB03 [???..???), preds={BB02} succs={BB04}</p>
+<p>N001 ( 14, 5) [000047] –C-G-?—– call help void HELPER.CORINFO_HELP_DBG_IS_JUST_MY_CODE</p>
+<p>-———– BB04 [???..???), preds={BB02,BB03} succs={BB05}</p>
+<p>-———– BB05 [000..005) -&gt; BB07 (always), preds={BB04} succs={BB07}</p>
+<p>( 1, 1) [000004] ———— il_offset void IL offset: 0</p>
+<p>N001 ( 1, 1) [000003] ———— no_op void</p>
+<p>( 1, 3) [000008] ———— il_offset void IL offset: 1</p>
+<p>N001 ( 1, 1) [000005] ———— t5 = const int 0</p>
+<p>/–* t5 int</p>
+<p>N003 ( 1, 3) [000007] DA———- * st.lclVar int V01 loc0</p>
+<p>( 0, 0) [000010] ———— il_offset void IL offset: 3</p>
+<p>N001 ( 0, 0) [000009] ———— nop void</p>
+<p>-———– BB06 [005..012), preds={BB07} succs={BB07}</p>
+<p>( 1, 1) [000025] ———— il_offset void IL offset: 5</p>
+<p>N001 ( 1, 1) [000024] ———— no_op void</p>
+<p>( 15, 7) [000029] ———— il_offset void IL offset: 6</p>
+<p>N003 ( 1, 1) [000026] ———— t26 = lclVar int V01 loc0</p>
+<p>/–* t26 int arg0 in rdi</p>
+<p>N005 ( 15, 7) [000027] –C-G——- * call void System.Console.WriteLine</p>
+<p>( 1, 1) [000031] ———— il_offset void IL offset: 12</p>
+<p>N001 ( 1, 1) [000030] ———— no_op void</p>
+<p>( 1, 1) [000033] ———— il_offset void IL offset: 13</p>
+<p>N001 ( 1, 1) [000032] ———— no_op void</p>
+<p>( 3, 3) [000039] ———— il_offset void IL offset: 14</p>
+<p>N001 ( 1, 1) [000034] ———— t34 = lclVar int V01 loc0</p>
+<p>N002 ( 1, 1) [000035] ———— t35 = const int 1</p>
+<p>/–* t34 int</p>
+<p>+–* t35 int</p>
+<p>N003 ( 3, 3) [000036] ———— t36 = * + int</p>
+<p>/–* t36 int</p>
+<p>N005 ( 3, 3) [000038] DA———- * st.lclVar int V01 loc0</p>
+<p>-———– BB07 [012..01A) -&gt; BB06 (cond), preds={BB05,BB06} succs={BB08,BB06}</p>
+<p>( 10, 6) [000017] ———— il_offset void IL offset: 18</p>
+<p>N001 ( 1, 1) [000012] ———— t12 = lclVar int V01 loc0</p>
+<p>N002 ( 1, 1) [000013] ———— t13 = const int 3</p>
+<p>/–* t12 int</p>
+<p>+–* t13 int</p>
+<p>N003 ( 6, 3) [000014] ———— t14 = * &lt; int</p>
+<p>/–* t14 int</p>
+<p>N005 ( 10, 6) [000016] DA———- * st.lclVar int V02 loc1</p>
+<p>( 7, 6) [000022] ———— il_offset void IL offset: 23</p>
+<p>N001 ( 3, 2) [000018] ———— t18 = lclVar int V02 loc1</p>
+<p>N002 ( 1, 1) [000019] ———— t19 = const int 0</p>
+<p>/–* t18 int</p>
+<p>+–* t19 int</p>
+<p>N003 ( 5, 4) [000020] J——N—- t20 = * != int</p>
+<p>/–* t20 int</p>
+<p>N004 ( 7, 6) [000021] ———— * jmpTrue void</p>
+<p>-———– BB08 [01A..01B) (return), preds={BB07} succs={}</p>
+<p>( 0, 0) [000042] ———— il_offset void IL offset: 26</p>
+<p>N001 ( 0, 0) [000041] ———— return void</p>
+<p>我们可以看到在LIR结构里, BasicBlock包含的是GenTree节点的有序列表, 原来是树结构的节点现在都连成了一串.</p>
+<p>LIR结构跟最终生成的机器代码结构非常的相似.</p>
+<p>接下来RyuJIT的后端会给LIR结构中的GenTree节点分配寄存器, 并且根据LIR结构生成汇编指令列表:</p>
+<p>Instructions as they come out of the scheduler</p>
+<p>G_M21556_IG01: ; func=00, offs=000000H, size=0016H, gcrefRegs=00000000 {}, byrefRegs=00000000 {}, byref, nogc &lt;-- Prolog IG</p>
+<p>IN001b: 000000 55 push rbp</p>
+<p>IN001c: 000001 4883EC10 sub rsp, 16</p>
+<p>IN001d: 000005 488D6C2410 lea rbp, [rsp+10H]</p>
+<p>IN001e: 00000A 33C0 xor rax, rax</p>
+<p>IN001f: 00000C 8945F4 mov dword ptr [rbp-0CH], eax</p>
+<p>IN0020: 00000F 8945F0 mov dword ptr [rbp-10H], eax</p>
+<p>IN0021: 000012 48897DF8 mov gword ptr [rbp-08H], rdi</p>
+<p>G_M21556_IG02: ; func=00, offs=000016H, size=0014H, gcrefRegs=00000000 {}, byrefRegs=00000000 {}, byref, isz</p>
+<p>IN0001: 000016 48B8100687EA957F0000 mov rax, 0x7F95EA870610</p>
+<p>IN0002: 000020 833800 cmp dword ptr [rax], 0</p>
+<p>IN0003: 000023 7405 je SHORT G_M21556_IG03</p>
+<p>[02479BA8] ptr arg pop 0</p>
+<p>IN0004: 000025 E8D6E0B578 call CORINFO_HELP_DBG_IS_JUST_MY_CODE</p>
+<p>G_M21556_IG03: ; func=00, offs=00002AH, size=0009H, gcrefRegs=00000000 {}, byrefRegs=00000000 {}, byref, isz</p>
+<p>IN0005: 00002A 90 nop</p>
+<p>IN0006: 00002B 33FF xor edi, edi</p>
+<p>IN0007: 00002D 897DF4 mov dword ptr [rbp-0CH], edi</p>
+<p>IN0008: 000030 90 nop</p>
+<p>IN0009: 000031 EB13 jmp SHORT G_M21556_IG05</p>
+<p>G_M21556_IG04: ; func=00, offs=000033H, size=0013H, gcrefRegs=00000000 {}, byrefRegs=00000000 {}, byref</p>
+<p>IN000a: 000033 90 nop</p>
+<p>IN000b: 000034 8B7DF4 mov edi, dword ptr [rbp-0CH]</p>
+<p>[02479BC0] ptr arg pop 0</p>
+<p>IN000c: 000037 E864F7FFFF call System.Console:WriteLine(int)</p>
+<p>IN000d: 00003C 90 nop</p>
+<p>IN000e: 00003D 90 nop</p>
+<p>IN000f: 00003E 8B45F4 mov eax, dword ptr [rbp-0CH]</p>
+<p>IN0010: 000041 FFC0 inc eax</p>
+<p>IN0011: 000043 8945F4 mov dword ptr [rbp-0CH], eax</p>
+<p>G_M21556_IG05: ; func=00, offs=000046H, size=0019H, gcrefRegs=00000000 {}, byrefRegs=00000000 {}, byref, isz</p>
+<p>IN0012: 000046 8B7DF4 mov edi, dword ptr [rbp-0CH]</p>
+<p>IN0013: 000049 83FF03 cmp edi, 3</p>
+<p>IN0014: 00004C 400F9CC7 setl dil</p>
+<p>IN0015: 000050 400FB6FF movzx rdi, dil</p>
+<p>IN0016: 000054 897DF0 mov dword ptr [rbp-10H], edi</p>
+<p>IN0017: 000057 8B7DF0 mov edi, dword ptr [rbp-10H]</p>
+<p>IN0018: 00005A 85FF test edi, edi</p>
+<p>IN0019: 00005C 75D5 jne SHORT G_M21556_IG04</p>
+<p>IN001a: 00005E 90 nop</p>
+<p>G_M21556_IG06: ; func=00, offs=00005FH, size=0006H, epilog, nogc, emitadd</p>
+<p>IN0022: 00005F 488D6500 lea rsp, [rbp]</p>
+<p>IN0023: 000063 5D pop rbp</p>
+<p>IN0024: 000064 C3 ret</p>
+<p>最后Emitter把这些指令编码成机器代码就完成了JIT的编译工作.</p>
+<h1 id="JIT的数据结构"><a href="#JIT的数据结构" class="headerlink" title="JIT的数据结构"></a>JIT的数据结构</h1><p>以下的图片来源于微软提供的JIT入门文档:</p>
+<p>第一张是HIR的数据结构</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171015099-1039055213.png" alt=""></p>
+<p>第二张是LIR的数据结构</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171023427-554503621.png" alt=""></p>
+<p>第三张是CoreCLR中实际的数据结构(HIR和LIR会共用GenTree节点).</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171028334-88323564.png" alt=""></p>
+<h1 id="JIT的触发"><a href="#JIT的触发" class="headerlink" title="JIT的触发"></a>JIT的触发</h1><p>在相当多的.NET书籍中都提到过, CLR中的JIT是懒编译的, 那么具体是如何实现的?</p>
+<p>JIT针对每个函数都会提供一个”桩”(Stub), 第一次调用时会触发JIT编译, 第二次调用时会跳转到第一次的编译结果.</p>
+<p>流程参考下图:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171038427-47061114.jpg" alt=""></p>
+<p>JIT之前的桩(例子)</p>
+<p>0x7fff7c21f5a8: e8 2b 6c fe ff callq 0x7fff7c2061d8</p>
+<p>JIT之后的桩(例子)</p>
+<p>0x7fff7c21f5a8: e9 a3 87 3a 00 jmp 0x7fff7c5c7d50</p>
+<p>具体的汇编代码分析我会在下一篇中给出, 目前你只需要理解”桩”起到的是一个路由的作用.</p>
+<p>目前的CoreCLR触发了JIT编译后, 会在当前线程中执行JIT编译.</p>
+<p>如果多个线程同时调用了一个未JIT的函数, 其中一个线程会执行编译, 其他线程会等待编译完成.</p>
+<p>CoreCLR会对正在JIT编译的函数分配一个线程锁(ListLockEntry)来实现这一点.</p>
+<p>JIT会为准备的函数创建一个Compiler实例, Compiler实例储存了BasicBlock列表等编译时需要的信息.</p>
+<p>一个正在编译的函数对应一个Compiler实例, 函数编译后Compiler实例会被销毁.</p>
+<p>接下来我会对JIT的各项步骤进行一个简单的说明.</p>
+<h1 id="Frontend"><a href="#Frontend" class="headerlink" title="Frontend"></a>Frontend</h1><h3 id="Importer"><a href="#Importer" class="headerlink" title="Importer"></a>Importer</h3><p>Importer负责读取和解析IL(byte array), 并根据IL生成JIT使用的内部表现IR(BasicBlock, Statement, GenTree).</p>
+<p>BasicBlock会根据它们的跳转类型连接成一个图(graph).</p>
+<p>第一个BasicBlock是内部使用的, 会添加一些函数进入的初始化处理(但不要和汇编中的prolog混淆).</p>
+<p>下图是Importer的实例:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171050990-1998870058.jpg" alt=""></p>
+<h3 id="Inliner"><a href="#Inliner" class="headerlink" title="Inliner"></a>Inliner</h3><p>如果函数符合内联的条件, 则Inliner会把函数的IR嵌入到它的调用端函数(callsite), 并且对本地变量和参数进行修整.</p>
+<p>执行内联后接下来的步骤将在调用端函数中完成.</p>
+<p>内联的条件有很多, 判断逻辑也相当的复杂, 这里我只列出一部分:</p>
+<ul>
+<li><p>未开启优化时不内联</p>
+</li>
+<li><p>函数是尾调用则不内联</p>
+</li>
+<li><p>函数是虚函数时不内敛</p>
+</li>
+<li><p>函数是helper call时不内联</p>
+</li>
+<li><p>函数是indirect call时(编译时无法确认地址)时不内联</p>
+</li>
+<li><p>未设置COMPlus_AggressiveInlining环境变量且函数在catch或者filter中时不内联</p>
+</li>
+<li><p>之前尝试内联失败时不内联</p>
+</li>
+<li><p>同步函数(CORINFO_FLG_SYNCH)不内联</p>
+</li>
+<li><p>函数需要安全检查(CORINFO_FLG_SECURITYCHECK)时不内联</p>
+</li>
+<li><p>如果函数有例外处理器则不内联</p>
+</li>
+<li><p>函数无内容(大小=0)则不内联</p>
+</li>
+<li><p>函数参数是vararg时不内联</p>
+</li>
+<li><p>函数中的本地变量数量大于MAX_INL_LCLS(32)时不内联</p>
+</li>
+<li><p>函数中的参数数量大于MAX_INL_LCLS时不内联</p>
+</li>
+<li><p>函数中的本地变量(包含内部变量)有512个以上, 则标记内联失败</p>
+</li>
+<li><p>如果出现循环inline, 例如A inline B, B inline A, 则标记内联失败</p>
+</li>
+<li><p>如果层数大于InlineStrategy::IMPLEMENTATION_MAX_INLINE_DEPTH(1000), 则标记内联失败</p>
+</li>
+<li><p>如果函数有返回类型但无返回表达式(包含throw), 则标记内联失败</p>
+</li>
+<li><p>如果初始化内联函数所在的class失败, 则标记内联失败</p>
+</li>
+<li><p>如果内联函数估算体积 &gt; 调用函数的指令体积 * 系数(DetermineMultiplier), 则标记内联失败</p>
+</li>
+<li><p>等等</p>
+</li>
+</ul>
+<p>下图是Inliner的实例:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171100521-794837589.jpg" alt=""></p>
+<h3 id="Morph"><a href="#Morph" class="headerlink" title="Morph"></a>Morph</h3><p>Morph会对Importer导入的HIR进行变形, 这个步骤包含了很多处理, 这里我只列出一部分:</p>
+<ul>
+<li><p>在第一个BasicBlock插入内部使用的代码</p>
+</li>
+<li><p>删除无法到达的BasicBlock(死代码)</p>
+</li>
+<li><p>如果有多个return block并且需要合并, 则生成一个新的return block并且让原来的block指向它</p>
+</li>
+<li><p>对本地的struct变量进行promotion, 把各个字段提取出来作为单独的变量</p>
+</li>
+<li><p>对各个节点进行修改</p>
+<ul>
+<li><p>标记节点是否需要检查null</p>
+</li>
+<li><p>标记节点是否需要检查边界</p>
+</li>
+<li><p>根据节点添加断言</p>
+<ul>
+<li>例如a = 5即可断言a等于5, b = new X()即可断言b != null</li>
+</ul>
+</li>
+<li><p>需要时添加cast</p>
+</li>
+<li><p>对于平台不支持的操作转换为helper call, 例如(1f+1f)转换为float_add(1f, 1f)</p>
+</li>
+<li><p>进行简单的优化, 例如(常量+常量)转换为(常量)</p>
+</li>
+<li><p>转换一些表达式, 例如(1 op 2 == 0)转换为(1 (rev op) 2)</p>
+</li>
+<li><p>如果表达式带有溢出检查(checked), 则添加对应的throw block, 只添加一次</p>
+</li>
+<li><p>添加检查数组边界的代码</p>
+</li>
+<li><p>尾调用(tail call)优化</p>
+</li>
+<li><p>等等</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>经过Morph变形后的HIR将会包含更多信息, 对IL中隐式的处理(例如边界检查和溢出检查)也添加了显式的代码(GenTree).</p>
+<p>下图是Morph的实例:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171110459-2142623924.jpg" alt=""></p>
+<p>图中的comma表示的是逗号式, 例如(X(), 123)这个式会先评价X()然后结果使用123,</p>
+<p>上图中的comma会先把数组保存到一个临时变量, 执行边界检查, 然后再访问数组中的元素然后输出到控制台.</p>
+<h3 id="Flowgraph-Analysis"><a href="#Flowgraph-Analysis" class="headerlink" title="Flowgraph Analysis"></a>Flowgraph Analysis</h3><p>Flowgraph Analysis会对BasicBlock进行流程分析,</p>
+<p>找出BasicBlock有哪些前任block(predecessor)和后继block(successor), 并且标记BasicBlock的引用次数.</p>
+<p>如果一个block是多个block的跳转目标, 则这个block有多个preds,</p>
+<p>如果一个block的跳转类型是jtrue(条件成立时跳转到目标block, 否则到下一个block), 则这个block有两个succs.</p>
+<p>并且计算DOM(dominator)树,</p>
+<p>例如出现 A -&gt; B, A -&gt; C, B -&gt; D, C -&gt; D, 则D的dominator不是B或C而是A, 表示执行D必须经过A,</p>
+<p>参考<a href="https://en.wikipedia.org/wiki/Dominator_(graph_theory)" target="_blank" rel="noopener">Wikipedia</a>和<a href="https://www.cs.rice.edu/~keith/EMBED/dom.pdf" target="_blank" rel="noopener">论文</a>.</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171119974-1389563809.png" alt=""></p>
+<p>例如在这张图中:</p>
+<ul>
+<li><p>block 1的preds是[], succs是[2]</p>
+</li>
+<li><p>block 2的preds是[1, 5], succs是[3, 4, 6]</p>
+</li>
+<li><p>block 3的preds是[2], succs是[5]</p>
+</li>
+<li><p>block 4的preds是[2], succs是[5]</p>
+</li>
+<li><p>block 5的preds是[3, 4], succs是[2]</p>
+</li>
+<li><p>block 6的preds是[2], succs是[]</p>
+</li>
+</ul>
+<p>计算出来的DOM(dominator)树为:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171129021-148487134.jpg" alt=""></p>
+<p>然后会根据流程分析的结果进行一些优化:</p>
+<p>优化 while 到 do while:</p>
+<p>优化前 jmp test; loop: …; test: cond; jtrue loop;</p>
+<p>优化后 cond; jfalse done; loop: …; test: cond; jtrue loop; done: …;</p>
+<p>优化循环中数组的边界检查:</p>
+<p>优化前 for (var x = 0; x &lt; a.Length; ++x) { b[x] = a[x]; },</p>
+<p>优化后</p>
+<p>if (x &lt; a.Length) {</p>
+<p>if ((a != null &amp;&amp; b != null) &amp;&amp; (a.Length &lt;= b.Length)) {</p>
+<p>do {</p>
+<p>var tmp = a[x]; // no bounds check</p>
+<p>b[x] = tmp; // no bounds check</p>
+<p>x = x + 1;</p>
+<p>} while (x &lt; a.Length);</p>
+<p>} else {</p>
+<p>do {</p>
+<p>var tmp = a[x];</p>
+<p>b[x] = tmp;</p>
+<p>x = x + 1;</p>
+<p>} while (x &lt; a.Length);</p>
+<p>}</p>
+<p>}</p>
+<p>优化次数是常量的循环:</p>
+<p>优化前 for (var x = 0; x &lt; 3; ++x) { DoSomething(); }</p>
+<p>优化后 DoSomething(); DoSomething(); DoSomething();</p>
+<p>注意循环次数过多或者循环中的代码过长则不会执行这项优化.</p>
+<h3 id="LclVar-sorting-amp-Tree-Ordering"><a href="#LclVar-sorting-amp-Tree-Ordering" class="headerlink" title="LclVar sorting &amp; Tree Ordering"></a>LclVar sorting &amp; Tree Ordering</h3><p>这个步骤会标记函数中本地变量的引用计数, 并且按引用计数排序本地变量表.</p>
+<p>然后会对tree的运行运行顺序执行标记, 例如 a() + b(), 会标记a()先于b()执行.</p>
+<p>(与C, C++不同, .Net中对操作参数的运行顺序有很严格的规定, 例如a+b和f(a, b)的运行顺序都是已规定的)</p>
+<p>经过运行顺序标记后其实就已经形成了LIR结构.</p>
+<p>LIR结构中无语句(Statement)节点, 语句节点经过在后面的Rationalization后会变为IL_OFFSET节点, 用于对应的IL偏移值,</p>
+<p>最终VisualStudio等IDE可以根据机器代码地址=&gt;IL偏移值=&gt;C#代码偏移值来下断点和调试.</p>
+<p>下图是Tree Ordering的实例, 红线表示连接下一个节点:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171138006-58838255.jpg" alt=""></p>
+<h1 id="Optimize"><a href="#Optimize" class="headerlink" title="Optimize"></a>Optimize</h1><h3 id="SSA-amp-VN"><a href="#SSA-amp-VN" class="headerlink" title="SSA &amp; VN"></a>SSA &amp; VN</h3><p>RyuJIT为了实现更好的优化, 会对GenTree节点分配<a href="https://en.wikipedia.org/wiki/Static_single_assignment_form" target="_blank" rel="noopener">SSA</a>序号和<a href="https://en.wikipedia.org/wiki/Global_value_numbering" target="_blank" rel="noopener">VN</a>.</p>
+<p>要说明什么是SSA, 可以拿<a href="https://en.wikipedia.org/wiki/Static_single_assignment_form" target="_blank" rel="noopener">Wikipedia上的代码</a>做例子:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171148115-2057306438.png" alt=""></p>
+<p>这里有4个BasicBlock和3个变量(x, y, w), 变量的值会随着执行而改变,</p>
+<p>我们很难确定两个时点的y是否同一个y, 这为代码优化带来了障碍.</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171157177-1001089272.png" alt=""></p>
+<p>为了解决这个问题我们为每个变量都标记一个版本号, 修改一次它的值就会出现一个新的版本.</p>
+<p>这就是SSA(Static single assignment form), 一个变量+版本只能有一个值, 这时我们可以很简单的确定两个时点的y是否同一个y.</p>
+<p>但是上图有一个问题, 最后一个BasicBlock使用的y在编译时是无法确定来源于哪个版本的.</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171203365-50100994.png" alt=""></p>
+<p>为了解决这个问题, SSA引入了Φ(Phi)函数, 最后一个BasicBlock的开头添加一个新的版本y3 = Φ(y1, y2).</p>
+<p>而VN(Value Number)则是基于SSA的标记, 会根据给GenTree分配一个唯一的ID, 例如x = 3和w = 3时, x和w的VN会相等.</p>
+<p>下图是标记SSA和VN的实例:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171212599-809861991.jpg" alt=""></p>
+<h3 id="Loop-Optimizations"><a href="#Loop-Optimizations" class="headerlink" title="Loop Optimizations"></a>Loop Optimizations</h3><p>上面的”Flowgraph Analysis”提到的针对循环的一些优化, 在生成了SSA和VN以后我们可以做出进一步的优化.</p>
+<p>例如这样的循环:</p>
+<p>var a = SomeFunction();</p>
+<p>for (var x = 0; x &lt; 3; ++x) {</p>
+<p>Console.WriteLine(a * 3);</p>
+<p>}</p>
+<p>注意a * 3这个表达式, 它每次循环都是一样的并且无副作用, 也就是我们可以提取(hoist)它到循环外面:</p>
+<p>var a = SomeFunction();</p>
+<p>var tmp = a * 3;</p>
+<p>for (var x = 0; x &lt; 3; ++x) {</p>
+<p>Console.WriteLine(tmp);</p>
+<p>}</p>
+<p>这样a * 3我们就只需要计算一次了, 但需要注意的是这种优化会增加一个临时变量, 所以实际不一定会执行.</p>
+<h3 id="Copy-Propagation"><a href="#Copy-Propagation" class="headerlink" title="Copy Propagation"></a>Copy Propagation</h3><p>这项优化会替换具有相同VN的本地变量,</p>
+<p>例如var tmp = a; var b = tmp + 1;, 因为我们确定tmp和a的值(VN)是一致的, 可以优化为var b = a + 1.</p>
+<p>在执行这项优化后, 多余的临时变量将不再需要, 例如上面的tmp变量如果引用计数为0即可删除.</p>
+<h3 id="CSE"><a href="#CSE" class="headerlink" title="CSE"></a>CSE</h3><p>这项优化会替换具有相同VN的表达式, 比起Copy Propagation这项优化的效果更强大.</p>
+<p>例如:</p>
+<p>var a = SomeFunction();</p>
+<p>var b = (a + 5) * a;</p>
+<p>var c = (a + 5) + a;</p>
+<p>注意a + 5这个表达式出现了两次, 这两次对应的GenTree的VN都是一样的,</p>
+<p>因为它们无副作用(不会修改到全局状态), JIT可以把这段代码优化为:</p>
+<p>var a = SomeFunction();</p>
+<p>var tmp = a + 5;</p>
+<p>var b = tmp * a;</p>
+<p>var c = tmp + a;</p>
+<p>和上面的Loop Optimizations一样, 这种优化会增加一个临时变量, 所以实际不一定会执行.</p>
+<h3 id="Assertion-Propagation"><a href="#Assertion-Propagation" class="headerlink" title="Assertion Propagation"></a>Assertion Propagation</h3><p>在上面的Morph中JIT根据语句添加了一些断言, 在生成VN后JIT可以传播这些断言.</p>
+<p>例如:</p>
+<p>var x = 1; // x确定为1var y = x + 2;</p>
+<p>传播断言后:</p>
+<p>var x = 1; // x确定为1var y = x + 2; // y确定为3</p>
+<h3 id="Range-Check-Elimination"><a href="#Range-Check-Elimination" class="headerlink" title="Range Check Elimination"></a>Range Check Elimination</h3><p>因为断言已经传播, 这项优化可以根据断言和VN来判断哪些数组的边界检查是多余的.</p>
+<p>例如:</p>
+<p>var length = 100;</p>
+<p>var index = 99;</p>
+<p>var a = new int[length]; // a的长度确定为100var b = a[index]; // 确定访问不会越界, 所以这里的边界检查可以去掉</p>
+<h1 id="Backend"><a href="#Backend" class="headerlink" title="Backend"></a>Backend</h1><h3 id="Rationalization"><a href="#Rationalization" class="headerlink" title="Rationalization"></a>Rationalization</h3><p>这个步骤会正式把HIR转换为LIR, 后面的步骤使用的都是LIR形式.</p>
+<p>前面的HIR中存在着一些问题, 例如ASG(=)节点:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171221959-2011838068.jpg" alt=""></p>
+<p>看出问题了吗?lclVar在LIR中如果不访问后面的节点, 无法确定是读取变量还是写入变量.</p>
+<p>Rationalizer会修改这些有问题的GenTree, 让后面的处理更加简单.</p>
+<p>上面的lclVar =会修改为st.lclVar, 与lclVar区别开来.</p>
+<h3 id="Lowering"><a href="#Lowering" class="headerlink" title="Lowering"></a>Lowering</h3><p>这个步骤会修改LIR中的GenTree节点, 让它更接近最终生成的机器代码形式.</p>
+<p>以下是部分会转换的GenTree节点:</p>
+<ul>
+<li><p>ARR_LENGTH(获取数组长度), 会转换为IND(arr + ArrLenOffset), IND相当于C中的deref(*ptr)</p>
+</li>
+<li><p>计算式, 可能时转换为LEA, 例如((v07 &lt;&lt; 2) + v01) + 16可以转换为lea(v01 + v07*4 + 16)</p>
+</li>
+<li><p>LONG, 如果当前cpu是x86(32位)则需要分为两个变量操作</p>
+</li>
+<li><p>SWITCH, 切割SWITCH到if else和jmp jumpTable[x-offset]</p>
+</li>
+<li><p>CALL, 对于参数添加putarg节点(指定需要放到哪个寄存器或者推入堆栈)</p>
+</li>
+<li><p>STMT, 转换为IL_OFFSET, 让机器代码地址跟IL偏移值可以对应起来</p>
+</li>
+</ul>
+<p>在完成了对GenTree节点的修改后, Lowering会对每个节点确定来源(src)和目标(dst)的寄存器数量.</p>
+<p>例如lclVar节点需要一个目标寄存器, lclVar + lclVar节点需要两个来源寄存器和一个目标寄存器.</p>
+<p>除了设置需要的寄存器数量外, Lowering还会标记哪些节点是contained,</p>
+<p>标记为contained的节点代表它是上级节点的一部分, 生成指令时不需要针对contained节点单独生成.</p>
+<p>典型的contained节点是常量, 例如b = a + 1可以生成add rbx, 1; mov rdi, rbx;, 这里的1并不需要一条单独的指令.</p>
+<p>下图是Lowering的实例:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171238365-1515982750.jpg" alt=""></p>
+<h3 id="LSRA"><a href="#LSRA" class="headerlink" title="LSRA"></a>LSRA</h3><p>在Lowering确认了寄存器需求以后, JIT还需要给这些节点实际的分配寄存器.</p>
+<p>分配寄存器的算法有<a href="https://en.wikipedia.org/wiki/Graph_coloring" target="_blank" rel="noopener">Graph coloring</a>和<a href="https://www.usenix.org/legacy/events/vee05/full_papers/p132-wimmer.pdf" target="_blank" rel="noopener">LSRA</a>等, RyuJIT使用的是LSRA, 和论文中的算法很相似.</p>
+<p>使用LSRA算法可以让JIT中分配寄存器所需的计算量更少, 但是分配的结果(执行效率)会比Graph coloring差一些.</p>
+<p>在LSRA中有以下概念:</p>
+<ul>
+<li><p>RefPosition: 记录定义或使用变量的位置, 如果是Def或者Use则有所属的Interval</p>
+</li>
+<li><p>Interval: 同一个变量对应的使用期间, 包含多个RefPosition</p>
+</li>
+<li><p>LocationInfo: 代码位置, 在构建时会对LIR中的GenTree分配位置, 位置总会+2</p>
+</li>
+</ul>
+<p>下图是LSRA的实例:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171250474-1099732361.jpg" alt=""></p>
+<p>在这张图中, Interval 0<del>2 是本地变量, 这里只有V01被使用, Interval 3</del>4是虚拟变量, 用于表示函数返回的结果或传入的参数.</p>
+<p>DEF表示Interval被写入, USE表示Interval被读取,</p>
+<p>Kill无对应的Interval, 只用于表示指定的寄存器的值是否在某个位置后被破坏,</p>
+<p>FixedReg也无对应的Interval, 只用于表示对应的位置使用了固定的寄存器.</p>
+<p>在确认Interval和RefPosition后, LSRA会开始分配寄存器,</p>
+<p>一个寄存器在同一时间只能被一个Interval使用, 图上的寄存器都未出现Interval重叠的情况,</p>
+<p>如果出现Interval重叠, 寄存器中的值会保存(spill)到堆栈上的变量.</p>
+<p>如果一个变量从未被spill, 则该变量可以不使用堆栈保存, 如图上的V01可以一直存在rbx中, 不需要保存在内存里,</p>
+<p>这可以带来很大幅度的性能提升.</p>
+<p>LSRA会积极的使用Callee Saved Register(RBX, RBP, R12, R13, R14, R15)暂存变量,</p>
+<p>这些寄存器在调用(call)其它函数后原来的值仍然会被保留, 不需要spill.</p>
+<h3 id="CodeGen"><a href="#CodeGen" class="headerlink" title="CodeGen"></a>CodeGen</h3><p>在以上步骤都完成后, JIT会根据cpu平台(x86, x64, arm)生成不一样的汇编指令.</p>
+<p>在CodeGen中有以下概念:</p>
+<ul>
+<li><p>instrDesc: 汇编指令的数据, 一个instrDesc实例对应一条汇编指令</p>
+</li>
+<li><p>insGroup: 汇编指令的组, 一个insGroup包含一个或多个instrDesc, 跳转指令的目标只能是IG的第一条指令</p>
+</li>
+</ul>
+<p>下图是CodeGen的实例:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171300865-1208396172.jpg" alt=""></p>
+<p>如图所示, CodeGen会按LIR中的节点和LSRA分配的寄存器信息生成汇编指令, 并且会对指令进行分组储存在不同的IG中.</p>
+<p>进入函数的prolog和离开函数的epilog指令也会在这里添加.</p>
+<p>CodeGen还会对汇编指令的大小进行估算, 确定最多需要分配多少内存才可以编码这些指令.</p>
+<h3 id="Emiiter"><a href="#Emiiter" class="headerlink" title="Emiiter"></a>Emiiter</h3><p>在最后, Emiiter会从LoaderHeap中分配内存, 并且根据instrDesc编码机器代码.</p>
+<p>下图是Emitter的实例:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171311631-790566433.jpg" alt=""></p>
+<p>除了写入机器代码外, Emiiter还会写入以下的信息:</p>
+<ul>
+<li><p>phdrDebugInfo: 包含了机器代码地址到IL偏移值的索引</p>
+</li>
+<li><p>phdrJitEHInfo: 包含了函数中的例外信息</p>
+</li>
+<li><p>phdrJitGCInfo: 包含了函数中需要GC扫描的变量的信息</p>
+</li>
+<li><p>unindInfos: 包含了函数的堆栈回滚信息(在什么位置使用了多大的堆栈空间)</p>
+</li>
+</ul>
+<p>最终写入的函数在内存中的结构如下:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171321381-1322853419.jpg" alt=""></p>
+<p>机器代码的前面是函数头信息(CodeHeader), 函数头信息指向真正的函数头信息(RealCodeHeader), 真正的头信息中包含了上面提到的信息.</p>
+<p>我们可以实际在Visual Studio中确认这一点:</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171329271-1854550097.jpg" alt=""></p>
+<p>图中的0x7ffa46d0d898就是CodeHeader的内容, 也是指向RealCodeHeader的指针.</p>
+<p>后面的55 57 56 …是机器代码, 表示push rbp; push rdi; push rsi; ….</p>
+<p><img src="https://images2017.cnblogs.com/blog/881857/201710/881857-20171018171335709-554953081.jpg" alt=""></p>
+<p>打开0x7ffa46d0d898可以看到RealCodeHeader的内容.</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ul>
+<li><p><a href="https://github.com/dotnet/coreclr/blob/master/Documentation/botr/ryujit-tutorial.md" target="_blank" rel="noopener">https://github.com/dotnet/coreclr/blob/master/Documentation/botr/ryujit-tutorial.md</a></p>
+</li>
+<li><p><a href="https://github.com/dotnet/coreclr/blob/release/1.1.0/Documentation/botr/ryujit-overview.md" target="_blank" rel="noopener">https://github.com/dotnet/coreclr/blob/release/1.1.0/Documentation/botr/ryujit-overview.md</a></p>
+</li>
+<li><p><a href="https://github.com/dotnet/coreclr/blob/release/1.1.0/Documentation/building/viewing-jit-dumps.md" target="_blank" rel="noopener">https://github.com/dotnet/coreclr/blob/release/1.1.0/Documentation/building/viewing-jit-dumps.md</a></p>
+</li>
+<li><p><a href="https://en.wikipedia.org/wiki/Dominator_(graph_theory)" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Dominator_(graph_theory)</a></p>
+</li>
+<li><p><a href="https://www.cs.rice.edu/~keith/EMBED/dom.pdf" target="_blank" rel="noopener">https://www.cs.rice.edu/~keith/EMBED/dom.pdf</a></p>
+</li>
+<li><p><a href="https://en.wikipedia.org/wiki/Static_single_assignment_form" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Static_single_assignment_form</a></p>
+</li>
+<li><p><a href="https://en.wikipedia.org/wiki/Global_value_numbering" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Global_value_numbering</a></p>
+</li>
+<li><p><a href="https://en.wikipedia.org/wiki/Graph_coloring" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Graph_coloring</a></p>
+</li>
+<li><p><a href="https://www.usenix.org/legacy/events/vee05/full_papers/p132-wimmer.pdf" target="_blank" rel="noopener">https://www.usenix.org/legacy/events/vee05/full_papers/p132-wimmer.pdf</a></p>
+</li>
+</ul>
+<p>这篇是JIT的入门+科普教程, 为了让内容更加易懂我省略了大量的实现细节, 也没有贴出CoreCLR中的代码.</p>
+<p>在下一篇我将结合CoreCLR中的代码讲解JIT的具体工作流程, 内容会比这一篇难很多, 绝大多数C#程序员只要理解这一篇就很足够了.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CoreCLR源码探索-七-JIT的工作原理-入门篇"><span class="toc-number">1.</span> <span class="toc-text">CoreCLR源码探索(七) JIT的工作原理(入门篇)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JIT的作用介绍"><span class="toc-number"></span> <span class="toc-text">JIT的作用介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JIT的流程总览"><span class="toc-number"></span> <span class="toc-text">JIT的流程总览</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JIT的流程实例"><span class="toc-number"></span> <span class="toc-text">JIT的流程实例</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JIT的数据结构"><span class="toc-number"></span> <span class="toc-text">JIT的数据结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JIT的触发"><span class="toc-number"></span> <span class="toc-text">JIT的触发</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Frontend"><span class="toc-number"></span> <span class="toc-text">Frontend</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Importer"><span class="toc-number">0.1.</span> <span class="toc-text">Importer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Inliner"><span class="toc-number">0.2.</span> <span class="toc-text">Inliner</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Morph"><span class="toc-number">0.3.</span> <span class="toc-text">Morph</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flowgraph-Analysis"><span class="toc-number">0.4.</span> <span class="toc-text">Flowgraph Analysis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LclVar-sorting-amp-Tree-Ordering"><span class="toc-number">0.5.</span> <span class="toc-text">LclVar sorting &amp; Tree Ordering</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Optimize"><span class="toc-number"></span> <span class="toc-text">Optimize</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SSA-amp-VN"><span class="toc-number">0.1.</span> <span class="toc-text">SSA &amp; VN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Loop-Optimizations"><span class="toc-number">0.2.</span> <span class="toc-text">Loop Optimizations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Copy-Propagation"><span class="toc-number">0.3.</span> <span class="toc-text">Copy Propagation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CSE"><span class="toc-number">0.4.</span> <span class="toc-text">CSE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Assertion-Propagation"><span class="toc-number">0.5.</span> <span class="toc-text">Assertion Propagation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Range-Check-Elimination"><span class="toc-number">0.6.</span> <span class="toc-text">Range Check Elimination</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Backend"><span class="toc-number"></span> <span class="toc-text">Backend</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Rationalization"><span class="toc-number">0.1.</span> <span class="toc-text">Rationalization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lowering"><span class="toc-number">0.2.</span> <span class="toc-text">Lowering</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LSRA"><span class="toc-number">0.3.</span> <span class="toc-text">LSRA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CodeGen"><span class="toc-number">0.4.</span> <span class="toc-text">CodeGen</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Emiiter"><span class="toc-number">0.5.</span> <span class="toc-text">Emiiter</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考链接"><span class="toc-number"></span> <span class="toc-text">参考链接</span></a>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&text=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&title=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&is_video=false&description=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CoreCLR源码探索(七)JIT的工作原理(入门篇)&body=Check out this article: http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&title=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&title=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&title=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&title=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&name=CoreCLR源码探索(七)JIT的工作原理(入门篇)&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/&t=CoreCLR源码探索(七)JIT的工作原理(入门篇)" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

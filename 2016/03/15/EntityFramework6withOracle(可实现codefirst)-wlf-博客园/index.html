@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Entity Framework6 with Oracle(可实现code first)   Oracle 与2个月前刚提供对EF6的支持。以前只支持到EF5。EF6有很多有用的功能 值得升级。这里介绍下如何支持Oracle  **  一.Oracle 对.net支持的一些基础知识了解介绍。** 1.早年的时候,微软自己做的有 System.Data.OracleClient。 现在已经成了过期类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EntityFramework6withOracle(可实现codefirst)-wlf-博客园">
+<meta property="og:url" content="http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="Entity Framework6 with Oracle(可实现code first)   Oracle 与2个月前刚提供对EF6的支持。以前只支持到EF5。EF6有很多有用的功能 值得升级。这里介绍下如何支持Oracle  **  一.Oracle 对.net支持的一些基础知识了解介绍。** 1.早年的时候,微软自己做的有 System.Data.OracleClient。 现在已经成了过期类">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-03-14T17:33:29.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.907Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>EntityFramework6withOracle(可实现codefirst)-wlf-博客园</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2016/03/26/EntityFramework-%E5%88%A9%E7%94%A8T4%E5%88%86%E7%A6%BBEntity%E5%92%8CDbContext-Robert-Fang-%E5%8D%9A%E5%AE%A2%E5%9B%AD/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2016/03/09/%E8%BF%90%E7%BB%B4%E9%97%AE%E9%A2%98/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&text=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&title=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&is_video=false&description=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=EntityFramework6withOracle(可实现codefirst)-wlf-博客园&body=Check out this article: http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&title=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&title=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&title=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&title=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&name=EntityFramework6withOracle(可实现codefirst)-wlf-博客园&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&t=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        EntityFramework6withOracle(可实现codefirst)-wlf-博客园
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-03-14T17:33:29.000Z" itemprop="datePublished">2016-03-15</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p><strong><a href="http://www.cnblogs.com/wlflovenet/p/4187455.html" target="_blank" rel="noopener">Entity Framework6 with Oracle(可实现code first)</a></strong></p>
+<p>  Oracle 与2个月前刚提供对EF6的支持。以前只支持到EF5。EF6有很多有用的功能 值得升级。这里介绍下如何支持Oracle</p>
+<p> **  一.Oracle 对.net支持的一些基础知识了解介绍。**</p>
+<p>1.早年的时候,微软自己做的有 System.Data.OracleClient。 现在已经成了过期类了。性能等都不是很好。</p>
+<p>2.Oracle 官方出的odp.net  Oracle.DataAccess.dll(非托管版本) 还要分32/64位。而且很麻烦的是 部署的时候 需要装客户端环境。非常繁琐。</p>
+<p>3.Oracle 官方近年新出的  Oracle.ManagedDataAccess.dll  这个非常给力 不再区分32/64位了。 而且不需要客户端再安装东西了。性能也得到了提高。不管是用ado.net或者其他ORM框架</p>
+<p>   都建议使用此版本dll。这次我们的EF6 也会依据此dll进行开发。</p>
+<p>官方下载地址是这个 一定要去官方下载最新的 才能支持EF6  我从nuget上下的版本较低 不支持。。</p>
+<p><a href="http://www.oracle.com/technetwork/database/windows/downloads/index-090165.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/database/windows/downloads/index-090165.html</a>  (当时下载的版本为4.121.2.0)</p>
+<p>下载好后  从这个目录下 odp.net\managed\common  拿出2最关键的dll</p>
+<p>Oracle.ManagedDataAccess.dll 和 Oracle.ManagedDataAccess.EntityFramework.dll</p>
+<p> ** ** <strong>二.修改webconfig配置文件</strong></p>
+<p>加入如下代码：</p>
+<configSections>  
+    <section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />  
+    <!--<section name="oracle.manageddataaccess.client" type="OracleInternal.Common.ODPMSectionHandler, Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342" />\-->   
+  </configSections>  
+
+  <entityFramework>  
+    <defaultConnectionFactory type="Oracle.ManagedDataAccess.EntityFramework.OracleConnectionFactory,  
+Oracle.ManagedDataAccess.EntityFramework,  
+Version=6.121.2.0,  
+Culture=neutral,  
+PublicKeyToken=89b483f429c47342" />  
+    <providers>  
+      <provider invariantName="Oracle.ManagedDataAccess.Client" type="Oracle.ManagedDataAccess.EntityFramework.EFOracleProviderServices, Oracle.ManagedDataAccess.EntityFramework, Version=6.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342" />  
+
+<pre><code>&lt;/providers&gt;  </code></pre>  </entityFramework>  
+
+<p>  &lt;system.data&gt;<br>    <DbProviderFactories><br>      <remove invariant="Oracle.ManagedDataAccess.Client" /><br>      <add name="ODP.NET, Managed Driver" invariant="Oracle.ManagedDataAccess.Client" description="Oracle Data Provider for .NET, Managed Driver"  
+          type="Oracle.ManagedDataAccess.Client.OracleClientFactory, Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342" /><br>    </DbProviderFactories><br>  &lt;/system.data&gt;</p>
+<p>连接字符串如下 记得提供下 providerName 为 Oracle.ManagedDataAccess.Client</p>
+<connectionStrings>  
+
+<pre><code>&lt;add name=&quot;OraString&quot; connectionString=&quot;Data Source= (DESCRIPTION =  
+(ADDRESS = (PROTOCOL = TCP)(HOST = *****)(PORT = 1521))  
+(CONNECT_DATA =  
+  (SERVER = DEDICATED)  
+  (SERVICE_NAME = ORCL)  
+)  </code></pre><p>  );User ID=<strong><strong><em>;Password=</em></strong></strong>;Persist Security Info=True” providerName=”Oracle.ManagedDataAccess.Client” /&gt;  </p>
+  </connectionStrings>
+
+<p>这里还有个注意事项,因为有的人以及装了oracle的客户端。这可能会导致一些错误。这里 请注意检查下  C:\Windows\Microsoft.NET\Framework\v4.0.30319\Config</p>
+<p>下的  machine.config （64位的话 路径是 Framework64,最好都检测下)</p>
+<p>machine.config 可以理解为webconfig的父类 所以我们需要检查下里面的内容  是否有</p>
+<section name="oracle.manageddataaccess.client" type="OracleInternal.Common.ODPMSectionHandler, Oracle.ManagedDataAccess, Version=4.121.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342" />
+
+
+
+
+<p> 这样的内容   如果有  修改版本号Version 为当前Oracle.ManagedDataAccess.Client版本。</p>
+<p> <strong>三.注意事项</strong></p>
+<p>1.访问时提示表不存在，有可能权限不够。需要设置默认的Schema 需要在 OnModelCreating设置</p>
+<p> modelBuilder.HasDefaultSchema(“Schema名”);</p>
+<p>2.oracle 的配置是否配置了使用ora方式来访问。 建议先不使用ora方式,有可能是这个方式访问导致的问题。</p>
+<p>3.oracle 访问的问题 一定多去官网看下。</p>
+<p>  推荐几篇</p>
+<p>  <a href="http://docs.oracle.com/cd/E56485_01/win.121/e55744/toc.htm" target="_blank" rel="noopener">http://docs.oracle.com/cd/E56485_01/win.121/e55744/toc.htm</a></p>
+<p>   <a href="http://docs.oracle.com/cd/E56485_01/win.121/e55744/entityMigrate.htm#BABEHEFE" target="_blank" rel="noopener">http://docs.oracle.com/cd/E56485_01/win.121/e55744/entityMigrate.htm#BABEHEFE</a></p>
+<p><a href="http://www.cnblogs.com/wlflovenet/p/4187455.html" target="_blank" rel="noopener">http://www.cnblogs.com/wlflovenet/p/4187455.html</a>       转载请注明出处</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&text=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&title=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&is_video=false&description=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=EntityFramework6withOracle(可实现codefirst)-wlf-博客园&body=Check out this article: http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&title=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&title=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&title=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&title=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&name=EntityFramework6withOracle(可实现codefirst)-wlf-博客园&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2016/03/15/EntityFramework6withOracle(%E5%8F%AF%E5%AE%9E%E7%8E%B0codefirst)-wlf-%E5%8D%9A%E5%AE%A2%E5%9B%AD/&t=EntityFramework6withOracle(可实现codefirst)-wlf-博客园" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

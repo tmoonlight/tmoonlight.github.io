@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="最近看博客园中 焰尾迭 的两篇关于”Newtonsoft.Json高级用法”的文章受到了很多人的评论，一度登入到头条推荐。 今天我就不再重复焰尾迭博文中的一些提过的Newtonsoft.Json的高级用法。大家如果想知道直接去看。 Newtonsoft.Json高级用法再谈Newtonsoft.Json高级用法我主要说焰尾迭 没有提到的用法——枚举中文转义 枚举值序列化问题（摘自焰尾迭 段落）p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义">
+<meta property="og:url" content="http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="最近看博客园中 焰尾迭 的两篇关于”Newtonsoft.Json高级用法”的文章受到了很多人的评论，一度登入到头条推荐。 今天我就不再重复焰尾迭博文中的一些提过的Newtonsoft.Json的高级用法。大家如果想知道直接去看。 Newtonsoft.Json高级用法再谈Newtonsoft.Json高级用法我主要说焰尾迭 没有提到的用法——枚举中文转义 枚举值序列化问题（摘自焰尾迭 段落）p">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/336693/201509/336693-20150910171743028-388882267.png">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/336693/201509/336693-20150910172109044-1714459886.png">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="data:image/png;base64,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">
+<meta property="og:image" content="data:image/png;base64,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">
+<meta property="article:published_time" content="2019-01-05T23:13:35.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.747Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images2015.cnblogs.com/blog/336693/201509/336693-20150910171743028-388882267.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/01/16/%E9%A6%99%E6%B8%AF%E8%B4%A6%E6%88%B7/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/12/28/CoreCLR%E6%BA%90%E7%A0%81%E6%8E%A2%E7%B4%A2(%E4%B8%83)JIT%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86(%E5%85%A5%E9%97%A8%E7%AF%87)/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&text=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&title=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&is_video=false&description=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义&body=Check out this article: http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&title=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&title=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&title=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&title=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&name=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&t=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Newtonsoft-Json高级用法"><span class="toc-number">1.</span> <span class="toc-text">Newtonsoft.Json高级用法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#再谈Newtonsoft-Json高级用法"><span class="toc-number">2.</span> <span class="toc-text">再谈Newtonsoft.Json高级用法</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#枚举值序列化问题（摘自焰尾迭-段落）"><span class="toc-number"></span> <span class="toc-text">枚举值序列化问题（摘自焰尾迭 段落）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#思考"><span class="toc-number"></span> <span class="toc-text">思考</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#枚举值中文序列化"><span class="toc-number"></span> <span class="toc-text">枚举值中文序列化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number"></span> <span class="toc-text">总结</span></a>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-01-05T23:13:35.000Z" itemprop="datePublished">2019-01-06</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p> 最近看博客园中 <a href="http://home.cnblogs.com/u/yanweidie/" target="_blank" rel="noopener">焰尾迭</a><a href="http://home.cnblogs.com/u/yanweidie/" target="_blank" rel="noopener"> </a>的两篇关于”Newtonsoft.Json高级用法”的文章受到了很多人的评论，一度登入到头条推荐。</p>
+<p>今天我就不再重复<a href="http://home.cnblogs.com/u/yanweidie/" target="_blank" rel="noopener">焰尾迭</a>博文中的一些提过的Newtonsoft.Json的高级用法。大家如果想知道直接去看。</p>
+<h4 id="Newtonsoft-Json高级用法"><a href="#Newtonsoft-Json高级用法" class="headerlink" title="Newtonsoft.Json高级用法"></a><a href="http://www.cnblogs.com/yanweidie/p/4605212.html" target="_blank" rel="noopener">Newtonsoft.Json高级用法</a></h4><h4 id="再谈Newtonsoft-Json高级用法"><a href="#再谈Newtonsoft-Json高级用法" class="headerlink" title="再谈Newtonsoft.Json高级用法"></a><a href="http://www.cnblogs.com/yanweidie/p/5155268.html" target="_blank" rel="noopener">再谈Newtonsoft.Json高级用法</a></h4><p>我主要说<a href="http://home.cnblogs.com/u/yanweidie/" target="_blank" rel="noopener">焰尾迭</a><a href="http://home.cnblogs.com/u/yanweidie/" target="_blank" rel="noopener"> </a>没有提到的用法——枚举中文转义</p>
+<h1 id="枚举值序列化问题（摘自焰尾迭-段落）"><a href="#枚举值序列化问题（摘自焰尾迭-段落）" class="headerlink" title="枚举值序列化问题（摘自焰尾迭 段落）"></a>枚举值序列化问题（摘自<a href="http://home.cnblogs.com/u/yanweidie/" target="_blank" rel="noopener">焰尾迭</a><a href="http://home.cnblogs.com/u/yanweidie/" target="_blank" rel="noopener"> </a>段落）</h1><p>public enum NotifyType</p>
+<p>{</p>
+<p>/// <summary></p>
+<p>/// Emil发送</p>
+<p>/// </summary></p>
+<p>Mail=0,</p>
+<p>/// <summary></p>
+<p>/// 短信发送</p>
+<p>/// </summary></p>
+<p>SMS=1</p>
+<p>}</p>
+<p>public class TestEnmu</p>
+<p>{</p>
+<p>/// <summary></p>
+<p>/// 消息发送类型</p>
+<p>/// </summary></p>
+<p>public NotifyType Type { get; set; }</p>
+<p>}</p>
+<p>JsonConvert.SerializeObject(new TestEnmu());</p>
+<p>输出结果：<img src="https://images2015.cnblogs.com/blog/336693/201509/336693-20150910171743028-388882267.png" alt="">  现在改造一下，输出”Type”:”Mail”</p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p>public class TestEnmu</p>
+<p>{</p>
+<p>/// <summary></p>
+<p>/// 消息发送类型</p>
+<p>/// </summary></p>
+<p>[JsonConverter(typeof(StringEnumConverter))]</p>
+<p>public NotifyType Type { get; set; }</p>
+<p>}</p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p>其它的都不变，在Type属性上加上了JsonConverter(typeof(StringEnumConverter))表示将枚举值转换成对应的字符串,而StringEnumConverter是Newtonsoft.Json内置的转换类型,最终输出结果</p>
+<p><img src="https://images2015.cnblogs.com/blog/336693/201509/336693-20150910172109044-1714459886.png" alt=""></p>
+<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>到这里StringEnumConverter确实为我们解决了很多问题，从枚举值类型转到名称。 如果我们是英国人该多好呀，到这里Newtonsoft.Json 自带的Converter已经为我们解决一切问题。</p>
+<p>谁叫我们是中国人，到到枚举转成Mail还是很不爽。</p>
+<p>如果能把枚举转成”电子邮箱“才符合我们中国人的习惯。</p>
+<p>{</p>
+<p>“Type”:”电子邮箱”</p>
+<p>}</p>
+<h1 id="枚举值中文序列化"><a href="#枚举值中文序列化" class="headerlink" title="枚举值中文序列化"></a>枚举值中文序列化</h1><p>首先根据上面的目标我们首先改造下我们的枚举类型</p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p>public enum NotifyType</p>
+<p>{</p>
+<p>/// <summary></p>
+<p>/// 电子邮箱</p>
+<p>/// </summary></p>
+<p>[Description(“电子邮箱”)]</p>
+<p>Mail = 0,</p>
+<p>/// <summary></p>
+<p>/// 手机短信</p>
+<p>/// </summary></p>
+<p>[Description(“手机短信”)]</p>
+<p>SMS = 1</p>
+<p>}</p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p>接下来我们自定义一个EnumJsonConvert 类，考虑到我们枚举可能会传入不同类型，我们这里使用泛型</p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p>public class EnumJsonConvert<T>:JsonConverter where T: struct, IConvertible</p>
+<p>{</p>
+<p>public void EnumConverter()</p>
+<p>{</p>
+<p>if (!typeof (T).IsEnum)</p>
+<p>{</p>
+<p>throw new ArgumentException(“T 必须是枚举类型”);</p>
+<p>}</p>
+<p>}</p>
+<p>public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)</p>
+<p>{</p>
+<p>if (reader.TokenType == JsonToken.Null)</p>
+<p>{</p>
+<p>return null;</p>
+<p>}</p>
+<p>try</p>
+<p>{</p>
+<p>return reader.Value.ToString();</p>
+<p>}</p>
+<p>catch (Exception ex)</p>
+<p>{</p>
+<p>throw new Exception(string.Format(“不能将枚举{1}的值{0}转换为Json格式.”, reader.Value, objectType));</p>
+<p>}</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 判断是否为Bool类型</p>
+<p>/// </summary></p>
+<p>/// <param name="objectType">类型</param></p>
+<p>/// <returns>为bool类型则可以进行转换</returns></p>
+<p>public override bool CanConvert(Type objectType)</p>
+<p>{</p>
+<p>return true;</p>
+<p>}</p>
+<p>public bool IsNullableType(Type t)</p>
+<p>{</p>
+<p>if (t == null)</p>
+<p>{</p>
+<p>throw new ArgumentNullException(nameof(t));</p>
+<p>}</p>
+<p>return t.BaseType != null &amp;&amp; (t.BaseType.FullName == “System.ValueType” &amp;&amp; t.GetGenericTypeDefinition() == typeof(Nullable&lt;&gt;));</p>
+<p>}</p>
+<p>public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)</p>
+<p>{</p>
+<p>if (value == null)</p>
+<p>{</p>
+<p>writer.WriteNull();</p>
+<p>return;</p>
+<p>}</p>
+<p>string bValue = value.ToString();</p>
+<p>int isNo;</p>
+<p>if (int.TryParse(bValue, out isNo))</p>
+<p>{</p>
+<p>bValue= GetEnumDescription(typeof(T), isNo);</p>
+<p>}</p>
+<p>else</p>
+<p>{</p>
+<p>bValue= GetEnumDescription(typeof(T), value.ToString());</p>
+<p>}</p>
+<p>writer.WriteValue(bValue);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 获取枚举描述</p>
+<p>/// </summary></p>
+<p>/// <param name="type">枚举类型</param></p>
+<p>/// <param name="value">枚举名称</param></p>
+<p>/// <returns></returns></p>
+<p>private string GetEnumDescription(Type type, string value)</p>
+<p>{</p>
+<p>try</p>
+<p>{</p>
+<p>FieldInfo field = type.GetField(value);</p>
+<p>if (field == null)</p>
+<p>{</p>
+<p>return “”;</p>
+<p>}</p>
+<p>var desc = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;</p>
+<p>if (desc != null) return desc.Description;</p>
+<p>return “”;</p>
+<p>}</p>
+<p>catch</p>
+<p>{</p>
+<p>return “”;</p>
+<p>}</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 获取枚举描述</p>
+<p>/// </summary></p>
+<p>/// <param name="type">枚举类型</param></p>
+<p>/// <param name="value">枚举hasecode</param></p>
+<p>/// <returns></returns></p>
+<p>private string GetEnumDescription(Type type, int value)</p>
+<p>{</p>
+<p>try</p>
+<p>{</p>
+<p>FieldInfo field = type.GetField(Enum.GetName(type, value));</p>
+<p>if (field == null)</p>
+<p>{</p>
+<p>return “”;</p>
+<p>}</p>
+<p>var desc = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;</p>
+<p>if (desc != null) return desc.Description;</p>
+<p>return “”;</p>
+<p>}</p>
+<p>catch</p>
+<p>{</p>
+<p>return “”;</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p>到这里我们自定义的JsonConvert已经实现好了。开始使用吧。</p>
+<p>我们定义一个类Myclass</p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p>public class MyClass</p>
+<p>{</p>
+<p>public string UserName { get; set; }</p>
+<p>[JsonConverter(typeof(EnumJsonConvert<NotifyType>))] // 这里就是 我们特殊的地方</p>
+<p>public int NotifyType { get; set; }</p>
+<p>}</p>
+<p><img src="https://common.cnblogs.com/images/copycode.gif" alt=""></p>
+<p>我们写个测试看对不对：</p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhgAAAB/CAIAAAAiiCyMAAALeklEQVR4nO3cu44ktxXG8U4MG5BhKJFlw1iHThQJUKI3UKhQj6AX2MeYQOE4tQJnSvwyygyndmBg4UBYSOVgsAUOz4WHPKxb9/+HxaKazSJZXZevWd09twUAgITb0QMAAFwbQQIASCFIAAApBAkAIIUgAQCkECQAgBSCBACQQpAAAFJCQXL7YMNxbN8FAGAL0SApH3723Q/lv5mjIUgA4GoGg6T6v5e1FkECAJczEiQvMnMRggQA7sbMIFFvdlU3wfzbYgQJAFzOtCApH67LaqFc1+8IAHBmM4NEnWqoMw+CBADuxiYzkuHKBAkAXM7Bt7aqRggSALicwSDxP1eXJdYn882OAAAnxy/bAQApXLgBACkECQAghSABAKQQJACAlK2C5Pn5ebe1AAAHOiZInl9z1nq2bTJuAECndpAMXLhfKgdXaQZJsCYA4BCNIBm4dveuQpAAwKVNDpK1jlyoqnFrCwDuw7QgcSJBXvetppiRAMDlzL+1FalMkADA3TgsSLi1BQD34ZggiXfBjAQATo4gAQCkbPI7koUgAYCHcdifSFHzKfLlLj4jAYBT4Y82AgBSCBIAQApBAgBIIUgAACkECbZ1u92qBQB3Zs65fbst6lXipdx6ah9WR9bAigqvTBrM/DarZme1OUU1nrMND8AUE69lI08dqxkk1f/97etrzb2elq0dcqV2OiVIgEdAkDTrjI9+hyA5w6W5azPPMGAAc3ln9XpjqrwL5C+r94uqEqeacytM9mgNYEpHReW6knoTqbq55N/CctqsphdlSdW41VTv6rJHazNlC72b6Q8YwEU1zurqutxbqD5s1mndcUr1Hu/oQx3z5ox6NY/caBpuU0ZIpAtn9YEtCgaGVU6QAPfnjEEya0jNh2NB4swe/HWdcrl68PreGyTxQmszI5szUBnAdV0vSNbKVo+7zUiGK3dd/Rf3op8PErWpKdlAkAAPIhUkt5tSuLQu5c06zUvNSYIkfmvLD5j87CFTuC5HbtD52dCck5EiwF1qB8lN+1x6LakWbsbH3TfjY3m1cmjcolqwd6dc66W+t6MWqneByqdkodqg31H50HlqYHU5pCmbqW6prAPg6jpmJEhy3rnfscfcauCh+Hf8O6YId+bzz5ff/O7drz/+91fff/X+5/dTSta389NbPk/Jp398v//OAnCsh0yJgDd//vnrv3/95Ze//P4v//z2H99+883y8R/+S0mk5OhdB2BvBInux//8+O6nd8uyvHmz/PZP//rVR//74q9fUBIpAfBoCBIAQApBAgBIiQaJ9f1OAMCD6wiSTccBALgoggQAkEKQAABSCBIAQEooHkgRAICFGQkAIIUgAQCkECQAgBSCBACQwi/bAQApZAMAIIUgAQCkECQAgBSCBACQQpAAp/a3Tz6Z28jLcqTZKV3jERAkmObp6alaiHvMrwXKa/paYv2rVm/WaTbbHF588Bh29eP/wkNXXX1/OD777oeXf9Vys/5aLbLWsCo8erNk3Wu3D6rljC3anEK9FvsPm081C8tOtw6SWa+8ulaktdtrA11vRA7mVMPrdeGhWyLH1j4jma4KEr+muiwfzjIrSJzljPI6cpIDwL8QR2YPauSo1crVpwRJfDrS9crHd02wzTXDuhrfmppq5xnegAsP3UKQxDNmFjU2urLkAYMkyL+aBz/82OLWVtDWQTK98j4Iklx/t6V8ucqHL8vqs1W50bIyga1KnHluZPJ7E5qbKUdebWZZs7mlMkjU+129QaKupbZmdbFPkER28VJcueQlTL4zPeoIsfR+RrKI/PCDRNZvjqR3EyrJV94pUVe3VlEblPtrt/0u61hrDRxF+ztgiFVUOIVLLEIW49LjHEmR1ZOqtKgWZGH5v2UNjKXIA3kXqytI1Jtg8cIXySCRp65c7t3Fapvl/36bkZobce5QWSVyXiJrrjl0hiCJn5tWeddZPP0Ay1Nbu0RmqM4SJOtDOSmJtekdQ87bE7+mVSH2JkVZXjdQxsxwkMiSgVtb1uRDrSZX33NGUq2l7g7rKlNdzqpGnJrB/d51hPi6PiPxg6SMkK5veVkNdtktSGQvzdWbw9huvwe36CqOGbp60WzOTtwG2weEWsGvmdGceFXPHhgkzopW6lQle35GkrzuWJHTDJLghswSn5Got7acr37Fb4U5FeLUV/5CQaKOJ48gmdGruGhGlt0GO8LDunbI5YxmkMjlZs9WkPgPB2r23tpatv/W1tguVleJtBl8B72F+AfjzoftmSCJlKjUN+NjQVK1E7/s+m8TncKxN6DDCJJJHYueb+K2z03cBXIbVKaW1nxTHvFWzTHqVsinyvqL9pqUyg/VF3GXKfIRevlRuV/e9Un7i4lBshS7Q5YM1JQP1cpltfV/q5GNTLm+Wx/LVwuRrxQ3yyv+3lFfedmCs4NkoT8AvyO1WvMAy7M6sipP7HojFxgiIjb6dUgXftk+kUwCZ5Lhr159zO6snvw28Bn2YHwMwev4Ppzj/wyvatMFhgjHpj9WB64iPm/YbdrxUHjhAAApBAkAIIUgAQCkECQAgBSC5P7xESJwTpuem2rjG/V4zCUm+OcFZ/UysO76FY71/+YOGNtD/tdF8nt9beHtB9XyaQ2P8O1r0we2sn6XM7HZWW1uwfkxR7yFeC9jq/vNWg/n9tXV5twvj+2WJQcEif8zuk2761IFyXALs6qNKRsvL6zD1+g5wwp3VPbY1ftuQ517DO98dvgDcFRX4c2Gs0kXa2s7bIXT7PDbx+HfyvSuHrd3kOx/bjxykFQtXzFIhnu/YpCcYQoyECQ72O5NuhoqEw2kxdybH/tkyYmCpJrOV3+uQ62p/gGPZo/B+wZqkJS3vKpCOVNWZ+VqZbV3a/YdaVNteb2vtYh3+lXGVDWlqllrdatms/dIoU9Wi/euDt7iHGDO8ake3smzw/n7zdZ45EL8rlrmuHWO2MiR7J9Z1sloNSVXj/dlDcAZjzoMawBy8F3jVDvqKgw6S5BYfyVQnmO9f0/QeeifLevRsLx+idW9tRhHhlNiHdlOC+r5oLapPlSD5K1278iJnGqE1uqyfacjf9kvtMgMC/auDt4ROcCCh/fOZ0fwjZdDXvWs5cgpEz+S/Tr+kHrXirQZqRAc/FibyZcu7+xBYlWIx4Mzm2kGSfnOoiy36kdK5BuKriCRy/6blPKhFSTqDEDWXHqCxKoQub6rHVmFFmtGMjx4izUjseo4h3f+7HAiR52URDanqXkoxk+ZspFIzWahHNKUIImfxZkgqbqLtJl56TIuGST+s/EZSZN/5KmVe0ucBv2uB3Io/qZ7oyDxn906SII95oNElu8WJGpTkWablR2zLqZOU5kgCVboCpLgYOLlVvvB4Vk1e0c7bO8gWWa8vQoWNh+uyzLG1/IltmPUcrlrew+R3iDxT4BmkMhl6y38wA2ribe21A2xKk8Z0tPTk/UnjTO3tqYXLq0gic9I/LOj61Cc8q68ubo6En+c8QEPX+idlJ3YZtcrPz1FlkOCZNE++pOF5UN12V+9qqmWryXxILkV1EJ5Aqgl5RGgri4LrWX5UG7Con2qvNapniorBG8QVS2vD9Vlf3Wnpuy9K0givVuD7wqSzOEtH/auLodk1VE7Wp9aH6qHln/AD58yzmHvnx2RNuU4I1u0PutvplWo9uW3Gd+oyOrNfpvlEccECfaUOT4uR03KLagzA9yrjU6iTc/NrhRJDuaBLjF4BNZUZjrr7TzuiTNHQYkXCACQQpAAAFIIEgBACkECAEhpBAkfNAEAfO2QIEgAAA6CBACQQpAAAFIIEgBASigkyBIAgIUZCQAghSABAKQQJACAFIIEAJDCL9sBACmEBAAghSABAKQQJACAFIIEAJBCkAAAUggSAEAKQQIASCFIAAApBAkAIIUgAQCkECQAgBSCBACQ8n9JYBy7uh/SeQAAAABJRU5ErkJggg==" alt=""></p>
+<p>结果如下：</p>
+<p><img src="data:image/png;base64,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" alt=""></p>
+<p>我们实现了最初的目标，一般我们数据库到保存着枚举的值类型，比如这里的 0，1，2，3……。 我们前端一般需要显示我们的语言，比如这里的电子邮箱，手机短信……</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>其实这里自定义实现了一个json自定义类型转换。利用枚举的Description特性利用反射实现枚举中文转义。其实这类转义在我们平时开发过程中经常见到。用JsonConvert可以给我们带来一定的解耦。</p>
+<p>省去if esleif 等判断。</p>
+<p>从上到下，主要只讲解了一个问题，字里行间语言上都有很多的不严谨。不过知识点涉及到Newtonsoft.Json的自定义类型转换，反射等。代码全部贴上，希望对大家有所帮助。谢谢。</p>
+<p>再次感谢<a href="http://home.cnblogs.com/u/yanweidie/" target="_blank" rel="noopener">焰尾迭</a>的分享。 谢谢！，同时也希望也能和你一样被大家推荐。谢谢。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Newtonsoft-Json高级用法"><span class="toc-number">1.</span> <span class="toc-text">Newtonsoft.Json高级用法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#再谈Newtonsoft-Json高级用法"><span class="toc-number">2.</span> <span class="toc-text">再谈Newtonsoft.Json高级用法</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#枚举值序列化问题（摘自焰尾迭-段落）"><span class="toc-number"></span> <span class="toc-text">枚举值序列化问题（摘自焰尾迭 段落）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#思考"><span class="toc-number"></span> <span class="toc-text">思考</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#枚举值中文序列化"><span class="toc-number"></span> <span class="toc-text">枚举值中文序列化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number"></span> <span class="toc-text">总结</span></a>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&text=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&title=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&is_video=false&description=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义&body=Check out this article: http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&title=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&title=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&title=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&title=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&name=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2019/01/06/Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89Newtonsoft.Json%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B9%8B%E6%9E%9A%E4%B8%BE%E4%B8%AD%E6%96%87%E8%BD%AC%E4%B9%89/&t=Newtonsoft.Json高级用法之枚举中文转义Newtonsoft.Json高级用法之枚举中文转义" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

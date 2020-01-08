@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Linux下强制杀死进程的方法(进程管理) 常规篇： 　首先，用ps查看进程，方法如下： $ ps -ef …… smx 1822 1 0 11:38 ? 00:00:49 gnome-terminal smx 1823 1822 0 11:38 ? 00:00:00 gnome-pty-helper smx 1824 1822 0 11:38 pts&#x2F;0 00:00:02 bash smx 18">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux下强制杀死进程的方法(进程管理)">
+<meta property="og:url" content="http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="Linux下强制杀死进程的方法(进程管理) 常规篇： 　首先，用ps查看进程，方法如下： $ ps -ef …… smx 1822 1 0 11:38 ? 00:00:49 gnome-terminal smx 1823 1822 0 11:38 ? 00:00:00 gnome-pty-helper smx 1824 1822 0 11:38 pts&#x2F;0 00:00:02 bash smx 18">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-11-10T15:22:47.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.823Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>Linux下强制杀死进程的方法(进程管理)</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/11/12/msbuild%E5%8D%B4%E6%8F%90%E7%A4%BA%E6%97%A0%E6%B3%95%E6%89%BE%E5%88%B0office%E6%90%9E%E4%BA%86%E5%8D%8A%E5%A4%A9%E8%BF%98%E6%98%AF%E8%A6%81%E8%A3%85%E4%B8%AAoffice/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/11/04/docker-engine%E7%9A%84%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&text=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&title=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&is_video=false&description=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Linux下强制杀死进程的方法(进程管理)&body=Check out this article: http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&title=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&title=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&title=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&title=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&name=Linux下强制杀死进程的方法(进程管理)&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&t=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Linux下强制杀死进程的方法(进程管理)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-11-10T15:22:47.000Z" itemprop="datePublished">2017-11-10</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p><a href="http://www.cnblogs.com/liaojie970/p/7131043.html" target="_blank" rel="noopener">Linux下强制杀死进程的方法</a>(进程管理)</p>
+<p>常规篇：</p>
+<p>　首先，用ps查看进程，方法如下：</p>
+<p>$ ps -ef</p>
+<p>……</p>
+<p>smx 1822 1 0 11:38 ? 00:00:49 gnome-terminal</p>
+<p>smx 1823 1822 0 11:38 ? 00:00:00 gnome-pty-helper</p>
+<p>smx 1824 1822 0 11:38 pts/0 00:00:02 bash</p>
+<p>smx 1827 1 4 11:38 ? 00:26:28 /usr/lib/firefox-3.6.18/firefox-bin</p>
+<p>smx 1857 1822 0 11:38 pts/1 00:00:00 bash</p>
+<p>smx 1880 1619 0 11:38 ? 00:00:00 update-notifier</p>
+<p>……</p>
+<p>smx 11946 1824 0 21:41 pts/0 00:00:00 ps -ef</p>
+<p>或者：</p>
+<p>$ ps -aux</p>
+<p>……</p>
+<p>smx 1822 0.1 0.8 58484 18152 ? Sl 11:38 0:49 gnome-terminal</p>
+<p>smx 1823 0.0 0.0 1988 712 ? S 11:38 0:00 gnome-pty-helper</p>
+<p>smx 1824 0.0 0.1 6820 3776 pts/0 Ss 11:38 0:02 bash</p>
+<p>smx 1827 4.3 5.8 398196 119568 ? Sl 11:38 26:13 /usr/lib/firefox-3.6.18/firefox-bin</p>
+<p>smx 1857 0.0 0.1 6688 3644 pts/1 Ss 11:38 0:00 bash</p>
+<p>smx 1880 0.0 0.6 41536 12620 ? S 11:38 0:00 update-notifier</p>
+<p>……</p>
+<p>smx 11953 0.0 0.0 2716 1064 pts/0 R+ 21:42 0:00 ps -aux</p>
+<p>此时如果我想杀了火狐的进程就在终端输入：</p>
+<p>$ kill -s 9 1827</p>
+<p>其中-s 9 制定了传递给进程的信号是９，即强制、尽快终止进程。各个终止信号及其作用见附录。</p>
+<p>1827则是上面ps查到的火狐的PID。</p>
+<p>简单吧，但有个问题，进程少了则无所谓，进程多了，就会觉得痛苦了，无论是ps -ef 还是ps -aux，每次都要在一大串进程信息里面查找到要杀的进程，看的眼都花了。</p>
+<p>进阶篇：</p>
+<p>改进１：</p>
+<p>把ps的查询结果通过管道给grep查找包含特定字符串的进程。管道符“|”用来隔开两个命令，管道符左边命令的输出会作为管道符右边命令的输入。</p>
+<p>$ ps -ef | grep firefox</p>
+<p>smx 1827 1 4 11:38 ? 00:27:33 /usr/lib/firefox-3.6.18/firefox-bin</p>
+<p>smx 12029 1824 0 21:54 pts/0 00:00:00 grep –color=auto firefox</p>
+<p>这次就清爽了。然后就是</p>
+<p>$kill -s 9 1827</p>
+<p>改进２——使用pgrep：</p>
+<p>一看到pgrep首先会想到什么？没错，grep！pgrep的p表明了这个命令是专门用于进程查询的grep。</p>
+<p>$ pgrep firefox</p>
+<p>1827</p>
+<p>看到了什么？没错火狐的PID，接下来又要打字了：</p>
+<p>$kill -s 9 1827</p>
+<p>改进３——使用pidof：</p>
+<p>看到pidof想到啥？没错pid of xx，字面翻译过来就是 xx的PID。</p>
+<p>$ pidof firefox-bin</p>
+<p>1827</p>
+<p>和pgrep相比稍显不足的是，pidof必须给出进程的全名。然后就是老生常谈：</p>
+<p>$kill -s 9 1827</p>
+<p>无论使用ps 然后慢慢查找进程PID 还是用grep查找包含相应字符串的进程，亦或者用pgrep直接查找包含相应字符串的进程ＰＩＤ，然后手动输入给ｋｉｌｌ杀掉</p>
+<p>改进４：</p>
+<p>$ps -ef | grep firefox | grep -v grep | cut -c 9-15 | xargs kill -s 9</p>
+<p>说明：</p>
+<p>“grep firefox”的输出结果是，所有含有关键字“firefox”的进程。</p>
+<p>“grep -v grep”是在列出的进程中去除含有关键字“grep”的进程。</p>
+<p>“cut -c 9-15”是截取输入行的第9个字符到第15个字符，而这正好是进程号PID。</p>
+<p>“xargs kill -s 9”中的xargs命令是用来把前面命令的输出结果（PID）作为“kill -s 9”命令的参数，并执行该命令。“kill -s 9”会强行杀掉指定进程。</p>
+<p>改进５：</p>
+<p>知道pgrep和pidof两个命令，干嘛还要打那么长一串！</p>
+<p>$ pgrep firefox | xargs kill -s 9</p>
+<p>改进６：</p>
+<p>$ ps -ef | grep firefox | awk ‘{print $2}’ | xargs kill -9</p>
+<p>kill: No such process</p>
+<p>有一个比较郁闷的地方，进程已经正确找到并且终止了，但是执行完却提示找不到进程。</p>
+<p>其中awk ‘{print $2}’ 的作用就是打印（print）出第二列的内容。根据常规篇，可以知道ps输出的第二列正好是PID。就把进程相应的PID通过xargs传递给kill作参数，杀掉对应的进程。</p>
+<p>改进７：</p>
+<p>难道每次都要调用xargs把PID传递给kill？答案是否定的：</p>
+<p>$kill -s 9 <code>ps -aux | grep firefox | awk &#39;{print $2}&#39;</code></p>
+<p>改进８：</p>
+<p>没错，命令依然有点长，换成pgrep。</p>
+<p>$kill -s 9 <code>pgrep firefox</code></p>
+<p>改进9——pkill：</p>
+<p>看到pkill想到了什么？没错pgrep和kill！pkill＝pgrep+kill。</p>
+<p>$pkill -９ firefox</p>
+<p>说明：”-9” 即发送的信号是9，pkill与kill在这点的差别是：pkill无须 “ｓ”，终止信号等级直接跟在 “-“ 后面。之前我一直以为是 “-s 9”，结果每次运行都无法终止进程。</p>
+<p>改进10——killall：</p>
+<p>killall和pkill是相似的,不过如果给出的进程名不完整，killall会报错。pkill或者pgrep只要给出进程名的一部分就可以终止进程。</p>
+<p>$killall -9 firefox</p>
+<p>附录：各种信号及其用途</p>
+<p>Signal</p>
+<p>| </p>
+<p>Description</p>
+<p>| </p>
+<p>Signal number on Linux x86[1]  </p>
+<p>—|—|—  </p>
+<p>SIGABRT</p>
+<p>| </p>
+<p>Process aborted</p>
+<p>| </p>
+<p>6  </p>
+<p>SIGALRM</p>
+<p>| </p>
+<p>Signal raised by alarm</p>
+<p>| </p>
+<p>14  </p>
+<p>SIGBUS</p>
+<p>| </p>
+<p>Bus error: “access to undefined portion of memory object”</p>
+<p>| </p>
+<p>7  </p>
+<p>SIGCHLD</p>
+<p>| </p>
+<p>Child process terminated, stopped (or continued*)</p>
+<p>| </p>
+<p>17  </p>
+<p>SIGCONT</p>
+<p>| </p>
+<p>Continue if stopped</p>
+<p>| </p>
+<p>18  </p>
+<p>SIGFPE</p>
+<p>| </p>
+<p>Floating point exception: “erroneous arithmetic operation”</p>
+<p>| </p>
+<p>8  </p>
+<p>SIGHUP</p>
+<p>| </p>
+<p>Hangup</p>
+<p>| </p>
+<p>1  </p>
+<p>SIGILL</p>
+<p>| </p>
+<p>Illegal instruction</p>
+<p>| </p>
+<p>4  </p>
+<p>SIGINT</p>
+<p>| </p>
+<p>Interrupt</p>
+<p>| </p>
+<p>2  </p>
+<p>SIGKILL</p>
+<p>| </p>
+<p>Kill (terminate immediately)</p>
+<p>| </p>
+<p>9  </p>
+<p>SIGPIPE</p>
+<p>| </p>
+<p>Write to pipe with no one reading</p>
+<p>| </p>
+<p>13  </p>
+<p>SIGQUIT</p>
+<p>| </p>
+<p>Quit and dump core</p>
+<p>| </p>
+<p>3  </p>
+<p>SIGSEGV</p>
+<p>| </p>
+<p>Segmentation violation</p>
+<p>| </p>
+<p>11  </p>
+<p>SIGSTOP</p>
+<p>| </p>
+<p>Stop executing temporarily</p>
+<p>| </p>
+<p>19  </p>
+<p>SIGTERM</p>
+<p>| </p>
+<p>Termination (request to terminate)</p>
+<p>| </p>
+<p>15  </p>
+<p>SIGTSTP</p>
+<p>| </p>
+<p>Terminal stop signal</p>
+<p>| </p>
+<p>20  </p>
+<p>SIGTTIN</p>
+<p>| </p>
+<p>Background process attempting to read from tty (“in”)</p>
+<p>| </p>
+<p>21  </p>
+<p>SIGTTOU</p>
+<p>| </p>
+<p>Background process attempting to write to tty (“out”)</p>
+<p>| </p>
+<p>22  </p>
+<p>SIGUSR1</p>
+<p>| </p>
+<p>User-defined 1</p>
+<p>| </p>
+<p>10  </p>
+<p>SIGUSR2</p>
+<p>| </p>
+<p>User-defined 2</p>
+<p>| </p>
+<p>12  </p>
+<p>SIGPOLL</p>
+<p>| </p>
+<p>Pollable event</p>
+<p>| </p>
+<p>29  </p>
+<p>SIGPROF</p>
+<p>| </p>
+<p>Profiling timer expired</p>
+<p>| </p>
+<p>27  </p>
+<p>SIGSYS</p>
+<p>| </p>
+<p>Bad syscall</p>
+<p>| </p>
+<p>31  </p>
+<p>SIGTRAP</p>
+<p>| </p>
+<p>Trace/breakpoint trap</p>
+<p>| </p>
+<p>5  </p>
+<p>SIGURG</p>
+<p>| </p>
+<p>Urgent data available on socket</p>
+<p>| </p>
+<p>23  </p>
+<p>SIGVTALRM</p>
+<p>| </p>
+<p>Signal raised by timer counting virtual time: “virtual timer expired”</p>
+<p>| </p>
+<p>26  </p>
+<p>SIGXCPU</p>
+<p>| </p>
+<p>CPU time limit exceeded</p>
+<p>| </p>
+<p>24  </p>
+<p>SIGXFSZ</p>
+<p>| </p>
+<p>File size limit exceeded</p>
+<p>| </p>
+<p>25  </p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&text=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&title=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&is_video=false&description=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Linux下强制杀死进程的方法(进程管理)&body=Check out this article: http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&title=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&title=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&title=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&title=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&name=Linux下强制杀死进程的方法(进程管理)&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2017/11/10/Linux%E4%B8%8B%E5%BC%BA%E5%88%B6%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95(%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86)/&t=Linux下强制杀死进程的方法(进程管理)" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

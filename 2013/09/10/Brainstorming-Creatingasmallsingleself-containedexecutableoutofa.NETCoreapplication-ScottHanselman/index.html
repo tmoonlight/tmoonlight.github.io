@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Scott Hanselman about blog speaking podcasts books  browse by category or date  Brainstorming - Creating a small single self-contained executable out of a .NET Core application二月 1, ‘19 Comments [33]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman">
+<meta property="og:url" content="http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="Scott Hanselman about blog speaking podcasts books  browse by category or date  Brainstorming - Creating a small single self-contained executable out of a .NET Core application二月 1, ‘19 Comments [33]">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2013-09-10T11:25:14.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:15.036Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2013/09/19/%E5%88%86%E4%BA%AB%E5%87%A0%E7%AF%87%E5%AD%A6%E4%B9%A0%E5%B8%A7%E5%90%8C%E6%AD%A5%E3%80%81%E7%8A%B6%E6%80%81%E5%90%8C%E6%AD%A5%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E7%82%B9%E7%9A%84%E6%96%87%E7%AB%A0-%E5%B0%8F5_%E5%B0%8F%E6%AD%A6%E5%90%9B-%E7%AE%80%E4%B9%A6/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2013/09/09/%E4%B8%80%E5%83%8F%E7%B4%A0/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&text=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&title=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&is_video=false&description=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman&body=Check out this article: http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&title=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&title=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&title=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&title=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&name=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&t=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Scott-Hanselman"><span class="toc-number">1.</span> <span class="toc-text">Scott Hanselman</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Brainstorming-Creating-a-small-single-self-contained-executable-out-of-a-NET-Core-application"><span class="toc-number">1.1.</span> <span class="toc-text">Brainstorming - Creating a small single self-contained executable out of a .NET Core application</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#About-Scott"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">About Scott</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Blog"><span class="toc-number">1.1.1.</span> <span class="toc-text">Blog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Podcast"><span class="toc-number">1.1.2.</span> <span class="toc-text">Podcast</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Speaking"><span class="toc-number">1.1.3.</span> <span class="toc-text">Speaking</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Books"><span class="toc-number">1.1.4.</span> <span class="toc-text">Books</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2013-09-10T11:25:14.000Z" itemprop="datePublished">2013-09-10</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="Scott-Hanselman"><a href="#Scott-Hanselman" class="headerlink" title="Scott Hanselman"></a><a href="https://www.hanselman.com/" target="_blank" rel="noopener">Scott Hanselman</a></h1><ul>
+<li><a href="https://hanselman.com/about" target="_blank" rel="noopener">about</a></li>
+<li><a href="https://hanselman.com/blog" target="_blank" rel="noopener">blog</a></li>
+<li><a href="https://hanselman.com/speaking" target="_blank" rel="noopener">speaking</a></li>
+<li><a href="https://hanselman.com/podcasts" target="_blank" rel="noopener">podcasts</a></li>
+<li><a href="https://hanselman.com/books" target="_blank" rel="noopener">books</a></li>
+</ul>
+<p>browse by <a href="https://www.hanselman.com/blog/archives.aspx" target="_blank" rel="noopener" title="The complete archive of Scott&#39;s Blog">category</a> or <a href="https://www.hanselman.com/blog/monthview.aspx" target="_blank" rel="noopener" title="Scott&#39;s blog posts in a friendly calendar format">date</a></p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a></p>
+<h2 id="Brainstorming-Creating-a-small-single-self-contained-executable-out-of-a-NET-Core-application"><a href="#Brainstorming-Creating-a-small-single-self-contained-executable-out-of-a-NET-Core-application" class="headerlink" title="Brainstorming - Creating a small single self-contained executable out of a .NET Core application"></a><a href="https://www.hanselman.com/blog/BrainstormingCreatingASmallSingleSelfcontainedExecutableOutOfANETCoreApplication.aspx" target="_blank" rel="noopener">Brainstorming - Creating a small single self-contained executable out of a .NET Core application</a></h2><p>二月 1, ‘19 <a href="https://www.hanselman.com/blog/CommentView.aspx?guid=0b5da3d4-99cb-4b30-88af-cc1aee40adcb#commentstart" target="_blank" rel="noopener">Comments [33]</a> Posted in <a href="https://www.hanselman.com/blog/CategoryView.aspx?category=DotNetCore" target="_blank" rel="noopener">DotNetCore</a></p>
+<p>Sponsored By  </p>
+<p>I’ve been using ILMerge and various hacks to merge/squish executables together for well over 12 years. The .NET community has long toyed with the idea of a single self-contained EXE that would “just work.” No need to copy a folder, no need to install anything. Just a single EXE.</p>
+<p>While work and thought continues on a CoreCLR Single File EXE solution, there’s a nice <a href="https://github.com/dgiagio/warp?WT.mc_id=-blog-scottha" target="_blank" rel="noopener">Rust tool called Warp</a> that creates self-contained single executables. Warp is cross-platform, works on any tech, and is very clever </p>
+<p>The Warp Packer app has a slightly complex command line, like this:</p>
+<pre><code>.\warp-packer --arch windows-x64 --input_dir bin/Release/netcoreapp2.1/win10-x64/publish --exec myapp.exe --output myapp.exe</code></pre><p>Fortunately <a href="https://github.com/Hubert-Rybak/DotnetPack?WT.mc_id=-blog-scottha" target="_blank" rel="noopener">Hubert Rybak</a> has created a very nice “<a href="https://github.com/Hubert-Rybak/dotnet-warp?WT.mc_id=-blog-scottha" target="_blank" rel="noopener">dotnet-warp</a>“ global tool that wraps this all up into a single command, dotnet-warp. </p>
+<p>All you have to do is this:</p>
+<pre><code>C:\supertestweb&gt; dotnet tool install -g dotnet-warp  
+C:\supertestweb&gt; dotnet-warp  
+O Running Publish...  
+O Running Pack...</code></pre><p>In this example, I just took a Razor web app with “dotnet new razor” and then packed it up with this tool using Warp packer. Now I’ve got a 40 meg self-contained app. I don’t need to install anything, it just works.</p>
+<pre><code>C:\supertestweb&gt; dir  
+    Directory: C:\supertestweb  
+
+Mode                LastWriteTime         Length Name  
+----                -------------         ------ ----  
+d-----         2/6/2019   9:14 AM                bin  
+d-----         2/6/2019   9:14 AM                obj  
+d-----         2/6/2019   9:13 AM                Pages  
+d-----         2/6/2019   9:13 AM                Properties  
+d-----         2/6/2019   9:13 AM                wwwroot  
+-a----         2/6/2019   9:13 AM            146 appsettings.Development.json  
+-a----         2/6/2019   9:13 AM            157 appsettings.json  
+-a----         2/6/2019   9:13 AM            767 Program.cs  
+-a----         2/6/2019   9:13 AM           2115 Startup.cs  
+-a----         2/6/2019   9:13 AM            294 supertestweb.csproj  
+-a----         2/6/2019   9:15 AM       40982879 supertestweb.exe</code></pre><p>Now here’s what it gets interesting. Let’s say I have a console app. Hello World, packed with Warp, ends up being about 35 megs. But if I use the “dotnet-warp -l aggressive” the tool will add the <a href="https://www.hanselman.com/blog/ACompleteContainerizedNETCoreApplicationMicroserviceThatIsAsSmallAsPossible.aspx" target="_blank" rel="noopener">Mono ILLinker (tree shaker/trimmer)</a> and shake off all the methods that aren’t needed. The resulting single executable? <strong>Just 9 megs compressed (20 uncompressed).</strong></p>
+<pre><code>C:\squishedapp&gt; dotnet-warp -l aggressive  
+O Running AddLinkerPackage...  
+O Running Publish...  
+O Running Pack...  
+O Running RemoveLinkerPackage...  
+C:\squishedapp&gt; dir  
+Mode                LastWriteTime         Length Name  
+----                -------------         ------ ----  
+d-----         2/6/2019   9:32 AM                bin  
+d-----         2/6/2019   9:32 AM                obj  
+-a----         2/6/2019   9:31 AM             47 global.json  
+-a----         2/6/2019   9:31 AM            193 Program.cs  
+-a----         2/6/2019   9:32 AM            178 squishedapp.csproj  
+-a----         2/6/2019   9:32 AM        9116643 squishedapp.exe</code></pre><p><strong>Here is where you come in!</strong></p>
+<p><strong>NOTE:</strong> The .NET team has <em>planned</em> to have a “single EXE” supported packing solution built into .NET 3.0. There’s a lot of ways to do this. Do you zip it all up with a header/unzipper? Well, that would hit the disk a lot and be messy. Do you “unzip” into memory? Do you merge into a single assembly? Or do you try to AoT (Ahead of Time) compile and do as much work as possible before you merge things? Is a small size more important than speed? </p>
+<p>What do you think? How should a built-in feature like this work and what would YOU focus on?</p>
+<hr>
+<p><strong>Sponsor:</strong> <a href="https://hnsl.mn/2MKfZjU" target="_blank" rel="noopener">Check out Seq 5</a> for real-time diagnostics from ASP.NET Core and Serilog, now with faster queries, <a href="https://hnsl.mn/2FZOvpO" target="_blank" rel="noopener">support for Docker on Linux</a>, and beautiful new dark and light themes.</p>
+<p><a href="https://www.hanselman.com/blog/VisitingTheNationalMuseumOfComputingInsideBletchleyParkCanWeCrackEnigmaWithRaspberryPis.aspx" target="_blank" rel="noopener">« Visiting The National Museum of Computin…</a> | <a href="https://www.hanselman.com/blog/default.aspx" target="_blank" rel="noopener">Blog Home</a> | <a href="https://www.hanselman.com/blog/TeachingKidsToCodeWithMinecraftModsMadeEasyUsingMakeCodeAndCodeConnection.aspx" target="_blank" rel="noopener">Teaching Kids to Code with Minecraft Mod… »</a></p>
+<h4 id="About-Scott"><a href="#About-Scott" class="headerlink" title="About Scott"></a>About Scott</h4><p>Scott Hanselman is a former professor, former Chief Architect in finance, now speaker, consultant, father, diabetic, and Microsoft employee. He is a failed stand-up comic, a cornrower, and a book author.</p>
+<p><a href="https://facebook.com/scott.hanselman" target="_blank" rel="noopener"></a> <a href="https://twitter.com/shanselman" target="_blank" rel="noopener"></a> <a href="https://plus.google.com/108573066018819777334?rel=author" target="_blank"></a> <a href="http://feeds.hanselman.com/ScottHanselman" target="_blank" rel="noopener"></a><br><a href="http://hanselman.com/about" target="_blank" rel="noopener">About</a>   <a href="http://www.hanselman.com/newsletter" target="_blank" rel="noopener">Newsletter</a></p>
+<p><strong>Sponsored By</strong>  </p>
+<p><strong>Hosting By</strong><br><a href="https://sherweb.com/" target="_blank" rel="noopener"></a></p>
+<p><a href="https://www.hanselman.com/blog/CommentView.aspx?guid=0b5da3d4-99cb-4b30-88af-cc1aee40adcb#commentstart" target="_blank" rel="noopener">Comments [33]</a></p>
+<p>Share on: <a href="https://twitter.com/intent/tweet?url=https://www.hanselman.com/blog/BrainstormingCreatingASmallSingleSelfcontainedExecutableOutOfANETCoreApplication.aspx&text=Brainstorming%20-%20Creating%20a%20small%20single%20self-contained%20executable%20out%20of%20a%20.NET%20Core%20application%20-%20Scott%20Hanselman&via=shanselman" target="_blank" rel="noopener">Twitter</a>, <a href="https://facebook.com/sharer.php?u=https://www.hanselman.com/blog/BrainstormingCreatingASmallSingleSelfcontainedExecutableOutOfANETCoreApplication.aspx" target="_blank" rel="noopener">Facebook</a>, <a href="https://plus.google.com/share?url=https://www.hanselman.com/blog/BrainstormingCreatingASmallSingleSelfcontainedExecutableOutOfANETCoreApplication.aspx" target="_blank" rel="noopener">Google+</a> or use the <a href="https://www.hanselman.com/blog/BrainstormingCreatingASmallSingleSelfcontainedExecutableOutOfANETCoreApplication.aspx" target="_blank" rel="noopener">Permalink</a></p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a></p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月6日 18:04:13 UTC</p>
+<p>In what way does this method differ from using <strong>Fody</strong> with <strong>Costura</strong> ? See <a href="https://github.com/Fody/Costura?WT.mc_id=-blog-scottha" target="_blank" rel="noopener">Link: Fody/Costura</a>.</p>
+<p>Stef</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月6日 18:07:58 UTC</p>
+<p>Dotnet core would be damn near perfect if they had a way to package into a single executable. I want to be able to deliver command line tools as a single, small .exe. Just download and run.</p>
+<p>Scott</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月6日 18:12:09 UTC</p>
+<p>I’d say speed first, then small size by techniques like trimming, and then optionally compression.<br>.net apps today are actually quite long to start, maybe because of many dlls to load. I’d expect a single exe to load faster.  </p>
+<p>That being said, I’d like to be able to do scenarios like having app A and B in the same folder that share the same library L as a dll (this dependency might be a combination of L1 and L2 too). In other words : not only self-contained apps, but also self-contained libraries and self-contained + some externals (could be for licensing reasons).  </p>
+<p>The key thing is : make it easy to configure complex link scenarii</p>
+<p>cube45</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月6日 18:20:39 UTC</p>
+<p>I would love to have <em>options</em> -- perhaps a command line switch that allows me to choose between file size and speed of execution, because I can see cases for both.</p>
+<p>Stacy</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月6日 18:50:13 UTC</p>
+<p>Can you connect to the “.NET Native” Team? they built single-exe native apps out of .NET Executables since years, for impressive Performance gains. And, well, They’re part of Microsoft, so..  </p>
+<p><a href="https://blogs.windows.com/buildingapps/2015/08/20/net-native-what-it-means-for-universal-windows-platform-uwp-developers/#lVhv2aTdHxTRkqsZ.97" target="_blank" rel="noopener">https://blogs.windows.com/buildingapps/2015/08/20/net-native-what-it-means-for-universal-windows-platform-uwp-developers/#lVhv2aTdHxTRkqsZ.97</a></p>
+<p><a href="https://davepermen.net/" target="_blank" rel="noopener">David Spörri</a></p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月6日 20:05:59 UTC</p>
+<p>I got excited and looked it up. Warp actually just uncompresses all the files to a temporary folder to run, it’s almost like one click unzip or silent installer that’s it. I guess it’s still nice, but it’s it a single exe for real and will make a target system messy. </p>
+<p>Ivan G</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月6日 20:14:10 UTC</p>
+<blockquote>
+<p>Do you zip it all up with a header/unzipper? Well, that would hit the disk a lot and be messy</p>
+</blockquote>
+<p>Warp is interesting, but isn’t this exactly how it works?  </p>
+<blockquote>
+<p>Do you “unzip” into memory?</p>
+</blockquote>
+<p>If we can’t rely on a shared CLR being installed, presumably this would require a native ‘packer’ executable that contained the compressed binaries?  </p>
+<blockquote>
+<p>Do you merge into a single assembly?</p>
+</blockquote>
+<p>Can’t ILRepack and/or ILMerge do this today?  </p>
+<blockquote>
+<p>Or do you try to AoT (Ahead of Time) compile and do as much work as possible before you merge things? </p>
+</blockquote>
+<p>Is that what IL Linker and Mono Linker do? I think this is a really interesting avenue to explore, but would it play nicely with reflection?</p>
+<p>cocowalla</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月6日 20:19:04 UTC</p>
+<p>Greg Szorc looked into this problem in depth for Python, I suspect that a lot of his research would be extremely useful here as well. Specifically, he considered the zip-unpacking strategy and its downsides extensively, as well as how to handle loading dependencies and executing them from areas of memory: <a href="https://gregoryszorc.com/blog/2018/12/18/distributing-standalone-python-applications/" target="_blank" rel="noopener">https://gregoryszorc.com/blog/2018/12/18/distributing-standalone-python-applications/</a></p>
+<p>Brandon Siegel</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 5:31:40 UTC</p>
+<p>@cocowalla - see the section titled CoreRT Deployments.<br><a href="https://msdn.microsoft.com/en-us/magazine/mt830370.aspx" target="_blank" rel="noopener">https://msdn.microsoft.com/en-us/magazine/mt830370.aspx</a>  </p>
+<p>It’s been working well for me.  </p>
+<p><a href="https://kijanawoodard.com/" target="_blank" rel="noopener">Kijana Woodard</a></p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 7:53:20 UTC</p>
+<p>For me this functionality is a bit of a holy grail, having a consistent way of publishing my applications. It’s certainly cool that dotnet core can publish into a directory, but the end-user experience has room for improvement! Having a directory where one needs to find the executable is not something I find convenient. This would already improve if the executable is in the root of the publish directory and the needed dependencies are separated into directories which are named to the functionality. Something like “runtime-dependencies”, and “application-dependencies”. Having a single executable is like cream on top, especially if this only contains the code which is used and not all libraries with everything they provide but I don’t use. I already follow some issues on GitHub, and shared my wishes, hope others do so too.  </p>
+<p>Just wanted to add some information about using “dotnet-pack -l aggressive” and dotnet core 3.0  </p>
+<p>Scott already explains this uses the mono ILLinker and currently this doesn’t work with dotnet core 3.0. Read and follow the issue here: <a href="https://github.com/mono/linker/issues/428" target="_blank" rel="noopener">https://github.com/mono/linker/issues/428</a></p>
+<p><a href="https://getgreenshot.org/" target="_blank" rel="noopener">Robin Krom</a></p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 8:26:17 UTC</p>
+<p>We’d need support for 3rd party components e.g. DevExpress WinForms. And support for all versions of .Net framework.</p>
+<p><a href="https://trisys.co.uk/" target="_blank" rel="noopener">TriSys</a></p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 9:31:31 UTC</p>
+<p>Si with an you could use a alpine linux docker image and run it right ? So you can have a 50-60MB docker image with your app :D Awesome ! Gonna try that.</p>
+<p><a href="https://remibou.github.io/" target="_blank" rel="noopener">Rémi BOURGAREL</a></p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 9:44:56 UTC</p>
+<p>Looks like the command has now been renamed to dotnet-warp  </p>
+<p><a href="https://github.com/Hubert-Rybak/dotnet-warp/issues/2" target="_blank" rel="noopener">https://github.com/Hubert-Rybak/dotnet-warp/issues/2</a></p>
+<p>Michael</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 10:04:59 UTC</p>
+<p>I would hope to choose at build time if and how hard to shake the tree.  </p>
+<p>I would hope to choose at build time between uncompressed for speed and various levels of compression.  </p>
+<p>I would hope to choose at startup between “uncompress to memory”, “uncompress to disk and keep for later” and “uncompress to disk/tmp every time”. Also with option to do it all at startup or just in time.</p>
+<p>Nils</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 10:53:26 UTC</p>
+<p>Merge into a single assembly all the way, and use an exe stream compressor if you want to compress it. However, how would you handle C++/CLR and native C++ DLLs in the same assembly?  </p>
+<p>If you run from a DVD it would be nice to have the whole assembly load linearly into memory. Yes we still use DVDs in the places I frequent because USB devices are not allowed.</p>
+<p>John Stewien</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 11:00:46 UTC</p>
+<p>I don’t see the point of a single exe.<br>We have over a 100 services running on 1 server, and hundreds of small application across our network.<br>We don’t want hundreds of copies of the same .NET framework.  </p>
+<p>We need a way to load .NET framework on server startup and that needs to remain in memory as long as the server (or PC) is running.<br>Make .NET (CORE) smaller and faster instead of trying to install it with every application we deliver to our customers.  </p>
+<p>Maybe an option would be to pack the .NET framework in 1 library and leave the exe just the way it is. When deploying we can put just 1 .NET library on a server (PC) and share it between all applications.</p>
+<p>Johan Visser</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 12:03:28 UTC</p>
+<p>I’m interested to see what would happen if I used Reflection to execute code that doesn’t appear to be referenced at compile time.</p>
+<p><a href="http://www.contrivedexample.com/" target="_blank" rel="noopener">Bob</a></p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 12:05:07 UTC</p>
+<p>I agree with Johan Visser 100%.  </p>
+<p>I think we need something similar to .NET Framework 4 (which installs on a system/computer level), downloaded either through Windows Update or separate, which offer the possibility to keep the EXE size small.   </p>
+<p>Like Johan, we also have so many small EXEs (and DLLs) which is used throughout the company servers in so many different ways. Yes, size DO matter.  </p>
+<p>For the ASP.NET Core road, I register that you already have something called a Runtime &amp; Hosting Bundle. Why not just create a .NET Core Framework Bundle 3.x, and make it installable the same way as you do today with .NET Framework.</p>
+<p>Roger D</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 12:49:41 UTC</p>
+<p>Something that would be useful is a way to bundle a cert/signature into the compiled bits so the host can trust it. We use Costura/Fody on .NET Framework apps to get them into a single .exe and use signtool.exe (code signing certs are a $ rip off but that is another topic); experimenting with conversion to .NET Core for cross-platforminess, we are hunting for a single exe package that can be deployed and trusted. Intellivision developers are 1/3 Windows, 1/3 Linux, 1/3 Mac so we’re trying to hit all of them with our code refreshes. #thisShouldBeEasier</p>
+<p><a href="http://www.intvprime.com/" target="_blank" rel="noopener">Intv Prime</a></p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 12:59:03 UTC</p>
+<p>40 MB is ridiculous<br>Look at other tools, Delphi for example, they do it with 10MB or less even.<br>And yes, it works on really every 32/64 windows version without the need for any additional file at all.  </p>
+<p>GuidoG</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 13:22:28 UTC</p>
+<p>You’ll have to excuse my ignorance (but am willing to learn). But FoxPro (younger people under 30 may have to look that up!) and later Visual FoxPro is still delivering working exe’s for smaller businesses as a matter of course. My list of EXE’s in my “test live” directory range in size from 1.7 to 4.9 Kb (not Mb). The DOS system was fully self contained, the Visual one just needs half a dozen dll’s in the same directory plus the data directory. I can take a demo system to a client and run the whole thing off a 4Mb USB stick that’s not even half full. </p>
+<p><a href="http://www.pengers.co.uk/" target="_blank" rel="noopener">Alan Pengelly</a></p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 13:46:17 UTC</p>
+<p>Thanks for mentioning my tool! I changed project name to avoid confict with “dotnet pack”<br><a href="https://github.com/Hubert-Rybak/dotnet-warp" target="_blank" rel="noopener">https://github.com/Hubert-Rybak/dotnet-warp</a></p>
+<p>Hubert Rybak</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 16:16:39 UTC</p>
+<p>Static linking and copying code from C lib files instead of DLLs - 1982 Unix System V era technology.  </p>
+<p>Here are the problems:<br>- GitHub based packages ensure DLL hell for a large application with package inside package dependencies<br>- Transition from .NET framework from 1 per computer to several GitHub packages ensures DLL hell<br>- Shifting the version maintenance from the OS level (MS) to individual GitHub packages ensures a large C# project lasting 5+ years will have man months spent upgrading GitHub packages, debugging problems and dealing with DLL hell  </p>
+<p>Forcing man years of wasted effort and expense of moving existing c# .net Framework applications to .net core. You can run the old .net framework for a long time, but many of the github packages you use or third party libraries will have moved to .net core. Your option is to stick with the old packages or old third party libraries with all the bugs and limitation or spend many man months doing a full release cycle just to switch to .net core.  </p>
+<p>Simple put. .NET Core should ship the entire .net framework on Windows 10 machines and later with no need to add many .net core GitHub packages to get small bits of the .net core framework.  </p>
+<p>.NET core is an OS level component and should be on every Windows 10 machine by default.  </p>
+<p>Linux users will have to install the entire .net core framework before using your application. This worked well for the regular .net framework when v2.0 was released.  </p>
+<p>A mid level of frustration in that I spent the last 3 weeks with GitHub .net framework and third party packages DLL hell for a 1 million line .net application. Keeping it as is with old packages did not help as serious bug fixes needed were only in the newer GitHub packages.  </p>
+<p>MS common business practice is to shift the high maintenance and configuration cost of the Framework side of an application from MS to the paying corporate customers.  </p>
+<p> **How can .net dev team make such business decisions without regard to TCO for corporate customers?  </p>
+<p>The SQL Server team could not make these type of decisions and force huge costly upgrades on the customers every 3 years.  </p>
+<p>No large company would buy SQL Server if the terms and conditions stated that you’ll have to replace SQL Server, reconfigure you data center, and spend lots of money every 3 years to get back to the level of reliability and security you had when initially installing SQL server.**  </p>
+<p>Half maintained GitHub packages should not be the norm. Development should get more productive over time for very large systems and not just the click-drag-click bam 2 screen demo app in 5 minutes.  </p>
+<p>Microsoft has community responsibility to push for technologies making development easier, cleaner, more secure and lower cost for long term large projects.  </p>
+<p>Microsoft has been doing the opposite by breaking the framework into many small pieces, using more soon to be maintenance problem third party tools in VS, shifting more and more of the configuration to corporate developers.  </p>
+<p>First should come good MS effort towards large scale solution developers which have been ignored by MS for 10 years; secondly should come good MS effort towards developers of small solutions.  </p>
+<p>My large employer has stopped adopting most MS .net/Azure related technologies outside of central C#, asp.net mvc, sql server on premise or hosted in a basic Azure web site. That’s after several 6 month X person projects just to upgrade existing critical business systems to the latest VS and .net framework versions.  </p>
+<p>The large system I work on has ~40 projects each with up to 25 GitHub packages. Budget for adding new business functionality for the large system comes once every 2 to 3 years. Hotfixes every 3 to 4 months. Budget for syncing up and upgrading just GitHub packages is non-existent.  </p>
+<p>new?</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 17:10:52 UTC</p>
+<p>9 Mb for a console app?<br>It’s ridiculous - Windows 3.1 (I know, a long time ago) was only 11 Mb, for a complete graphical OS. So i think that 9Mb for a Hello World console application is simply ridiculous.</p>
+<p>Theo</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月7日 22:33:11 UTC</p>
+<p>9MB for a tiny little program? 🤮 But hey, it’s a start! And at least it’s <em>possible</em>. I really like that we’ll have more deployment choices for .NET apps.</p>
+<p><a href="https://blog.getpaint.net/" target="_blank" rel="noopener">Rick Brewster</a></p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月8日 0:45:24 UTC</p>
+<p>The GraalVM project is doing some interesting work with <a href="https://www.graalvm.org/docs/reference-manual/aot-compilation/" target="_blank" rel="noopener" title="GraalVM">AOT compiling and native image generation</a> for Java. The resulting program does not run on the Java HotSpot VM, but uses a separate VM (SubstrateVM) resulting in faster startup and lower runtime memory requirements. The code can be compiled to a shared object or exe. The optimizations are achieved by aggressive static analysis that requires knowing all classes and all bytecode that is reachable at run time. Substrate VM has partial support for reflection and predictably it needs to know ahead of time the reflectively accessed program elements.   </p>
+<p>Chris Whelan</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月8日 9:28:59 UTC</p>
+<p>What if c++/cli is part of the app?</p>
+<p><a href="https://www.woelfer.com/" target="_blank" rel="noopener">thomas woelfer</a></p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月8日 14:05:50 UTC</p>
+<p>This would be nice to have for .NET, but do we have nothing more important to work on?  </p>
+<p>Hard to come up with use cases for this. If you can deliver a single exe you can usually deliver a single folder full of files.  </p>
+<p>Many people have commented on the GitHub issue that the ability to do that is not important to them. The team seems stubbornly set on delivering this.</p>
+<p>tobi</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月8日 19:21:31 UTC</p>
+<p>I would like to have these options  </p>
+<p>native: compile a single native instruction set<br>all: all the referenced dll in the same package<br>reference: the referenced dll stays as reference (but the app may be natively compiled)<br>shake: perform treeshaking and includes only the code that can be statically reached<br>hint: include in the package also the indicated parts of code  </p>
+<p>different apps may have different needs, as always having options may save the day :)  </p>
+<p>Sincerely,<br>Captain Obvious :P  </p>
+<p><a href="http://photoatomic.com/" target="_blank" rel="noopener">Mose Bottacini</a></p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月8日 22:37:32 UTC</p>
+<p>Im, old. I remember when Borland users would brag about their ultra-optimized binaries.  </p>
+<p>IMHO, I see a natural progression:</p>
+<ol>
+<li>Binaries with static and dynamic shared libraries - this will come and go with different methods of API communication</li>
+</ol>
+<ol start="2">
+<li>Simple roll it all in binary - easy to share and publish, but big</li>
+</ol>
+<ol start="3">
+<li>Pruned binary - I like the idea of trimming the unused binary fat</li>
+</ol>
+<ol start="4">
+<li>Optimized binary - Make grandpa Borland proud, self-managed, self-contained, lean, fast, small</li>
+</ol>
+<ol start="5">
+<li>‘highlander’ binary - only one, runs anywhere, immortal but cut off the head and the body dies (future replacing ‘containers’)</li>
+</ol>
+<p>I feel like decompressing to run might come with it’s own set of problems. Although instead of decompressing to memory or the FS, why not decompress to windows container (ala UWP) and ask for permission to do anything beyond what a UWP app can do, but keep it a possibility.  </p>
+<p>I think some are missing out on where the single binary could be going and that the shared lib option will probably never go away. If you are scared of the single binary, are you also looking into using Docker to scoop up the mess in development and dump it into production? You might want to meditate on what is different. In the long term I would like to see compiling to a single exe the future of containers: Small, Fast, Sandboxed. Maybe future binaries have a completely different extension because … Container as Executable  </p>
+<p>just sayin’</p>
+<p>Drydenmaker</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月12日 14:33:25 UTC</p>
+<p>An empty “dotnet new razor” application is 40MB? And 9 if tree shacked?  </p>
+<p>I am writing my command line utilities “still” in cpp. If 32bit compiled against the “old” Win7 SDK and linked against VS runtime statically, I end up with a exe of 1.2MB running blazing fast and completely standalone from WinXP up to the latest Win10.<br>And with all the new C11/C17 features available, cpp has become much less cumbersome than it used to be.  </p>
+<p>My cmd utilities are often called in tight loops (scripts iterating over file/folder trees). So startup time is important. Much more important than for fat desktop UI apps.  </p>
+<p>If runtime lightness is more important than dev time, I use cpp. If dev time is more important, I use managed languages as C# or Java.<br>Having both at the same time is like wanting to have the cake and still eating it. For me this is a solution looking for a problem. But of course other’s MMV.  </p>
+<p>Joerg</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月12日 15:38:52 UTC</p>
+<p>Hi Scott -<br>I apologize in advance for posting this comment on the wrong blog entry - it is intended for your blog post of Jan 16, 2019 - Installing .NET Core 2.x SDK on a Raspberry Pi; but comments are closed on that post. If possible, I would love the content of this comment to be moved to that post - as it will hopefully help people who are trying to follow that blog (like I was).  </p>
+<p>I followed your excellent instructions for installing .NET Core on a Raspberry Pi 3. My install was a little tweaked, because I was installing 2.2.103 - but your instructions explain how to find the link for newer versions of the framework.  </p>
+<p>Note 1) You explain how to also download and install the ASP.NET Runtime; but I wonder if that is no longer needed. It seemed to me that the ASP.NET Runtime is included in the .NET Core SDK with version 2.2.103.  </p>
+<p>Note 2) This is the reason I wanted to add this comment: After cloning my .NET Core project via Git to my Raspberry Pi; I tried running “dotnet restore” to restore NuGet packages. This caused a ton of very weird SSL errors while talking to the NuGet API host. I spent hours trying to diagnose this and my Internet connection and the packages I used in my project, etc. In the end, what I figured out is that it seems like “dotnet restore” is trying to download too many packages at once from api.nuget.org - and this overwhelms some part of SSL-handling (OpenSSL?) on the Raspberry Pi. After hours of many wild goose chases, the simple fix was to run “dotnet restore –disable-parallel”. Wow, I wish I would have figured out to to do that earlier; and hopefully that saves others some pain.  </p>
+<p>Note 3) There was some discussion in the comments about running WinForms and other GUIs on .NET Core on the Raspberry Pi. I am having some luck with using AvaloniaUI on the Raspberry Pi. There are specific notes/discussion for running “Avalonia on Raspbian” - so interested people should make sure they Google-Bing that phrase. (I had some trouble with libSkiaSharp - but the correct ARM version is in the latest NuGet package of Avalonia.Skia.Linux.Natives.)  </p>
+<p>Thank you for your excellent blog!</p>
+<p>Jeremy Ellis</p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a>2019年2月12日 20:58:17 UTC</p>
+<p>Need to have a compiler switch to turn off and give compiler error message if any use of reflection is used so that static linking can be done for only parts of classes actually called.  </p>
+<p>Fact is, the most basic c# subset can produce a much much smaller executable when only the most basic language constructs are used. Too much syntactic sugar has been added in the last many years - <em>cough</em> C#’s not a functional language and shouldn’t turn into a messy spaghetti tangle of JavaScript/F#/erlang via adopting 2 or 3 language features a year from those languages.   </p>
+<p>Bob</p>
+<p>Comments are closed.</p>
+<p>Disclaimer: The opinions expressed herein are my own personal opinions and do not represent my employer’s view in any way.</p>
+<h3 id="Blog"><a href="#Blog" class="headerlink" title="Blog"></a>Blog</h3><ul>
+<li><a href="https://www.hanselman.com/privacy" target="_blank" rel="noopener">Privacy Policy</a></li>
+<li><a href="https://www.hanselman.com/blog/GreatestHits.aspx" target="_blank" rel="noopener">Greatest Hits</a></li>
+<li><a href="https://www.hanselman.com/tools" target="_blank" rel="noopener">Dev Tool List</a></li>
+</ul>
+<h3 id="Podcast"><a href="#Podcast" class="headerlink" title="Podcast"></a>Podcast</h3><ul>
+<li><a href="http://hanselminutes.com/" target="_blank" rel="noopener">Hanselminutes</a></li>
+<li><a href="http://thisdeveloperslife.com/" target="_blank" rel="noopener">This Developer’s Life</a></li>
+<li><a href="http://ratchetandthegeek.com/" target="_blank" rel="noopener">Ratchet &amp; The Geek</a></li>
+</ul>
+<h3 id="Speaking"><a href="#Speaking" class="headerlink" title="Speaking"></a>Speaking</h3><ul>
+<li><a href="https://www.hanselman.com/blog/CategoryView.aspx?category=Speaking" target="_blank" rel="noopener">Speaking/Videos</a></li>
+<li><a href="http://www.speakinghacks.com/" target="_blank" rel="noopener">Presentations Tips</a></li>
+</ul>
+<h3 id="Books"><a href="#Books" class="headerlink" title="Books"></a>Books</h3><ul>
+<li><a href="https://www.amazon.com/gp/product/1118311825/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=1118311825&linkCode=as2&tag=diabeticbooks" target="_blank" rel="noopener">ASP.NET 4.5</a></li>
+<li><a href="https://www.amazon.com/gp/product/111834846X/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=111834846X&linkCode=as2&tag=diabeticbooks" target="_blank" rel="noopener">ASP.NET MVC 4</a></li>
+<li><a href="http://relationshiphacks.com/" target="_blank" rel="noopener">Relationship Hacks</a></li>
+</ul>
+<p>© Copyright 2018, <a href="https://www.hanselman.com/" target="_blank" rel="noopener">Scott Hanselman</a>. Design by <a href="http://www.8164.org/" target="_blank" rel="noopener">@jzy</a></p>
+<p><a href="https://www.hanselman.com/blog/" target="_blank" rel="noopener"></a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Scott-Hanselman"><span class="toc-number">1.</span> <span class="toc-text">Scott Hanselman</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Brainstorming-Creating-a-small-single-self-contained-executable-out-of-a-NET-Core-application"><span class="toc-number">1.1.</span> <span class="toc-text">Brainstorming - Creating a small single self-contained executable out of a .NET Core application</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#About-Scott"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">About Scott</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Blog"><span class="toc-number">1.1.1.</span> <span class="toc-text">Blog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Podcast"><span class="toc-number">1.1.2.</span> <span class="toc-text">Podcast</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Speaking"><span class="toc-number">1.1.3.</span> <span class="toc-text">Speaking</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Books"><span class="toc-number">1.1.4.</span> <span class="toc-text">Books</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&text=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&title=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&is_video=false&description=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman&body=Check out this article: http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&title=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&title=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&title=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&title=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&name=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2013/09/10/Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman/&t=Brainstorming-Creatingasmallsingleself-containedexecutableoutofa.NETCoreapplication-ScottHanselman" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="The Trail Renderer is used to make trails behind objects in the scene as they move about. 拖尾渲染器（Trail Renderer）用于制作跟在场景中的物体后面的拖尾效果来代表它们在到处移动。  The Trail Renderer Inspector 拖尾渲染器检视面板  Properties 属性  Ma">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TrailRenderer拖尾渲染器">
+<meta property="og:url" content="http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="The Trail Renderer is used to make trails behind objects in the scene as they move about. 拖尾渲染器（Trail Renderer）用于制作跟在场景中的物体后面的拖尾效果来代表它们在到处移动。  The Trail Renderer Inspector 拖尾渲染器检视面板  Properties 属性  Ma">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2014-10-21T15:24:32.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.992Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>TrailRenderer拖尾渲染器</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2014/11/08/NGUI/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2014/10/18/%E6%97%A0%E6%A0%87%E9%A2%98222/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&text=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&title=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&is_video=false&description=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=TrailRenderer拖尾渲染器&body=Check out this article: http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&title=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&title=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&title=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&title=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&name=TrailRenderer拖尾渲染器&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&t=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        TrailRenderer拖尾渲染器
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2014-10-21T15:24:32.000Z" itemprop="datePublished">2014-10-21</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>The <strong>Trail Renderer</strong> is used to make trails behind objects in the scene as they move about.</p>
+<p>拖尾渲染器（Trail Renderer）用于制作跟在场景中的物体后面的拖尾效果来代表它们在到处移动。</p>
+<p> <em>The Trail Renderer Inspector</em> <em>拖尾渲染器检视面板</em></p>
+<p> <strong>Properties 属性</strong></p>
+<ul>
+<li><strong>Materials</strong> <strong>材质</strong></li>
+</ul>
+<ul>
+<li>An array of <strong>materials</strong> used for rendering the trail. Particle shaders work the best for trails.</li>
+<li>用于渲染拖尾的材质数组。对于拖尾效果粒子着色器工作的最好。</li>
+</ul>
+<ul>
+<li><strong>Size</strong> <strong>大小</strong></li>
+</ul>
+<ul>
+<li>The total number of elements in the <strong>Material</strong> array.</li>
+<li>在材质数组中总共有多少元素。</li>
+</ul>
+<ul>
+<li><strong>Element 0</strong> <strong>元素</strong></li>
+</ul>
+<ul>
+<li>Reference to the Material used to render the trail. The total number of elements is determined by the <strong>Size</strong> property.</li>
+<li>用于渲染拖尾的材质的引用。总共的元素个数由Size参数指定。</li>
+</ul>
+<ul>
+<li><strong>Time</strong> <strong>时间</strong></li>
+</ul>
+<ul>
+<li>Length of the trail, measured in seconds.<br>拖尾的长度，以秒为单位</li>
+</ul>
+<ul>
+<li><strong>Start Width</strong> <strong>开始宽度</strong></li>
+</ul>
+<ul>
+<li>Width of the trail at the object’s position.<br>物体位置的拖尾宽度</li>
+</ul>
+<ul>
+<li><strong>End Width</strong> <strong>结束宽度</strong></li>
+</ul>
+<ul>
+<li>Width of the trail at the end.<br>结束位置的拖尾宽度</li>
+</ul>
+<ul>
+<li><strong>Colors</strong> <strong>颜色</strong></li>
+</ul>
+<ul>
+<li>Array of colors to use over the length of the trail. You can also set alpha transparency with the colors.<br>使用拖尾长度渐变的颜色数组，你也可以在这些颜色中使用alpha透明</li>
+</ul>
+<ul>
+<li><strong>Color0 to Color4</strong><br>The trail’s colors, initial to final.<br>拖尾的颜色，从初始到结束</li>
+</ul>
+<ul>
+<li><strong>Min Vertex Distance</strong> <strong>最小顶点距离</strong></li>
+</ul>
+<ul>
+<li>The minimum distance between anchor points of the trail.<br>拖尾锚点之间的最小距离</li>
+</ul>
+<ul>
+<li><strong>AutoDestruct</strong> <strong>自动销毁</strong></li>
+</ul>
+<ul>
+<li>Enable this to make the object be destroyed when the object has been idle for <strong>Time</strong> seconds.</li>
+<li>将这一项设置为允许来使物体在静止Time秒后被销毁</li>
+</ul>
+<p> <strong>Details 细节</strong></p>
+<p>The Trail Renderer is great for a trail behind a projectile, or contrails from the tip of a plane’s wings. It is good when trying to add a general feeling of speed.</p>
+<p>拖尾渲染器（Trail Renderer）用于炮弹后面的拖尾，或是飞机机翼尖端产生的凝结尾的效果非常棒。当尝试添加一个速度的通用感觉时也很好。</p>
+<p>When using a Trail Renderer, no other renderers on the <strong>GameObject</strong> are used. It is best to create an empty GameObject, and attach a Trail Renderer as the only renderer. You can then parent the Trail Renderer to whatever object you would like it to follow.</p>
+<p>当使用一个拖尾渲染器（Trail Renderer）时，不能在游戏物体（GameObject）上使用其他的渲染器。最好是创建一个空的游戏物体（GameObject），并附加一个拖尾渲染器作为唯一的渲染器。然后你可以将你想要跟随的物体设置为拖尾渲染器的父物体。</p>
+<p> <strong>Materials 材质</strong></p>
+<p>Trail Renderers should use a material that has a Particle <strong>Shader</strong>. The <strong>Texture</strong> used for the Material should be of square dimensions (e.g. 256x256 or 512x512).</p>
+<p>拖尾渲染器（Trail Renderer）将使用一个包含粒子着色器（Paricle Shader）的材质。材质使用的贴图必需是平方尺寸（例如：256×256或512×512）。</p>
+<p> <strong>Trail Width 拖尾宽度</strong></p>
+<p>By setting the Trail’s <strong>Start</strong> and <strong>End Width</strong> , along with the <strong>Time</strong> property, you can tune the way it is displayed and behaves. For example, you could create the wake behind a boat by setting the <strong>Start Width</strong> to 1, and the <strong>End Width</strong> to 2. These values would probably need to be fine-tuned for your game.</p>
+<p>通过设置拖尾的开始和结束宽度（Width），配合时间（Time）属性，你可以调节它显示和表现的方式。例如，你可以创建一个船后面的浪花（wake? Or wave?），设置开始宽度为1，结束宽度为2。这些值大概需要为你的游戏进行适当的调节。</p>
+<p> <strong>Trail Colors 拖尾颜色</strong></p>
+<p>You can cycle your trail through 5 different color/opacity combinations. Using colors could make a bright green plasma trail gradually dim down to a dull grey dissipation, or cycle through the other colors of the rainbow. If you don’t want to change the color, it can be very effective to change only the opacity of each color to make your trail fade in and out at the head and/or tail.</p>
+<p>你可以通过5种不同的颜色/透明度组合循环变化你的拖尾。使用颜色能使一个亮绿色的等离子体拖尾渐渐变暗到一个灰色耗散结构，或是使彩虹循环变为其他颜色。如果你不想改变颜色，它可以非常有效的仅仅改变每一个颜色的透明度来使你的拖尾在头部和/或尾部之间进行渐变。</p>
+<p> <strong>Min Vertex Distance 最小顶点距离</strong></p>
+<p>The <strong>Min Vertex Distance</strong> value determines how far the object that contains the trail must travel before a segment of the trail is solidified. Low values like 0.1 will create trail segments more often, creating smoother trails. Higher values like 1.5 will create segments that are more jagged in appearance. There is a slight performance trade off when using lower values/smoother trails, so try to use the largest possible value to achieve the effect you are trying to create.</p>
+<p>最小顶点距离（Min Vertex Distance）决定了包含拖尾的物体在一个拖尾的段实体化之前必需经过的距离。较小的值如0.1将更频繁的创建拖尾段，生成更平滑的拖尾。较大的值如1.5将创建显示有更多锯齿的段。当使用较低的值/更平滑的拖尾时有一点点性能损失，所以应该尝试使用尽可能大的值来达到你想要创建的效果。</p>
+<p> <strong>Hints 提示</strong></p>
+<ul>
+<li>Use Particle Materials with the Trail Renderer.<br>在拖尾渲染器（TrailRender）中使用粒子材质（Particle Material）。</li>
+</ul>
+<ul>
+<li>Trail Renderers must be laid out over a sequence of frames, they can’t appear instantaneously.<br>拖尾渲染器（TrailRender）必需在一些连续帧之后显现，它不能突然出现。</li>
+</ul>
+<ul>
+<li>Trail Renderers rotate to display the face toward the camera, similar to other <strong>Particle Systems</strong>.</li>
+<li>拖尾渲染器（TrailRender）将旋转为面向摄像机显示，就像其他的粒子系统（Particle Systems）。</li>
+</ul>
+<p>页面最后更新: 2011-12-28</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&text=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&title=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&is_video=false&description=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=TrailRenderer拖尾渲染器&body=Check out this article: http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&title=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&title=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&title=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&title=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&name=TrailRenderer拖尾渲染器&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2014/10/21/TrailRenderer%E6%8B%96%E5%B0%BE%E6%B8%B2%E6%9F%93%E5%99%A8/&t=TrailRenderer拖尾渲染器" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

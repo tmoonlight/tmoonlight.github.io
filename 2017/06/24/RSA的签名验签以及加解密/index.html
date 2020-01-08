@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="作者：刘巍然-学酥链接：https:&#x2F;&#x2F;www.zhihu.com&#x2F;question&#x2F;25912483&#x2F;answer&#x2F;31653639来源：知乎著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。   休息完毕，开始进入答题时间！在回答之前我看了一下已经有的答案，我个人感觉不太舒服… 首先，题主既然提出了问题，我们还是应该用心来答，而不是打击题主的信心… 其次，题主有这个问题的本质">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RSA的签名验签以及加解密">
+<meta property="og:url" content="http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="作者：刘巍然-学酥链接：https:&#x2F;&#x2F;www.zhihu.com&#x2F;question&#x2F;25912483&#x2F;answer&#x2F;31653639来源：知乎著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。   休息完毕，开始进入答题时间！在回答之前我看了一下已经有的答案，我个人感觉不太舒服… 首先，题主既然提出了问题，我们还是应该用心来答，而不是打击题主的信心… 其次，题主有这个问题的本质">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(PK%252C+SK)%5Cleftarrow+KeyGen(%5Clambda)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cvarphi(N)%253D(p-1)(q-1)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cvarphi(N)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cvarphi(N)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=CT+%5Cleftarrow+Encrypt(PK%252CM)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=CT%253DM%5Ee+%5Cbmod+N">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=M+%5Cleftarrow+Decrypt(SK%252CCT)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=M%253DCT%5Ed+%5Cbmod+N">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cvarphi(N)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=CT%5Ed%253DM%5E%7Bed%7D%253DM+%5Cbmod+N">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(PK%252CSK)+%5Cleftarrow+KeyGen(%5Clambda)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Clambda">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Csigma+%5Cleftarrow+Sign(SK%252CM)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Csigma">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Csigma+%253D+M%5Ed+%5Cbmod+N">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=b+%5Cleftarrow+Verify(PK%252C%5Csigma%252CM)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Csigma">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=M%27%253D%5Csigma%5Ee+%5Cbmod+N">
+<meta property="article:published_time" content="2017-06-24T15:05:20.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.841Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.zhihu.com/equation?tex=(PK%252C+SK)%5Cleftarrow+KeyGen(%5Clambda)">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>RSA的签名验签以及加解密</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2017/07/02/STUNTURN/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2017/06/17/%E6%AF%94%E7%89%B9%E5%B8%81%E7%A7%81%E9%92%A5%E3%80%81%E5%85%AC%E9%92%A5%E3%80%81%E9%92%B1%E5%8C%85%E5%9C%B0%E5%9D%80%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&text=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&title=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&is_video=false&description=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=RSA的签名验签以及加解密&body=Check out this article: http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&title=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&title=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&title=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&title=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&name=RSA的签名验签以及加解密&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&t=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        RSA的签名验签以及加解密
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2017-06-24T15:05:20.000Z" itemprop="datePublished">2017-06-24</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>作者：刘巍然-学酥<br>链接：<a href="https://www.zhihu.com/question/25912483/answer/31653639" target="_blank" rel="noopener">https://www.zhihu.com/question/25912483/answer/31653639</a><br>来源：知乎<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。  </p>
+<p>休息完毕，开始进入答题时间！<br>在回答之前我看了一下已经有的答案，我个人感觉不太舒服… 首先，题主既然提出了问题，我们还是应该用心来答，而不是打击题主的信心… 其次，题主有这个问题的本质原因是因为RSA体制本身的一个特点决定的。我相信题主在提问前已经进行了很多的资料搜索和查找工作，甚至有可能阅读了RSA那篇原始论文。因此，我们应该更多地考虑：  </p>
+<ul>
+<li>为什么题主会提出这个问题，这个问题的本质原因来自于哪里？</li>
+<li>我们如何进行详细的解答，帮助题主解决这个问题。</li>
+</ul>
+<p>最后，一些答案本身可能会误导大家，所以还请仔细斟酌后再进行回答。</p>
+<p>=================分割线=================</p>
+<p>我们来回顾一下RSA的加密算法。我们从公钥加密算法和签名算法的定义出发，用比较规范的语言来描述这一算法。</p>
+<p>RSA公钥加密体制包含如下3个算法：KeyGen（密钥生成算法），Encrypt（加密算法）以及Decrypt（解密算法）。</p>
+<ul>
+<li><p><img src="https://www.zhihu.com/equation?tex=%28PK%2C+SK%29%5Cleftarrow+KeyGen%28%5Clambda%29" alt="\(PK, SK\)\\leftarrow KeyGen\(\\lambda\)">)。密钥生成算法以安全常数<img src="https://www.zhihu.com/equation?tex=%5Clambda" alt="\\lambda">)作为输入，输出一个公钥PK，和一个私钥SK。安全常数用于确定这个加密算法的安全性有多高，一般以加密算法使用的质数p的大小有关。<img src="https://www.zhihu.com/equation?tex=%5Clambda" alt="\\lambda">)越大，质数p一般越大，保证体制有更高的安全性。在RSA中，密钥生成算法如下：算法首先随机产生两个不同大质数p和q，计算N=pq。随后，算法计算欧拉函数<img src="https://www.zhihu.com/equation?tex=%5Cvarphi%28N%29%3D%28p-1%29%28q-1%29" alt="\\varphi\(N\)=\(p-1\)\(q-1\)">)。接下来，算法随机选择一个小于<img src="https://www.zhihu.com/equation?tex=%5Cvarphi%28N%29" alt="\\varphi\(N\)">)的整数e，并计算e关于<img src="https://www.zhihu.com/equation?tex=%5Cvarphi%28N%29" alt="\\varphi\(N\)">的模反元素d。最后，公钥为PK=(N, e)，私钥为SK=（N, d）。</p>
+</li>
+<li><p><img src="https://www.zhihu.com/equation?tex=CT+%5Cleftarrow+Encrypt%28PK%2CM%29" alt="CT \\leftarrow Encrypt\(PK,M\)">。加密算法以 <strong>公钥PK和待加密的消息M作为输入</strong> ，输出密文CT。在RSA中，加密算法如下：算法直接输出密文为<img src="https://www.zhihu.com/equation?tex=CT%3DM%5Ee+%5Cbmod+N" alt="CT=M^e \\bmod N">  </p>
+</li>
+<li><p><img src="https://www.zhihu.com/equation?tex=M+%5Cleftarrow+Decrypt%28SK%2CCT%29" alt="M \\leftarrow Decrypt\(SK,CT\)">。解密算法以 <strong>私钥SK和密文CT作为输入</strong> ，输出消息M。在RSA中，解密算法如下：算法直接输出明文为<img src="https://www.zhihu.com/equation?tex=M%3DCT%5Ed+%5Cbmod+N" alt="M=CT^d \\bmod N">)。由于e和d在<img src="https://www.zhihu.com/equation?tex=%5Cvarphi%28N%29" alt="\\varphi\(N\)">下互逆，因此我们有：<img src="https://www.zhihu.com/equation?tex=CT%5Ed%3DM%5E%7Bed%7D%3DM+%5Cbmod+N" alt="CT^d=M^{ed}=M \\bmod N">  </p>
+</li>
+</ul>
+<p>所以，从算法描述中我们也可以看出： <strong>公钥用于对数据进行加密，私钥用于对数据进行解密</strong> 。当然了，这个也可以很直观的理解：公钥就是公开的密钥，其公开了大家才能用它来加密数据。私钥是私有的密钥，谁有这个密钥才能够解密密文。否则大家都能看到私钥，就都能解密，那不就乱套了。</p>
+<p>=================分割线=================</p>
+<p>我们再来回顾一下RSA签名体制。签名体制同样包含3个算法：KeyGen（密钥生成算法），Sign（签名算法），Verify（验证算法）。</p>
+<ul>
+<li><img src="https://www.zhihu.com/equation?tex=%28PK%2CSK%29+%5Cleftarrow+KeyGen%28%5Clambda%29" alt="\(PK,SK\) \\leftarrow KeyGen\(\\lambda\)">)。密钥生成算法同样以安全常数<img src="https://www.zhihu.com/equation?tex=%5Clambda" alt="\\lambda">作为输入，输出一个公钥PK和一个私钥SK。在RSA签名中，密钥生成算法与加密算法完全相同。</li>
+<li><img src="https://www.zhihu.com/equation?tex=%5Csigma+%5Cleftarrow+Sign%28SK%2CM%29" alt="\\sigma \\leftarrow Sign\(SK,M\)">。签名算法 <strong>以私钥SK和待签名的消息M作为输入</strong> ，输出签名<img src="https://www.zhihu.com/equation?tex=%5Csigma" alt="\\sigma">。在RSA签名中，签名算法直接输出签名为<img src="https://www.zhihu.com/equation?tex=%5Csigma+%3D+M%5Ed+%5Cbmod+N" alt="\\sigma = M^d \\bmod N">。注意， <em>签名算法和RSA加密体制中的解密算法非常像</em> 。</li>
+<li><img src="https://www.zhihu.com/equation?tex=b+%5Cleftarrow+Verify%28PK%2C%5Csigma%2CM%29" alt="b \\leftarrow Verify\(PK,\\sigma,M\)">。验证算法 <strong>以公钥PK，签名<img src="https://www.zhihu.com/equation?tex=%5Csigma" alt="\\sigma"> 以及消息M作为输入</strong>，输出一个比特值b。b=1意味着验证通过。b=0意味着验证不通过。在RSA签名中，验证算法首先计算<img src="https://www.zhihu.com/equation?tex=M%27%3D%5Csigma%5Ee+%5Cbmod+N" alt="M&#39;=\\sigma^e \\bmod N">，随后对比M’与M，如果相等，则输出b=1，否则输出b=0。注意： <em>验证算法和RSA加密体制中的加密算法非常像</em> 。</li>
+</ul>
+<p>所以，在签名算法中， <strong>私钥用于对数据进行签名，公钥用于对签名进行验证</strong> 。这也可以直观地进行理解：对一个文件签名，当然要用私钥，因为我们希望只有自己才能完成签字。验证过程当然希望所有人都能够执行，大家看到签名都能通过验证证明确实是我自己签的。</p>
+<p>=================分割线=================</p>
+<p>那么，为什么题主问这么一个问题呢？我们可以看到，RSA的加密/验证，解密/签字过程太像了。同时，RSA体制本身就是对称的：如果我们反过来把e看成私钥，d看成公钥，这个体制也能很好的执行。我想正是由于这个原因，题主在学习RSA体制的时候才会出现这种混乱。那么解决方法是什么呢？建议题主可以学习一下其他的公钥加密体制以及签名体制。其他的体制是没有这种对称性质的。举例来说，公钥加密体制的话可以看一看ElGamal加密，以及更安全的Cramer-Shoup加密。签名体制的话可以进一步看看ElGamal签名，甚至是BLS签名，这些体制可能能够帮助题主更好的弄清加密和签名之间的区别和潜在的联系。</p>
+<p>至于题主问的加密和签名是怎么结合的。这种体制叫做签密方案（SignCrypt），RSA中，这种签密方案看起来特别特别像，很容易引起混乱。在此我不太想详细介绍RSA中的加密与签字结合的方案。我想提醒题主的是，加密与签字结合时，两套公私钥是不同的。</p>
+<p>如果题主还有进一步的问题，欢迎留言。我个人是衷心希望大家都了解一点密码学的知识，以便了解庞大的计算机网络系统到底是如何保护数据安全性的。希望我的回答能对题主有所帮助。</p>
+<p>以上</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&text=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&title=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&is_video=false&description=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=RSA的签名验签以及加解密&body=Check out this article: http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&title=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&title=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&title=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&title=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&name=RSA的签名验签以及加解密&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2017/06/24/RSA%E7%9A%84%E7%AD%BE%E5%90%8D%E9%AA%8C%E7%AD%BE%E4%BB%A5%E5%8F%8A%E5%8A%A0%E8%A7%A3%E5%AF%86/&t=RSA的签名验签以及加解密" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

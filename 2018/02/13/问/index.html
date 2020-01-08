@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="问 javascript 这样写(function(){})() 有什么用途？匿名函数 javascript util 2014年10月11日提问  6 关注  16 收藏，6.5k 浏览 -1 javascript 这样写有什么用途？一般是用在什么地方 (function(){ })() 2014年10月11日提问2 评论邀请回答编辑 默认排序时间排序 7个回答14 全局命名空间污染与 IIFE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="问">
+<meta property="og:url" content="http://yoursite.com/2018/02/13/%E9%97%AE/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="问 javascript 这样写(function(){})() 有什么用途？匿名函数 javascript util 2014年10月11日提问  6 关注  16 收藏，6.5k 浏览 -1 javascript 这样写有什么用途？一般是用在什么地方 (function(){ })() 2014年10月11日提问2 评论邀请回答编辑 默认排序时间排序 7个回答14 全局命名空间污染与 IIFE">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-02-13T06:46:53.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.810Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>问</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/02/18/ASP.NETCoreWebApi%E8%BF%94%E5%9B%9E%E7%BB%9F%E4%B8%80%E6%A0%BC%E5%BC%8F%E5%8F%82%E6%95%B0/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/02/02/%E5%AE%9E%E4%BD%93%E8%AE%BE%E8%AE%A1%E4%B9%8BConcurrencyStamp%E5%90%8C%E6%AD%A5%E6%A0%87%E8%AE%B0/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/02/13/%E9%97%AE/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/02/13/%E9%97%AE/&text=问" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/02/13/%E9%97%AE/&title=问" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/02/13/%E9%97%AE/&is_video=false&description=问" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=问&body=Check out this article: http://yoursite.com/2018/02/13/%E9%97%AE/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/02/13/%E9%97%AE/&title=问" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/02/13/%E9%97%AE/&title=问" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/02/13/%E9%97%AE/&title=问" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/02/13/%E9%97%AE/&title=问" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/02/13/%E9%97%AE/&name=问&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/02/13/%E9%97%AE/&t=问" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#javascript-这样写-function-有什么用途？"><span class="toc-number">1.</span> <span class="toc-text">javascript 这样写(function(){})() 有什么用途？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7个回答"><span class="toc-number">1.1.</span> <span class="toc-text">7个回答</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#全局命名空间污染与-IIFE"><span class="toc-number">1.1.1.</span> <span class="toc-text">全局命名空间污染与 IIFE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IIFE（立即执行的函数表达式）"><span class="toc-number">1.1.2.</span> <span class="toc-text">IIFE（立即执行的函数表达式）</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        问
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-02-13T06:46:53.000Z" itemprop="datePublished">2018-02-13</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>问</p>
+<h1 id="javascript-这样写-function-有什么用途？"><a href="#javascript-这样写-function-有什么用途？" class="headerlink" title="javascript 这样写(function(){})() 有什么用途？"></a><a href="https://segmentfault.com/q/1010000000718015" target="_blank" rel="noopener">javascript 这样写(function(){})() 有什么用途？</a></h1><p><a href="https://segmentfault.com/t/%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0" target="_blank" rel="noopener">匿名函数</a> <a href="https://segmentfault.com/t/javascript" target="_blank" rel="noopener">javascript</a> <a href="https://segmentfault.com/u/util" target="_blank" rel="noopener">util</a> 2014年10月11日提问</p>
+<p> 6 关注</p>
+<p> 16 收藏，6.5k 浏览</p>
+<p>-1</p>
+<p>javascript 这样写有什么用途？一般是用在什么地方</p>
+<p>(function(){</p>
+<p>})()</p>
+<p><a href="https://segmentfault.com/q/1010000000718015" target="_blank" rel="noopener">2014年10月11日提问</a>2 评论邀请回答编辑</p>
+<p><a href="https://segmentfault.com/q/1010000000718015#answers-title" target="_blank" rel="noopener">默认排序</a><a href="https://segmentfault.com/q/1010000000718015?sort=created#answers-title" target="_blank" rel="noopener">时间排序</a></p>
+<h2 id="7个回答"><a href="#7个回答" class="headerlink" title="7个回答"></a>7个回答</h2><p>14</p>
+<h3 id="全局命名空间污染与-IIFE"><a href="#全局命名空间污染与-IIFE" class="headerlink" title="全局命名空间污染与 IIFE"></a>全局命名空间污染与 IIFE</h3><p>总是将代码包裹成一个 IIFE(Immediately-Invoked Function Expression)，用以创建独立隔绝的定义域。这一举措可防止全局命名空间被污染。</p>
+<p>IIFE 还可确保你的代码不会轻易被其它全局命名空间里的代码所修改（i.e. 第三方库，window 引用，被覆盖的未定义的关键字等等）。</p>
+<p>不推荐</p>
+<p>var x = 10,</p>
+<p>y = 100;</p>
+<p>// Declaring variables in the global scope is resulting in global scope pollution. All variables declared like this// will be stored in the window object. This is very unclean and needs to be avoided.</p>
+<p>console.log(window.x + ‘ ‘ + window.y);</p>
+<p>推荐</p>
+<p>// We declare a IIFE and pass parameters into the function that we will use from the global space</p>
+<p>(function(log, w, undefined){</p>
+<p>‘use strict’;</p>
+<p>var x = 10,</p>
+<p>y = 100;</p>
+<p>// Will output ‘true true’</p>
+<p>log((w.x === undefined) + ‘ ‘ + (w.y === undefined));</p>
+<p>}(window.console.log, window));</p>
+<hr>
+<h3 id="IIFE（立即执行的函数表达式）"><a href="#IIFE（立即执行的函数表达式）" class="headerlink" title="IIFE（立即执行的函数表达式）"></a>IIFE（立即执行的函数表达式）</h3><p>无论何时，想要创建一个新的封闭的定义域，那就用 IIFE。它不仅避免了干扰，也使得内存在执行完后立即释放。</p>
+<p>所有脚本文件建议都从 IIFE 开始。</p>
+<p>立即执行的函数表达式的执行括号应该写在外包括号内。虽然写在内还是写在外都是有效的，但写在内使得整个表达式看起来更像一个整体，因此推荐这么做。</p>
+<p>不推荐</p>
+<p>(function(){})();</p>
+<p>推荐</p>
+<p>(function(){}());</p>
+<p>so，用下列写法来格式化你的 IIFE 代码：</p>
+<p>(function(){</p>
+<p>‘use strict’;</p>
+<p>// Code goes here</p>
+<p>}());</p>
+<p>如果你想引用全局变量或者是外层 IIFE 的变量，可以通过下列方式传参：</p>
+<p>(function($, w, d){</p>
+<p>‘use strict’;</p>
+<p>$(function() {</p>
+<p>w.alert(d.querySelectorAll(‘div’).length);</p>
+<p>});</p>
+<p>}(jQuery, window, document));</p>
+<hr>
+<p>全文阅读：<a href="http://roshanca.com/2014/web-develop-styleguide-javascript/" target="_blank" rel="noopener">前端编码风格规范之 JavaScript 规范</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#javascript-这样写-function-有什么用途？"><span class="toc-number">1.</span> <span class="toc-text">javascript 这样写(function(){})() 有什么用途？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7个回答"><span class="toc-number">1.1.</span> <span class="toc-text">7个回答</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#全局命名空间污染与-IIFE"><span class="toc-number">1.1.1.</span> <span class="toc-text">全局命名空间污染与 IIFE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IIFE（立即执行的函数表达式）"><span class="toc-number">1.1.2.</span> <span class="toc-text">IIFE（立即执行的函数表达式）</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/02/13/%E9%97%AE/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/02/13/%E9%97%AE/&text=问" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/02/13/%E9%97%AE/&title=问" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/02/13/%E9%97%AE/&is_video=false&description=问" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=问&body=Check out this article: http://yoursite.com/2018/02/13/%E9%97%AE/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/02/13/%E9%97%AE/&title=问" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/02/13/%E9%97%AE/&title=问" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/02/13/%E9%97%AE/&title=问" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/02/13/%E9%97%AE/&title=问" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/02/13/%E9%97%AE/&name=问&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/02/13/%E9%97%AE/&t=问" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

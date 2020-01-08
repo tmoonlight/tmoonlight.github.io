@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="1.1. 概述在ASP.NET Core之前，ASP.NET Framework应用程序由IIS加载。Web应用程序的入口点由InetMgr.exe创建并调用托管。以初始化过程中触发HttpApplication.Application_Start()事件。开发人员第一次执行代码的机会是处理Application_StartGlobal.asax中的事件。在ASP.NET Core中，Global">
+<meta property="og:type" content="article">
+<meta property="og:title" content="asp.netcore运行原理">
+<meta property="og:url" content="http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="TmoonSite">
+<meta property="og:description" content="1.1. 概述在ASP.NET Core之前，ASP.NET Framework应用程序由IIS加载。Web应用程序的入口点由InetMgr.exe创建并调用托管。以初始化过程中触发HttpApplication.Application_Start()事件。开发人员第一次执行代码的机会是处理Application_StartGlobal.asax中的事件。在ASP.NET Core中，Global">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ss.csdn.net/p?http://mmbiz.qpic.cn/mmbiz_png/gak2lhVxV6LibJia5SrhPY3kiaeLAr6QQ3Z1zLFy9puPTTvDxFuzWbeUcYbya2mCgdbQWW5xhvuer0SrQbsfDiavMA/640?wx_fmt=png&wxfrom=5&wx_lazy=1">
+<meta property="article:published_time" content="2018-09-27T09:47:02.000Z">
+<meta property="article:modified_time" content="2020-01-07T10:48:14.764Z">
+<meta property="article:author" content="Tmoonlight">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ss.csdn.net/p?http://mmbiz.qpic.cn/mmbiz_png/gak2lhVxV6LibJia5SrhPY3kiaeLAr6QQ3Z1zLFy9puPTTvDxFuzWbeUcYbya2mCgdbQWW5xhvuer0SrQbsfDiavMA/640?wx_fmt=png&wxfrom=5&wx_lazy=1">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/logo2.gif" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/logo2.gif">
+          
+        
+    
+    <!-- title -->
+    <title>asp.netcore运行原理</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2018/10/13/%E5%B1%80%E9%83%A8%E6%95%85%E9%9A%9C%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2018/09/22/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&text=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&title=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&is_video=false&description=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=asp.netcore运行原理&body=Check out this article: http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&title=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&title=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&title=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&title=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&name=asp.netcore运行原理&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&t=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-概述"><span class="toc-number">1.</span> <span class="toc-text">1.1. 概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-文件配置"><span class="toc-number">2.</span> <span class="toc-text">1.2. 文件配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-Starup文件配置"><span class="toc-number">2.1.</span> <span class="toc-text">1.2.1. Starup文件配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Configure"><span class="toc-number">2.1.1.</span> <span class="toc-text">Configure</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ConfigureServices"><span class="toc-number">2.1.2.</span> <span class="toc-text">ConfigureServices</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-appsetting-json配置"><span class="toc-number">2.2.</span> <span class="toc-text">1.2.2. appsetting.json配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-处理管道（中间件）"><span class="toc-number">3.</span> <span class="toc-text">1.3. 处理管道（中间件）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-总结"><span class="toc-number">4.</span> <span class="toc-text">1.4 总结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        asp.netcore运行原理
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TmoonSite</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-09-27T09:47:02.000Z" itemprop="datePublished">2018-09-27</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1. 概述"></a>1.1. 概述</h2><p>在<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core之前，<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Framework应用程序由IIS加载。Web应用程序的入口点由InetMgr.exe创建并调用托管。以初始化过程中触发HttpApplication.Application_Start()事件。开发人员第一次执行代码的机会是处理Application_StartGlobal.asax中的事件。在<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core中，Global.asax文件不再可用，已被新的初始化过程替代。</p>
+<p><img src="https://ss.csdn.net/p?http://mmbiz.qpic.cn/mmbiz_png/gak2lhVxV6LibJia5SrhPY3kiaeLAr6QQ3Z1zLFy9puPTTvDxFuzWbeUcYbya2mCgdbQWW5xhvuer0SrQbsfDiavMA/640?wx_fmt=png&wxfrom=5&wx_lazy=1" alt=""></p>
+<p><a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core 应用程序是在.NET Core 控制台程序下调用特定的库，这是<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core应用程序开发的根本变化。所有的<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a>托管库都是从Program开始执行，而不是由IIS托管。也就是说.NET工具链可以同时用于.NET Core控制台应用程序和<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core应用程序。</p>
+<p>using System;</p>
+<p>using Microsoft.AspNetCore.Hosting;</p>
+<p>namespace aspnetcoreapp{  </p>
+<p> public class Program</p>
+<p>   {      </p>
+<p>  public static void Main(string[] args)        {            </p>
+<pre><code>    var host = new WebHostBuilder()
+
+        .UseKestrel() //指定宿主程序为Kestrel
+
+        .UseStartup&lt;Startup&gt;()// 调用Startup.cs类下的Configure 和 ConfigureServices
+
+        .Build();
+
+    host.Run();
+
+}</code></pre><p>   }</p>
+<p>}</p>
+<p>以上是Program类中Main方法的示例代码，Main方法负责初始化Web主机，调用Startup和执行应用程序。主机将调用Startup类下面的Configure和ConfigureServices方法。</p>
+<h2 id="1-2-文件配置"><a href="#1-2-文件配置" class="headerlink" title="1.2. 文件配置"></a>1.2. 文件配置</h2><h3 id="1-2-1-Starup文件配置"><a href="#1-2-1-Starup文件配置" class="headerlink" title="1.2.1. Starup文件配置"></a>1.2.1. Starup文件配置</h3><p>对于一个<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core 程序而言，Startup 类是必须的。<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core在程序启动时会从Program类中开始执行，然后再找到UseStartup<Startup>中找到配置的Startup的类，如果不指定Startup类会导致启动失败。</p>
+<p>在Startup中必须定义Configure方法，而ConfigureServices方法则是可选的，方法会在程序第一次启动时被调用，类似传统的<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> MVC的路由和应用程序状态均可在Startup中配置，也可以在此初始化所需中间件。</p>
+<h4 id="Configure"><a href="#Configure" class="headerlink" title="Configure"></a>Configure</h4><p>在<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core 应用程序中Configure方法用于指定中间件以什么样的形式响应HTTP请求。</p>
+<p>using System;</p>
+<p>using Microsoft.AspNetCore.Builder;</p>
+<p>using Microsoft.AspNetCore.Hosting;</p>
+<p>using Microsoft.AspNetCore.Http;</p>
+<p>namespace aspnetcoreapp{  </p>
+<p> public class Startup</p>
+<p>   {      </p>
+<p>  public Startup(IConfiguration configuration)    </p>
+<p>   {</p>
+<pre><code>      Configuration = configuration;
+
+  }    
+
+
+
+public IConfiguration Configuration { get; }        
+
+
+
+   public void Configure(IApplicationBuilder app, IHostingEnvironment env)        {                        
+
+      if (env.IsDevelopment())
+
+      {
+
+          app.UseDeveloperExceptionPage();
+
+          app.UseBrowserLink();
+
+      }            else
+
+      {
+
+          app.UseExceptionHandler(&quot;/Home/Error&quot;);
+
+      }
+
+
+
+      app.UseStaticFiles();
+
+
+
+      app.UseMvc(routes =&gt;
+
+      {
+
+          routes.MapRoute(
+
+              name: &quot;default&quot;,
+
+              template: &quot;{controller=Home}/{action=Index}/{id?}&quot;);
+
+      });
+
+  }</code></pre><p>   }</p>
+<p>}</p>
+<p><a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core是通过对IApplicationBuilder进行扩展来构建中间件的， 上面代码中每个use扩展方法都是将中间件添加到请求管道。也可以给Configure方法附加服务（如：IHostingEnvironment）这些服务在ConfigureServices方法中被初始化。</p>
+<p>用<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core项目模板添加的应用程序，默认添加的几个中间件：</p>
+<p>UseStaticFiles 允许应用程序提供静态资源。</p>
+<p>UseMvc 将MVC添加到管道并允许配置路由。</p>
+<h4 id="ConfigureServices"><a href="#ConfigureServices" class="headerlink" title="ConfigureServices"></a>ConfigureServices</h4><p>ConfigureServices方法是应用程序运行时将服务添加到容器中，用<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core项目模板的时候默认会将MVC的服务添加到容器中：</p>
+<p>public void ConfigureServices(IServiceCollection services){</p>
+<p>   services.AddMvc();</p>
+<p>}</p>
+<p>接下来举一个例子，在实际应用中ConfigureServices方法和Configure方法配合使用，在<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core中有一个UI开发框架Telerik UI for <a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core，它有60多个UI组件，不仅支持<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core的跨平台布署模式，而且还支持前端自适应渲染。</p>
+<p>当在项目中应用Telerik UI的时候，首先在项目中引用相关的包，然后再在ConfigureServices方法中将Kendo UI服务添加到容器中：</p>
+<p>public void ConfigureServices(IServiceCollection services){</p>
+<p>   services.AddKendo();</p>
+<p>}</p>
+<p>接下来，在Configure中设置Kendo UI</p>
+<p>public void Configure(IApplicationBuilder app, IHostingEnvironment env){    //…</p>
+<p>   app.UseKendo(env);</p>
+<p>}</p>
+<h3 id="1-2-2-appsetting-json配置"><a href="#1-2-2-appsetting-json配置" class="headerlink" title="1.2.2. appsetting.json配置"></a>1.2.2. appsetting.json配置</h3><p>Configuration API 提供了一个基于键-值对来配置应用程序的方法，在运行时可以从多个来源来读取配置。键-值对可以分组形成多层结构。键-值对可以配置在不同的地方，如：文件、内存等，其中放在内存中不能持久化，这里笔者选择将其配置在appsetting.json文件里面。</p>
+<p>配置appsetting文件</p>
+<p>{</p>
+<p> “key1”: “字符串”,</p>
+<p> “key2”: 2,</p>
+<p> “key3”:true,</p>
+<p> “parentObj”: {</p>
+<p>   “key1”: “sub-key1”</p>
+<p> },</p>
+<p> “members”: [</p>
+<p>   {</p>
+<pre><code>&quot;name&quot;: &quot;Lily&quot;,
+
+&quot;age&quot;: &quot;18&quot;</code></pre><p>   },</p>
+<p>   {</p>
+<pre><code>&quot;name&quot;: &quot;Lucy&quot;,
+
+&quot;age&quot;: &quot;17&quot;</code></pre><p>   }</p>
+<p> ]}</p>
+<p>一个分层结构的JSON文件，键（如：key1）作为索引器，值作为参数，类型可以为：字符串、数字、布尔、对象、数组。下面具体来看下在应用中怎样使用。</p>
+<p>在应用程序加加载和应用配置文件</p>
+<p>public static IConfigurationRoot Configuration { get; set; }</p>
+<p>public static void Main(string[] args = null){  </p>
+<p> var builder = new ConfigurationBuilder()</p>
+<pre><code>.SetBasePath(Directory.GetCurrentDirectory())
+
+.AddJsonFile(&quot;appsettings.json&quot;);</code></pre><p>   Configuration = builder.Build();</p>
+<p>   Console.WriteLine($”key1 = {Configuration[“key1”]}”);</p>
+<p>   Console.WriteLine($”key2 = {Configuration[“key2”]}”);</p>
+<p>   Console.WriteLine(</p>
+<pre><code>$&quot;subkey1 = {Configuration[&quot;parentObj:key1&quot;]}&quot;);</code></pre><p>   Console.WriteLine();</p>
+<p>   Console.WriteLine(“members:”);</p>
+<p>   Console.Write($”{Configuration[“members:0:name”]}, “);</p>
+<p>   Console.WriteLine($”age {Configuration[“members:0:age”]}”);</p>
+<p>   Console.Write($”{Configuration[“members:1:name”]}, “);</p>
+<p>   Console.WriteLine($”age {Configuration[“members:1:age”]}”);</p>
+<p>   Console.WriteLine();</p>
+<p>   Console.WriteLine(“Press a key…”);</p>
+<p>   Console.ReadKey();</p>
+<p>}</p>
+<p>由于加载的是一个JSON文件,所以文件加载进来以后程序可以直接将它当作一个JSON对象来使用。如果有过动态语言使用经验的同学来说这种方式就比较熟悉了。只在这里访问属性的时候将平时常见的.变成了:，这和写的JSON对象更接近。</p>
+<h2 id="1-3-处理管道（中间件）"><a href="#1-3-处理管道（中间件）" class="headerlink" title="1.3. 处理管道（中间件）"></a>1.3. 处理管道（中间件）</h2><p>在<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core应用程序中使用中间件，应用程序所做的任何事情（包括服务器中的静态文件）都是由中间件来完成的。没有任何中间件的应用程序在请求的出错时候简单返回404 Not Found。中间件可以让您完全控制请求的处理方式，并且让您的应用程序更加精简。</p>
+<p>当接收到一个请求时，请求会交给中间件构成的中间件管道进行处理，管道就是多个中间件构成，请求从一个中间件的一端进入，从中间件的另一端出来，每个中间件都可以对HttpContext请求开始和结束进行处理：</p>
+<p>在<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core中可以用Run、Map和Use三种方式来配置HTTP管道。Run 方法称为短路管道（因为它不会调用 next 请求委托）。因此，Run方法一般在管道尾部被调用。Run 是一种惯例，有些中间件组件可能会暴露他们自己的 Run方法，而这些方法只能在管道末尾处运行。下面两段代码是等效的，因为Use没有调用next方法</p>
+<p>Run方法示例代码</p>
+<p>public void Configure(IApplicationBuilder app, IHostingEnvironment env){</p>
+<p>   app.Run(async context =&gt;</p>
+<pre><code>{            await context.Response.WriteAsync(&quot;environment &quot; \+ env);
+
+});</code></pre><p>}</p>
+<p>Use方法不执行next时示例代码</p>
+<p>public void Configure(IApplicationBuilder app, IHostingEnvironment env){</p>
+<p>   app.Use(async (context, next) =&gt;</p>
+<pre><code>{            await context.Response.WriteAsync(&quot;environment &quot; \+ env);
+
+});</code></pre><p>}</p>
+<p>在.NET Core 中约定了Map*扩展被用于分支管道，当前的实现已支持基于请求路径或使用谓词来进入分支。Map扩展方法用于匹配基于请求路径的请求委托。Map只接受路径，并配置单独的中间件管道的功能。</p>
+<p>private static void HandleMapUrl(IApplicationBuilder app){</p>
+<p>   app.Run(async context =&gt;</p>
+<p>   {      </p>
+<p> await context.Response.WriteAsync(“Map Url Test Successful”);</p>
+<p>   });</p>
+<p>}public void ConfigureMapping(IApplicationBuilder app, IHostingEnvironment env){</p>
+<p>   app.Map(“/mapurl”, HandleMapUrl);</p>
+<p>}</p>
+<p>上例中是一个用Map方法来接受路径进入分支管道，也就是说所有基于/mapurl路径请求都会被管道中的HandleMapUrl方法所处理；如果想用谓词来进入中间件分支，则要使用MapThen方法。MapThen方法允许以一种非常灵活的方式构建中间管道。比如可以检测查询字符串是否具有’branch’来进入分支：</p>
+<p>private static void HandleBranch(IApplicationBuilder app){</p>
+<p>   app.Run(async context =&gt;</p>
+<p>   {      </p>
+<p> await context.Response.WriteAsync(“Branch used.”);</p>
+<p>   });</p>
+<p>}</p>
+<p> public void Configure(IApplicationBuilder app){</p>
+<p>   app.MapWhen(context =&gt; {        return context.Request.Query.ContainsKey(“branch”);</p>
+<p>   }, HandleBranch);</p>
+<p>}</p>
+<h2 id="1-4-总结"><a href="#1-4-总结" class="headerlink" title="1.4 总结"></a>1.4 总结</h2><p>这节讲解了<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core在运行时首先加载Program类下面的Main方法，在Main方法中指定托管服务器，并调用Startup类中的Configure和ConfigureServices方法等完成初始化；</p>
+<p>在<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core中 HTTP请求是以中间件管道的形式进行处理，每个中间件都可以在HTTP请求开始和结束处理对它进行处理；</p>
+<p><a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a> Core可以构建跨平台应用，服务运行在Http.Sys（仅适用于Windows平台）和Kestrel上，不需要用IIS进行托管，所以相比传统<a href="http://asp.net/" target="_blank" rel="noopener">ASP.NET</a>来说性能更高效也更加灵活。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-概述"><span class="toc-number">1.</span> <span class="toc-text">1.1. 概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-文件配置"><span class="toc-number">2.</span> <span class="toc-text">1.2. 文件配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-Starup文件配置"><span class="toc-number">2.1.</span> <span class="toc-text">1.2.1. Starup文件配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Configure"><span class="toc-number">2.1.1.</span> <span class="toc-text">Configure</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ConfigureServices"><span class="toc-number">2.1.2.</span> <span class="toc-text">ConfigureServices</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-appsetting-json配置"><span class="toc-number">2.2.</span> <span class="toc-text">1.2.2. appsetting.json配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-处理管道（中间件）"><span class="toc-number">3.</span> <span class="toc-text">1.3. 处理管道（中间件）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-总结"><span class="toc-number">4.</span> <span class="toc-text">1.4 总结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&text=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&title=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&is_video=false&description=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=asp.netcore运行原理&body=Check out this article: http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&title=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&title=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&title=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&title=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&name=asp.netcore运行原理&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://yoursite.com/2018/09/27/asp.netcore%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/&t=asp.netcore运行原理" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Tmoonlight
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
