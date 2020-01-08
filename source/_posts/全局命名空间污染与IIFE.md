@@ -2,6 +2,7 @@
 title: 全局命名空间污染与IIFE
 date: 2018/2/13 14:46:53
 tags:
+categories: 前端
 ---
 
 总是将代码包裹成一个 IIFE(Immediately-Invoked Function Expression)，用以创建独立隔绝的定义域。这一举措可防止全局命名空间被污染。
@@ -51,7 +52,6 @@ log((w.x === undefined) + ' ' \+ (w.y === undefined));
 
 }(window.console.log, window));
 ```
-
 
 
 
