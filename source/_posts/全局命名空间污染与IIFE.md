@@ -1,37 +1,8 @@
 ---
-title: 问
+title: 全局命名空间污染与IIFE
 date: 2018/2/13 14:46:53
 tags:
 ---
-
-
-问
-
-# [javascript 这样写(function(){})() 有什么用途？](https://segmentfault.com/q/1010000000718015)
-
-[匿名函数](https://segmentfault.com/t/%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0) [javascript](https://segmentfault.com/t/javascript) [util](https://segmentfault.com/u/util) 2014年10月11日提问
-
- 6 关注
-
- 16 收藏，6.5k 浏览
-
--1
-
-javascript 这样写有什么用途？一般是用在什么地方
-
-(function(){
-
-})()
-
-[2014年10月11日提问](https://segmentfault.com/q/1010000000718015)2 评论邀请回答编辑
-
-[默认排序](https://segmentfault.com/q/1010000000718015#answers-title)[时间排序](https://segmentfault.com/q/1010000000718015?sort=created#answers-title)
-
-## 7个回答
-
-14
-
-### 全局命名空间污染与 IIFE
 
 总是将代码包裹成一个 IIFE(Immediately-Invoked Function Expression)，用以创建独立隔绝的定义域。这一举措可防止全局命名空间被污染。
 
@@ -39,6 +10,7 @@ IIFE 还可确保你的代码不会轻易被其它全局命名空间里的代码
 
 不推荐
 
+```
 var x = 10,
 
 y = 100;
@@ -49,9 +21,11 @@ y = 100;
 // Declaring variables in the global scope is resulting in global scope pollution. All variables declared like this// will be stored in the window object. This is very unclean and needs to be avoided.
 
 console.log(window.x + ' ' + window.y);
+```
 
 推荐
 
+```
 // We declare a IIFE and pass parameters into the function that we will use from the global space
 
 (function(log, w, undefined){
@@ -76,6 +50,10 @@ log((w.x === undefined) + ' ' \+ (w.y === undefined));
 
 
 }(window.console.log, window));
+```
+
+
+
 
 * * *
 
@@ -89,10 +67,13 @@ log((w.x === undefined) + ' ' \+ (w.y === undefined));
 
 不推荐
 
+```
 (function(){})();
+```
 
 推荐
 
+```
 (function(){}());
 
 so，用下列写法来格式化你的 IIFE 代码：
@@ -110,9 +91,11 @@ so，用下列写法来格式化你的 IIFE 代码：
 
 
 }());
+```
 
 如果你想引用全局变量或者是外层 IIFE 的变量，可以通过下列方式传参：
 
+```
 (function($, w, d){
 
 'use strict';
@@ -127,6 +110,9 @@ w.alert(d.querySelectorAll('div').length);
 });
 
 }(jQuery, window, document));
+```
+
+
 
 * * *
 
