@@ -8,7 +8,7 @@ subtitle: '月影工作间'
 description: ''
 keywords:
 author: Tmoonlight
-language: en
+language: zh-Hans
 timezone: ''
 
 # URL
@@ -93,7 +93,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: cactus
+theme: landscape
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
